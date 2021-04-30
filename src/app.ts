@@ -6,7 +6,7 @@ const port = 3000;
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.send('3000 working');
+    res.send(`${port} working`);
 });
 
 app.listen(port, () => {
