@@ -12,7 +12,23 @@ const CAMHEIGHT = 480;
 // previous code is here
 
 window.onload = function() {
-    
+
+    navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+    if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({  audio: true, video: true })
+        .then(function (stream) {
+                    //Display the video stream in the video object
+        })
+        .catch(function (e) { logError(e.name + ": " + e.message); });
+    }
+    else {
+        navigator.getWebcam({ audio: true, video: true }, 
+            function (stream) {
+                    //Display the video stream in the video object
+            }, 
+            function () { logError("Web cam is not accessible."); });
+    }
+
     console.log("window loaded");
     let state = getState();
 
@@ -33,7 +49,9 @@ window.onload = function() {
 
     const canvasElement =
     document.getElementById('output_canvas');
-    
+
+    canvasElement.style.display = "none";
+
     const canvasCtx = canvasElement.getContext('2d');
     
     
