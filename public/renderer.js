@@ -1,123 +1,154 @@
-import {checkRadio, checkSelectList, newMenuState} from './menu.js';
-
+import {checkRadio, checkSelectList, getState} from './state.js';
+import {initiate} from './initiator.js';
+import { getTechnique } from './technique/technique.js';
 
 let done = false;
-function onResults(results) {
-    
-    
-    // Hide the spinner.        
-    if (!done) {
-        console.log("results:", results);
-        console.log("canvasElement:", canvasElement);
-        done = true;
-    }
-    
-    document.body.classList.add('loaded');
-    // Update the frame rate.
-    // fpsControl.tick();
+let done2 = false;
 
-    // Draw the overlays.
-    canvasCtx.save();
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(
-        results.image, 0, 0, canvasElement.width, canvasElement.height
-    );
+const CAMWIDTH = 1280;
+const CAMHEIGHT = 720;
 
-    if (results.multiHandLandmarks && results.multiHandedness) {
-        for (let index = 0; index < results.multiHandLandmarks.length; index++) {
-            const classification = results.multiHandedness[index];
-            const isRightHand = classification.label === 'Right';
-            const landmarks = results.multiHandLandmarks[index];
-            // drawConnectors(
-            //     canvasCtx, landmarks, HAND_CONNECTIONS,
-            //     {color: isRightHand ? '#00FF00' : '#FF0000'}),
-            // drawLandmarks(canvasCtx, landmarks, {
-            //     color: isRightHand ? '#00FF00' : '#FF0000',
-            //     fillColor: isRightHand ? '#FF0000' : '#00FF00',
-            //     radius: (x) => {
-            //     return lerp(x.from.z, -0.15, .1, 10, 1);
-            //     }
-            // });
-        }
-    }
-
-    canvasCtx.restore();
-}
-
+// previous code is here
 
 window.onload = function() {
     
     console.log("window loaded");
-    let menuState = newMenuState();
-
+    let state = getState();
+    
     let menuElement = document.getElementById("menu");
-
+    
     let start_study = false;
     
     // Our input frames will come from here.
     
     const videoContainer = document.getElementById("video_container");
-    videoContainer.disabled = true;
+    // videoContainer.style.display = "none";
+    
+    const videoElement =
+    document.getElementById('input_video');
+    videoElement.style.display = "none";
 
+    const canvasElement =
+    document.getElementById('output_canvas');
+    
+    const canvasCtx = canvasElement.getContext('2d');
+    
+    
     const startBtn = document.getElementById("start_btn");
     startBtn.onclick = function() {
-        menuState.showMenu = false;
-        menuState.technique = checkRadio("menutechnique");
-        menuState.trigger = checkRadio("menutrigger");
-        menuState.userID = document.getElementById("inputUserID").value;
-        menuState.practice = document.getElementById("practiceCheck").checked; 
-        menuState.debug = document.getElementById("debugCheck").checked;
-        menuState.cellscnt = checkSelectList("selectCells");
-        menuState.targetscnt = 3;
-        
-        console.log("menuState:", menuState);
+        state.menu.showMenu     = false;
+        state.menu.technique    = checkRadio("menutechnique");
+        state.menu.trigger      = checkRadio("menutrigger");
+        state.menu.userID       = document.getElementById("inputUserID").value;
+        state.menu.practice     = document.getElementById("practiceCheck").checked; 
+        state.menu.debug        = document.getElementById("debugCheck").checked;
+        state.menu.cellscnt     = parseInt(checkSelectList("selectCells"));
+        state.menu.targetscnt   = 3;
+        state.height            = CAMHEIGHT; 
+        state.width             = CAMWIDTH;
+
         start_study = true;
         menu.style.display = "none";
-        console.log("start btn clicked");
+        videoContainer.style.display = "block";
 
-    }
-    
-    console.log("startBtn:", startBtn);
-    
-    
-    
-    if (start_study) {
-        const videoElement =
-        document.getElementById('input_video');
-        const canvasElement =
-        document.getElementById('output_canvas');
-        
-        const canvasCtx = canvasElement.getContext('2d');
-        
-        // call tick() each time the graph runs.
-        // const fpsControl = new FPS();
-        
-
-        
+        state.technique = getTechnique(state);
+ 
         const hands = new Hands({locateFile: (file) => {
-            console.log("hands file:", file);
             return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
         }});
-    
+        
         hands.setOptions({
+            selfieMode: true,
             maxNumHands: 2,
             minDetectionConfidence: 0.9,
             minTrackingConfidence: 0.9
         });
         
         hands.onResults(onResults);
-    
-        /**
-         * Instantiate a camera. We'll feed each frame we receive into the solution.
-         */
+        
         const camera = new Camera(videoElement, {
             onFrame: async () => {
                 await hands.send({image: videoElement});
             },
-            width: 1280,
-            height: 720
+            width: CAMWIDTH,
+            height: CAMHEIGHT
         });
-    
+
         camera.start();
     }
+    
+    
+    // call tick() each time the graph runs.
+    // const fpsControl = new FPS();
+    
+
+    
+    function onResults(results) {
+        // Hide the spinner.        
+        if (!done) {            
+            done = true;
+        }
+        
+        
+        state.data = results;
+        
+        // document.body.classList.add('loaded');
+        // Update the frame rate.
+        // fpsControl.tick();
+        
+        // Draw the overlays.
+        canvasCtx.save();
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(
+            results.image, 0, 0, canvasElement.width, canvasElement.height
+        );
+        
+        let srcMat = cv.imread('output_canvas');
+        
+        state.imageCV = srcMat;
+
+        if (results.multiHandLandmarks && results.multiHandedness) {
+            if (!done2) {
+                console.log("results:", results);
+            }
+            
+            state.initData = initiate(state, results);
+                
+            if (!done2) {
+                console.log("state.initData:", state);
+                console.log("typeof(results.image):", typeof(results.image));
+            }
+            
+            done2 = true;            
+            state.cursor = (state.initData.right.landmarks)? state.initData.right.landmarks[8]: null;
+
+            if (state.initData.show) {
+
+                state.technique.calculate(state);
+                state.technique.draw(state);
+            }
+            // for (let index = 0; index < results.multiHandLandmarks.length; index++) {
+                //     const classification = results.multiHandedness[index];
+                //     const isRightHand = classification.label === 'Right';
+                //     const landmarks = results.multiHandLandmarks[index];
+                // drawConnectors(
+                    //     canvasCtx, landmarks, HAND_CONNECTIONS,
+                    //     {color: isRightHand ? '#00FF00' : '#FF0000'}),
+                    // drawLandmarks(canvasCtx, landmarks, {
+                        //     color: isRightHand ? '#00FF00' : '#FF0000',
+                        //     fillColor: isRightHand ? '#FF0000' : '#00FF00',
+                        //     radius: (x) => {
+                            //     return lerp(x.from.z, -0.15, .1, 10, 1);
+                            //     }
+                            // });
+            // }
+        }
+
+        cv.imshow('cv_output_canvas', srcMat);
+
+        srcMat.delete();
+        
+        canvasCtx.restore();
+    }
+    
 }
