@@ -9,13 +9,14 @@ class Grid {
         this.divisions = state.menu.cellscnt;
         this.x_cols = Array(11);
         this.y_rows = Array(11);
-        this.dx_col = (this.width - (this.divisions+1)*this.gap) / this.divisions;
-        this.dy_row = (this.height - (this.divisions+1)*this.gap) / this.divisions;
         console.log("grid:", this);
     }
-
+    
     align(state) {
-
+        
+        this.dx_col = (this.width - (this.divisions+1)*this.gap) / this.divisions;
+        this.dy_row = (this.height - (this.divisions+1)*this.gap) / this.divisions;
+        
         this.x_cols[0] = this.x;
         this.x_cols[1] = this.x_cols[0] + this.gap;
         for (var i = 2; i <= this.divisions; i ++) {

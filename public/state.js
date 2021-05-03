@@ -39,7 +39,7 @@ class State {
                 
                 ret.x = Math.min(ret.x, l.x);
                 ret.y = Math.min(ret.y, l.y);
-                ret.mxx = Math.max(ret.mxx, l.y);
+                ret.mxx = Math.max(ret.mxx, l.x);
                 ret.mxy = Math.max(ret.mxy, l.y);
             }
 

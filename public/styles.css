@@ -9,10 +9,10 @@ body {
   transform: scale(-1, 1); }
 
 .output_canvas {
-  height: 720px;
-  width: 1280px; }
+  height: 480px;
+  width: 640px; }
 
 .menu {
   background-color: #444141;
-  height: 720px;
-  width: 1280px; }
+  height: 480px;
+  width: 640px; }

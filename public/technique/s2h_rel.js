@@ -1,4 +1,5 @@
 
+
 class S2HRelative {
     constructor(parent) {
         this.name = "S2H_Relative";
@@ -26,6 +27,24 @@ class S2HRelative {
 
             this.parent._setupSelection(state);
         }
+    }
+
+    draw(state) {
+
+        state.overlay = state.imageCV.clone();
+        this.parent._draw_main_grid_layout(state);   
+        this.parent._drawCells(state);
+
+        cv.addWeighted(
+            state.overlay, 
+            state.config.TRANSPARENCY_ALPHA, 
+            state.imageCV, 
+            1-state.config.TRANSPARENCY_ALPHA, 
+            0.0, 
+            state.outputCV, 
+            -1);
+        
+        state.overlay.delete();
     }
 }
 

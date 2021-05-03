@@ -1,12 +1,13 @@
 import {checkRadio, checkSelectList, getState} from './state.js';
 import {initiate} from './initiator.js';
 import { getTechnique } from './technique/technique.js';
+import {getConfig} from './config.js';
 
 let done = false;
 let done2 = false;
 
-const CAMWIDTH = 1280;
-const CAMHEIGHT = 720;
+const CAMWIDTH = 640;
+const CAMHEIGHT = 480;
 
 // previous code is here
 
@@ -14,6 +15,8 @@ window.onload = function() {
     
     console.log("window loaded");
     let state = getState();
+
+    state.config = getConfig();
     
     let menuElement = document.getElementById("menu");
     
@@ -103,9 +106,9 @@ window.onload = function() {
             results.image, 0, 0, canvasElement.width, canvasElement.height
         );
         
-        let srcMat = cv.imread('output_canvas');
         
-        state.imageCV = srcMat;
+        state.imageCV = cv.imread('output_canvas');
+        state.outputCV = state.imageCV.clone();
 
         if (results.multiHandLandmarks && results.multiHandedness) {
             if (!done2) {
@@ -128,26 +131,47 @@ window.onload = function() {
                 state.technique.draw(state);
             }
             // for (let index = 0; index < results.multiHandLandmarks.length; index++) {
-                //     const classification = results.multiHandedness[index];
-                //     const isRightHand = classification.label === 'Right';
-                //     const landmarks = results.multiHandLandmarks[index];
-                // drawConnectors(
-                    //     canvasCtx, landmarks, HAND_CONNECTIONS,
-                    //     {color: isRightHand ? '#00FF00' : '#FF0000'}),
-                    // drawLandmarks(canvasCtx, landmarks, {
-                        //     color: isRightHand ? '#00FF00' : '#FF0000',
-                        //     fillColor: isRightHand ? '#FF0000' : '#00FF00',
-                        //     radius: (x) => {
-                            //     return lerp(x.from.z, -0.15, .1, 10, 1);
-                            //     }
-                            // });
+            //     const classification = results.multiHandedness[index];
+            //     const isRightHand = classification.label === 'Right';
+            //     const landmarks = results.multiHandLandmarks[index];
+            //     // drawConnectors(
+            //         //     canvasCtx, landmarks, HAND_CONNECTIONS,
+            //         //     {color: isRightHand ? '#00FF00' : '#FF0000'}),
+            //     if (!isRightHand) {
+            //         drawLandmarks(canvasCtx, landmarks, {
+            //             color: isRightHand ? '#00FF00' : '#FF0000',
+            //             fillColor: isRightHand ? '#FF0000' : '#00FF00',
+            //             radius: (x) => {
+            //                 return lerp(x.from.z, -0.15, .1, 10, 1);
+            //                 }
+            //             });
+            //     }
             // }
         }
 
-        cv.imshow('cv_output_canvas', srcMat);
+        if (state.cursor) {
+            state.cursor.z += 1;
 
-        srcMat.delete();
+            console.log("cursor:", state.cursor);
+            cv.circle(
+                state.outputCV, 
+                new cv.Point(state.cursor.x, state.cursor.y), 
+                Math.min(20, state.cursor.z*10), 
+                new cv.Scalar(state.cursor.z*100, state.cursor.z*100, state.cursor.z*100), 
+                -1);
+        }
+
+
+        cv.imshow('cv_output_canvas', state.outputCV);
+
+        if (state.outputCV) {
+            state.outputCV.delete();
+        }
         
+        if (state.imageCV) {
+            state.imageCV.delete();
+        }
+
         canvasCtx.restore();
     }
     

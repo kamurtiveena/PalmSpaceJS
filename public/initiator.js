@@ -60,8 +60,8 @@ function initiate(state, results) {
         }
     }
 
-    ret.left.show = ret.left.area > 0.1;
-    ret.right.show = ret.right.area > 0.1;
+    ret.left.show = ret.left.area > 0.08;
+    ret.right.show = ret.right.area > 0.08;
     ret.show = (ret.left.show | ret.right.show)? true: false;
 
     return ret;
