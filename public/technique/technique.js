@@ -1,10 +1,12 @@
 import {S2HRelative} from './s2h_rel.js';
 import {Grid} from '../ds/grid.js';
+import { TechniqueType } from './constant.js';
 
 
 
 class Technique {
     constructor(state) {
+        this.type = TechniqueType.Unassigned;
         this.grid = {}
         this.grid.input = new Grid(state, "input");
         this.grid.output = new Grid(state, "output");
@@ -38,7 +40,6 @@ class Technique {
         }
         
         const btn = this.grid.input.btnPointedBy(state.cursor);
-        // console.log("_setupSelection() btn:", btn);
 
         if (btn.row_i != -1 && btn.col_j != -1) {
             if (btn.row_i != state.selection.previousBtn.row_i || 
@@ -48,8 +49,6 @@ class Technique {
                 state.selection.messages.selected = 
                     `Highlighted: ${(btn.row_i-1)*this.grid.input.divisions + btn.col_j}`;
                 this.visited_cell += 1;
-                
-                // console.log("changing highlight, tech:", this);
             }
             
             state.selection.currentBtn.row_i = btn.row_i;
@@ -85,7 +84,7 @@ class Technique {
                     state.overlay,
                     new cv.Point(this.grid.output.x_cols[j], this.grid.output.y_rows[i]),
                     new cv.Point(
-                        this.grid.output.x_cols[j]+this.grid.output.dx_col, 
+                        this.grid.output.x_cols[j] + this.grid.output.dx_col, 
                         this.grid.output.y_rows[i] + this.grid.output.dy_row),
                     c,
                     -1
@@ -191,11 +190,4 @@ class Technique {
 }
 
 
-function getTechnique(state) {
-    console.log("getTechnique state:", state);
-    return new Technique(state);
-
-}
-
-
-export {getTechnique};
+export {Technique};

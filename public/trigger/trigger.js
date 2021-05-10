@@ -24,11 +24,4 @@ class Trigger {
 }
 
 
-function getTrigger(state) {
-    console.log("getTrigger state:", state);
-    return new Trigger(state);
-
-}
-
-
-export {getTrigger};
+export {Trigger};

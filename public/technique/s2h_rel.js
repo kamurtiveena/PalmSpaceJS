@@ -1,9 +1,10 @@
-
+import {TechniqueType} from "./constant.js";
 
 class S2HRelative {
     constructor(parent) {
         this.name = "S2H_Relative";
         this.parent = parent;
+        this.parent.type = TechniqueType.S2H_Relative;
     }
 
     calculate(state) {
@@ -35,23 +36,11 @@ class S2HRelative {
     draw(state) {
         if (!state.initData.left.show) return;
 
-        state.overlay = state.imageCV.clone();
         this.parent._draw_main_grid_layout(state);   
         this.parent._drawCells(state);
         this.parent._drawTextHighlighted(state);
         this.parent._drawTextMarked(state);
         this.parent._drawProgressBar(state);
-        
-        cv.addWeighted(
-            state.overlay, 
-            state.config.TRANSPARENCY_ALPHA, 
-            state.imageCV, 
-            1-state.config.TRANSPARENCY_ALPHA, 
-            0.0, 
-            state.outputCV, 
-            -1);
-        
-        state.overlay.delete();
     }
 }
 

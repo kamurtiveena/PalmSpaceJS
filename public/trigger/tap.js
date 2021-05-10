@@ -52,6 +52,7 @@ class Tap {
             this.cnt += 1;
         }
 
+        // ~ exponentially moving average
         this.baseRelDepth = 0.2*this.baseRelDepth + 0.8*relDepth;
 
         if (this.cnt > 8) {
