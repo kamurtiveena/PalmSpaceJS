@@ -9,7 +9,7 @@ class S2HRelative {
 
     calculate(state) {
 
-        if (!state.initData.left.show) return;
+        if (!state.initiator.left.show) return;
 
         let palm = state.palmRect();
         
@@ -34,7 +34,7 @@ class S2HRelative {
     }
 
     draw(state) {
-        if (!state.initData.left.show) return;
+        if (!state.initiator.left.show) return;
 
         this.parent._draw_main_grid_layout(state);   
         this.parent._drawCells(state);

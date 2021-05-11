@@ -13,9 +13,9 @@ class Tap {
 
     update(state) {
 
-        if (!state.initData.right.show) return;
+        if (!state.initiator.right.show) return;
 
-        const relDepth = state.initData.right.scale.thickness;
+        const relDepth = state.initiator.right.scale.thickness;
 
         if (this.baseRelDepth < 0) this.baseRelDepth = relDepth;
         this.diff = (relDepth - this.baseRelDepth) * 2;

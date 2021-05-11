@@ -1,5 +1,7 @@
+"use strict";
+
 import {checkRadio, checkSelectList, getState} from './state.js';
-import {initiate} from './initiator.js';
+import {Initiator} from './initiator.js';
 import { Technique } from './technique/technique.js';
 import {Config} from './config.js';
 import {Trigger} from './trigger/trigger.js';
@@ -75,6 +77,7 @@ window.onload = function() {
         menu.style.display = "none";
         videoContainer.style.display = "block";
 
+        state.initiator = new Initiator(state);
         state.technique = new Technique(state);
         state.trigger = new Trigger(state);
         
@@ -90,8 +93,8 @@ window.onload = function() {
         hands.setOptions({
             selfieMode: true,
             maxNumHands: 2,
-            minDetectionConfidence: 0.8,
-            minTrackingConfidence: 0.8
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
         });
         
         hands.onResults(onResults);
@@ -104,7 +107,6 @@ window.onload = function() {
             height: state.config.CAMHEIGHT
         });
 
-        console.log("camera:", camera);
         camera.start();
     }
     
@@ -114,15 +116,16 @@ window.onload = function() {
     // const fpsControl = new FPS();
 
     function goBackToMenu() {
-        menu.style.display = "block";
-        videoContainer.style.display = "none";
-        const mediaStream = videoElement.srcObject;
-        const tracks = mediaStream.getTracks();
-        tracks.forEach(track => track.stop())
+        location.reload();
+        // menu.style.display = "block";
+        // videoContainer.style.display = "none";
+        // const mediaStream = videoElement.srcObject;
+        // const tracks = mediaStream.getTracks();
+        // tracks.forEach(track => track.stop())
     }
     
     function onResults(results) {
-        
+
         state.data = results;
         
         // document.body.classList.add('loaded');
@@ -144,11 +147,11 @@ window.onload = function() {
 
         if (results.multiHandLandmarks && results.multiHandedness) {
 
-            state.initData = initiate(state, results);
+            state.initiator.initiate(state, results);
             
-            state.cursor = (state.initData.right.landmarks)? state.initData.right.landmarks[8]: null;
-
-            if (state.initData.show) {
+            state.cursor = (state.initiator.right.dataID != null)? state.initiator.right.landmarks[8]: null;
+            
+            if (state.initiator.show) {
 
                 state.technique.calculate(state);
                 
@@ -233,7 +236,7 @@ window.onload = function() {
 
         if (state.cursor) {
             
-            const colsz = state.initData.right.scale;
+            const colsz = state.initiator.right.scale;
             cv.circle(
                 state.outputCV, 
                 new cv.Point(state.cursor.x, state.cursor.y), 
