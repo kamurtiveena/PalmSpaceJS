@@ -68,7 +68,6 @@ class Initiator {
     constructor(state) {
         this.left = new HandInitData();
         this.right = new HandInitData();
-
     }
 
     initiate(state, results) {
@@ -76,50 +75,53 @@ class Initiator {
         let lft = false;
         let rgt = false;
 
-        for (let i = 0; i < results.multiHandLandmarks.length; i++) {
-            if (results.multiHandedness[i].index == 1) {
-                this.right.dataID = i;
-                this.right.area = area(results.multiHandLandmarks[i]);
+        if (results.multiHandLandmarks && results.multiHandedness) {
 
-                for (let j = 0; j < 21; j++) {
-                    this.right.landmarks[j].x = (0.4 * this.right.landmarks[j].x) + (0.6 * results.multiHandLandmarks[i][j].x * state.width);
-                    this.right.landmarks[j].y = (0.4 * this.right.landmarks[j].y) + (0.6 * results.multiHandLandmarks[i][j].y * state.height);
-                    this.right.landmarks[j].z = (0.4 * this.right.landmarks[j].z) + (0.6 * results.multiHandLandmarks[i][j].z);
+            for (let i = 0; i < results.multiHandLandmarks.length; i++) {
+                if (results.multiHandedness[i].index == 1) {
+                    this.right.dataID = i;
+                    this.right.area = area(results.multiHandLandmarks[i]);
+
+                    for (let j = 0; j < 21; j++) {
+                        this.right.landmarks[j].x = (0.2 * this.right.landmarks[j].x) + (0.8 * results.multiHandLandmarks[i][j].x * state.width);
+                        this.right.landmarks[j].y = (0.2 * this.right.landmarks[j].y) + (0.8 * results.multiHandLandmarks[i][j].y * state.height);
+                        this.right.landmarks[j].z = (0.2 * this.right.landmarks[j].z) + (0.8 * results.multiHandLandmarks[i][j].z);
+                    }
+
+                    const rng = getMinMaxZ(this.right.landmarks);
+
+                    this.right.scale = getColorSizeValueFromZ(
+                        this.right.landmarks[8].z,
+                        rng.zMin,
+                        rng.zMax,
+                        1,
+                        10
+                    );
+
+                    rgt = true;
+
+                } else if (results.multiHandedness[i].index == 0) {
+                    this.left.dataID = i;
+                    this.left.area = area(results.multiHandLandmarks[i]);
+
+                    for (let j = 0; j < 21; j++) {
+                        this.left.landmarks[j].x = (0.4 * this.left.landmarks[j].x) + (0.6 * results.multiHandLandmarks[i][j].x * state.width);
+                        this.left.landmarks[j].y = (0.4 * this.left.landmarks[j].y) + (0.6 * results.multiHandLandmarks[i][j].y * state.height);
+                        this.left.landmarks[j].z = (0.4 * this.left.landmarks[j].z) + (0.6 * results.multiHandLandmarks[i][j].z);
+                    }
+
+                    const rng = getMinMaxZ(this.left.landmarks);
+
+                    this.left.scale = getColorSizeValueFromZ(
+                        this.left.landmarks[8].z,
+                        rng.zMin,
+                        rng.zMax,
+                        1,
+                        10
+                    );
+
+                    lft = true;
                 }
-
-                const rng = getMinMaxZ(this.right.landmarks);
-
-                this.right.scale = getColorSizeValueFromZ(
-                    this.right.landmarks[8].z,
-                    rng.zMin,
-                    rng.zMax,
-                    1,
-                    10
-                );
-
-                rgt = true;
-
-            } else if (results.multiHandedness[i].index == 0) {
-                this.left.dataID = i;
-                this.left.area = area(results.multiHandLandmarks[i]);
-
-                for (let j = 0; j < 21; j++) {
-                    this.left.landmarks[j].x = (0.4 * this.left.landmarks[j].x) + (0.6 * results.multiHandLandmarks[i][j].x * state.width);
-                    this.left.landmarks[j].y = (0.4 * this.left.landmarks[j].y) + (0.6 * results.multiHandLandmarks[i][j].y * state.height);
-                    this.left.landmarks[j].z = (0.4 * this.left.landmarks[j].z) + (0.6 * results.multiHandLandmarks[i][j].z);
-                }
-
-                const rng = getMinMaxZ(this.left.landmarks);
-
-                this.left.scale = getColorSizeValueFromZ(
-                    this.left.landmarks[8].z,
-                    rng.zMin,
-                    rng.zMax,
-                    1,
-                    10
-                );
-
-                lft = true;
             }
         }
 
@@ -138,7 +140,7 @@ class Initiator {
         }
 
         if (rgt) {
-            this.right.show = this.right.area > 0.08;
+            this.right.show = this.right.area > 0.04;
         } else {
             this.right.dataID = null;
             this.right.show = false;

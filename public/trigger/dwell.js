@@ -101,6 +101,10 @@ class Dwell {
             }
         }
     }
+
+    reset() {
+        
+    }
 }
 
 export {Dwell};

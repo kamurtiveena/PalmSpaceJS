@@ -60,6 +60,11 @@ window.onload = function() {
     canvasElement.style.display = "none";
 
     const canvasCtx = canvasElement.getContext('2d');
+
+
+    const canvasCVOut = 
+        document.getElementById('cv_output_canvas');
+    const canvasCVOutCtx = canvasCVOut.getContext('2d');
     
     const startBtn = document.getElementById("start_btn");
     startBtn.onclick = function() {
@@ -139,82 +144,82 @@ window.onload = function() {
             results.image, 0, 0, canvasElement.width, canvasElement.height
         );
         
-        
         state.imageCV = cv.imread('output_canvas');
         state.outputCV = state.imageCV.clone();
 
+        state.initiator.initiate(state, results);
+        
         state.cursor = null;
+        state.cursor = (state.initiator.right.dataID != null)? state.initiator.right.landmarks[8]: null;
+        if (state.cursor == null) {
+            state.trigger.reset();
+        }
 
-        if (results.multiHandLandmarks && results.multiHandedness) {
+        if (state.initiator.show || state.technique.alwaysShow) {
 
-            state.initiator.initiate(state, results);
+            state.technique.calculate(state);
             
-            state.cursor = (state.initiator.right.dataID != null)? state.initiator.right.landmarks[8]: null;
-            
-            if (state.initiator.show) {
+            state.experiment.trial.updateStartBtnInputLoc(state);
 
-                state.technique.calculate(state);
-                
-                state.experiment.trial.updateStartBtnInputLoc(state);
+            state.trigger.update(state);
 
-                state.trigger.update(state);
-
-                switch(state.trigger.status) {
-                    case TRIGGER.ONHOLD:
-                        // console.log("switch TRIGGER.ONHOLD");
-                        break;
-                    case TRIGGER.OPEN:
-                        // console.log("switch TRIGGER.OPEN");
-                        break;
-                    case TRIGGER.PRESSED:
-                        // console.log("switch TRIGGER.PRESSED");
-                        break;
-                    case TRIGGER.RELEASED:
-                        // console.log("switch TRIGGER.RELEASED");
-                        if (state.experiment.trial.isCursorOverStartBtn(state)) {
-                            // console.log("RELASED over trial btn")
-                            state.experiment.trial.clickStartBtn(state);
-                        } else if(state.experiment.trial.isCursorOverBackBtn(state)) {
-                            console.log("RELEASED over back btn");
-                            goBackToMenu();
-                        } else if (state.experiment.trial.status == TrialState.STARTED){
-                            state.technique.markSelected(state);
-                            
-                            if (state.experiment.trial.matched(state)) {
-                                state.experiment.trial.clickTarget(state);
-                                state.experiment.trial.generateTarget(state);
-                            }
+            // document.getElementById('stats').innerHTML = state.experiment.trial.targetsDuration;
+            switch(state.trigger.status) {
+                case TRIGGER.ONHOLD:
+                    // console.log("switch TRIGGER.ONHOLD");
+                    break;
+                case TRIGGER.OPEN:
+                    // console.log("switch TRIGGER.OPEN");
+                    break;
+                case TRIGGER.PRESSED:
+                    // console.log("switch TRIGGER.PRESSED");
+                    break;
+                case TRIGGER.RELEASED:
+                    // console.log("switch TRIGGER.RELEASED");
+                    if (state.experiment.trial.isCursorOverStartBtn(state)) {
+                        // console.log("RELASED over trial btn")
+                        state.experiment.trial.clickStartBtn(state);
+                    } else if(state.experiment.trial.isCursorOverBackBtn(state)) {
+                        console.log("RELEASED over back btn");
+                        goBackToMenu();
+                    } else if (state.experiment.trial.status == TrialState.STARTED){
+                        state.technique.markSelected(state);
+                        
+                        if (state.experiment.trial.matched(state)) {
+                            state.experiment.trial.clickTarget(state);
+                            state.experiment.trial.generateTarget(state);
                         }
+                    }
 
-                        state.trigger.reset();
-                        break;
-                    default:
-                        state.trigger.reset();
-                        break;
-                }
-                
-                state.overlay = state.imageCV.clone();
-                
-                state.experiment.trial.drawStartBtn(state);
-                state.experiment.trial.drawBackBtn(state);
-                state.experiment.trial.drawCompletedTargetsText(state);
-
-                state.technique.draw(state);
-                
-                cv.addWeighted(
-                    state.overlay, 
-                    state.config.TRANSPARENCY_ALPHA, 
-                    state.imageCV, 
-                    1-state.config.TRANSPARENCY_ALPHA, 
-                    0.0, 
-                    state.outputCV, 
-                    -1);
-                    
-                state.experiment.trial.drawTarget(state);
-
-                state.overlay.delete();
-
+                    state.trigger.reset();
+                    break;
+                default:
+                    state.trigger.reset();
+                    break;
             }
+            
+            state.overlay = state.imageCV.clone();
+            
+            state.experiment.trial.drawStartBtn(state);
+            state.experiment.trial.drawBackBtn(state);
+            state.experiment.trial.drawCompletedTargetsText(state);
+
+            state.technique.draw(state);
+            
+            cv.addWeighted(
+                state.overlay, 
+                state.config.TRANSPARENCY_ALPHA, 
+                state.imageCV, 
+                1-state.config.TRANSPARENCY_ALPHA, 
+                0.0, 
+                state.outputCV, 
+                -1);
+                
+            state.experiment.trial.drawTarget(state);
+
+            state.overlay.delete();
+
+        }
             // for (let index = 0; index < results.multiHandLandmarks.length; index++) {
             //     const classification = results.multiHandedness[index];
             //     const isRightHand = classification.label === 'Right';
@@ -232,7 +237,7 @@ window.onload = function() {
             //             });
             //     }
             // }
-        }
+        // }
 
         if (state.cursor) {
             
@@ -246,6 +251,21 @@ window.onload = function() {
         }
 
         cv.imshow('cv_output_canvas', state.outputCV);
+
+        if (state.initiator.left.show &&
+            state.selection.currentBtn.row_i != -1 &&
+            state.selection.currentBtn.col_j != -1) {
+            
+                canvasCVOutCtx.strokeStyle = "blue";
+                canvasCVOutCtx.lineWidth = 3;
+                canvasCVOutCtx.globalAlpha = 0.4;
+                canvasCVOutCtx.strokeRect(
+                    state.technique.grid.output.x_cols[state.selection.currentBtn.col_j], 
+                    state.technique.grid.output.y_rows[state.selection.currentBtn.row_i], 
+                    state.technique.grid.output.dx_col,
+                    state.technique.grid.output.dy_row
+                );                
+        }
 
         if (state.outputCV) {
             state.outputCV.delete();

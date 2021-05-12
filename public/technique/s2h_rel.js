@@ -1,7 +1,7 @@
 import {TechniqueType} from "./constant.js";
 
 class S2HRelative {
-    constructor(parent) {
+    constructor(parent, state) {
         this.name = "S2H_Relative";
         this.parent = parent;
         this.parent.type = TechniqueType.S2H_Relative;
@@ -25,11 +25,13 @@ class S2HRelative {
         this.parent.grid.output.x   = palm.x;
         this.parent.grid.output.y   = palm.y;
         
-        if (this.parent.grid.input.x > 0 && this.parent.grid.input.y > 0) {
-            this.parent.grid.input.align(state);
-            this.parent.grid.output.align(state);
+        if (this.parent.grid.input.x > 0 && 
+            this.parent.grid.input.y > 0) {
+            
+                this.parent.grid.input.align(state);
+                this.parent.grid.output.align(state);
 
-            this.parent._setupSelection(state);
+                this.parent._setupSelection(state);
         }
     }
 

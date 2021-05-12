@@ -20,6 +20,7 @@ class Trigger {
 
     reset() {
         this.status = TRIGGER.OPEN;
+        this.trigger.reset();
     }
 }
 

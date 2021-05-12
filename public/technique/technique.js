@@ -1,6 +1,7 @@
 import {S2HRelative} from './s2h_rel.js';
 import {Grid} from '../ds/grid.js';
 import { TechniqueType } from './constant.js';
+import { MidAir } from './midair.js';
 
 
 
@@ -16,8 +17,20 @@ class Technique {
         this.message = "";
 
         this.name = state.menu.technique;
-        if (this.name == "S2H_Relative") {
-            this.anchor = new S2HRelative(this);
+
+        console.log("tech name:", this.name);
+        
+        switch(this.name) {
+            case "S2H_Relative":
+                console.log("S2H_Relative enterered");
+                this.anchor = new S2HRelative(this, state);
+                break;
+            case "MidAir":
+                console.log("MidAir enterered");
+                this.anchor = new MidAir(this, state);
+                break;
+            default:
+                break;
         }
     }
 
@@ -92,22 +105,22 @@ class Technique {
             }
         }
 
-        if (state.selection.currentBtn.row_i != -1 &&
-            state.selection.currentBtn.col_j != -1) {
+        // if (state.selection.currentBtn.row_i != -1 &&
+        //     state.selection.currentBtn.col_j != -1) {
 
-            let c = new cv.Scalar(25, 25, 255);
-            cv.rectangle(
-                state.overlay,
-                new cv.Point(
-                    this.grid.output.x_cols[state.selection.currentBtn.col_j], 
-                    this.grid.output.y_rows[state.selection.currentBtn.row_i]),
-                new cv.Point(
-                    this.grid.output.x_cols[state.selection.currentBtn.col_j]+this.grid.output.dx_col, 
-                    this.grid.output.y_rows[state.selection.currentBtn.row_i] + this.grid.output.dy_row),
-                c,
-                -1
-            );
-        }
+        //     let c = new cv.Scalar(25, 25, 255);
+        //     cv.rectangle(
+        //         state.overlay,
+        //         new cv.Point(
+        //             this.grid.output.x_cols[state.selection.currentBtn.col_j], 
+        //             this.grid.output.y_rows[state.selection.currentBtn.row_i]),
+        //         new cv.Point(
+        //             this.grid.output.x_cols[state.selection.currentBtn.col_j]+this.grid.output.dx_col, 
+        //             this.grid.output.y_rows[state.selection.currentBtn.row_i] + this.grid.output.dy_row),
+        //         c,
+        //         -1
+        //     );
+        // }
     }
 
     markSelected(state) {

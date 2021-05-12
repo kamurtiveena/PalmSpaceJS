@@ -105,7 +105,7 @@
               </div>
               
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="menutechnique" id="menutechnique_h2s_midair" value="MidAir" disabled>
+                <input class="form-check-input" type="radio" name="menutechnique" id="menutechnique_h2s_midair" value="MidAir">
                 <label class="form-check-label" for="menutechnique_h2s_midair">
                   MidAir
                 </label>
@@ -142,11 +142,15 @@
         </div>
       </form>
 
-      <div class="row" id="video_container">
+      <div class="row" id="video_container" width="640px" height="480px">
           <video id="input_video"></video>
           <canvas id="cv_output_canvas" width="640px" height="480px"></canvas>
           <canvas id="output_canvas" width="640px" height="480px"></canvas>
 
+        </div>
+
+        <div class="row" id="stats">
+          
         </div>
     </div>
 

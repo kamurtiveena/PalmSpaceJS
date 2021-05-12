@@ -11,7 +11,7 @@ class Trial {
         this.cursorOverBackBtn  = false;
         
         this.startBtn = {
-            rect: new cv.Rect(1, 1, 10, 10),
+            rect: new cv.Rect(1, 1, 70, 50),
             label: 'Start',
             color: new cv.Scalar(20, 20, 20)
         }
@@ -42,15 +42,15 @@ class Trial {
             if (this.status != TrialState.DONE) {
                 const r = this.startBtn.rect;
                 if (this.status != TrialState.STARTED &&
-                    r.x <= state.cursor.x && state.cursor.x <= r.x + r.width &&
-                    r.y <= state.cursor.y && state.cursor.y <= r.y + r.height) {
+                    r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 50 &&
+                    r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 50) {
     
                         if (!this.cursorOverBtn) {
                             this.cursorOverBtn = true;
                             this.visitTimeBtn = performance.now();
                         }
     
-                        return (performance.now() - this.visitTimeBtn) > 200;
+                        return (performance.now() - this.visitTimeBtn) > 5;
                     }
             }
         } 
@@ -75,7 +75,7 @@ class Trial {
                         }
                         console.log("isCursorOverBackBtn backbtn:", b);
                         
-                        return (performance.now() - this.visitTimeBackBtn) > 200;
+                        return (performance.now() - this.visitTimeBackBtn) > 5;
                     }
             }
         } 
