@@ -33,7 +33,7 @@ class Technique {
                 break;
         }
     }
-
+    
     calculate(state) {
         this.anchor.calculate(state);
     }
@@ -43,6 +43,9 @@ class Technique {
     }
 
     _setupSelection(state) {
+
+        if (state.selection.locked) return;
+
         state.selection.previousBtn.row_i = 
             state.selection.currentBtn.row_i;
         state.selection.previousBtn.col_j = 

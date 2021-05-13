@@ -3,10 +3,8 @@
 import {checkRadio, checkSelectList, getState} from './state.js';
 import {Initiator} from './initiator.js';
 import { Technique } from './technique/technique.js';
-import {Config} from './config.js';
 import {Trigger} from './trigger/trigger.js';
 import {TRIGGER} from './trigger/triggerstate.js';
-import {ButtonSelection} from './ds/btnselection.js';
 import { Trial } from './userstudies/trial.js';
 import {TrialState} from './userstudies/constant.js';
 
@@ -35,8 +33,6 @@ window.onload = function() {
 
     let state = getState();
 
-    state.config = new Config();
-    state.selection = new ButtonSelection();
 
     state.experiment = {
         study1: {},
@@ -149,10 +145,10 @@ window.onload = function() {
 
         state.initiator.initiate(state, results);
         
-        state.cursor = null;
         state.cursor = (state.initiator.right.dataID != null)? state.initiator.right.landmarks[8]: null;
+
         if (state.cursor == null) {
-            state.trigger.reset();
+            state.trigger.reset(state);
         }
 
         if (state.initiator.show || state.technique.alwaysShow) {
@@ -164,6 +160,10 @@ window.onload = function() {
             state.trigger.update(state);
 
             // document.getElementById('stats').innerHTML = state.experiment.trial.targetsDuration;
+            if (state.trigger.status != TRIGGER.PRESSED) {
+                state.resetCursorPath();
+            }
+
             switch(state.trigger.status) {
                 case TRIGGER.ONHOLD:
                     // console.log("switch TRIGGER.ONHOLD");
@@ -173,17 +173,25 @@ window.onload = function() {
                     break;
                 case TRIGGER.PRESSED:
                     // console.log("switch TRIGGER.PRESSED");
+                    state.lockSelection();
+                    state.updateCursorPath();
                     break;
                 case TRIGGER.RELEASED:
+                    state.resetCursorPath();
                     // console.log("switch TRIGGER.RELEASED");
                     if (state.experiment.trial.isCursorOverStartBtn(state)) {
                         // console.log("RELASED over trial btn")
                         state.experiment.trial.clickStartBtn(state);
+                        state.selection.locked = false;
                     } else if(state.experiment.trial.isCursorOverBackBtn(state)) {
                         console.log("RELEASED over back btn");
                         goBackToMenu();
                     } else if (state.experiment.trial.status == TrialState.STARTED){
-                        state.technique.markSelected(state);
+                        
+                        if (state.technique.grid.input.isCursorInside(state)) {
+                            state.technique.markSelected(state);
+                            state.experiment.trial.incrementAttempts();
+                        }
                         
                         if (state.experiment.trial.matched(state)) {
                             state.experiment.trial.clickTarget(state);
@@ -191,10 +199,10 @@ window.onload = function() {
                         }
                     }
 
-                    state.trigger.reset();
+                    state.trigger.reset(state);
                     break;
                 default:
-                    state.trigger.reset();
+                    state.trigger.reset(state);
                     break;
             }
             
@@ -265,6 +273,25 @@ window.onload = function() {
                     state.technique.grid.output.dx_col,
                     state.technique.grid.output.dy_row
                 );                
+        }
+
+        if (state.cursorPath.head != null) {
+            
+            let p = state.cursorPath.head;
+            let q = p.next;
+            
+            canvasCVOutCtx.beginPath();
+            canvasCVOutCtx.lineWidth = 3;
+            canvasCVOutCtx.globalAlpha = 0.6;
+            canvasCVOutCtx.strokeStyle = "purple";
+            while (q != null) {
+                canvasCVOutCtx.moveTo(p.x, p.y);
+                canvasCVOutCtx.lineTo(q.x, q.y);                
+                p = q;
+                q = p.next;    
+            }
+
+            canvasCVOutCtx.stroke();
         }
 
         if (state.outputCV) {

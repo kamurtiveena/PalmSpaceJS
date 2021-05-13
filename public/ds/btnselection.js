@@ -16,6 +16,7 @@ class ButtonSelection {
             marked: "",
             selected: ""
         };
+        this.lastLockTime = performance.now();
     }
 }
 

@@ -1,3 +1,14 @@
+import {Config} from './config.js';
+import {ButtonSelection} from './ds/btnselection.js';
+
+
+class Point{
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.next = null;
+    }
+}
 
 class State {
     
@@ -21,6 +32,50 @@ class State {
             maxWidth: 100,
             maxHeight: 30
         };
+
+        this.config = new Config();
+        this.selection = new ButtonSelection();
+        
+        this.cursorPath = {
+            show: false,
+            head: null,
+            tail: null,
+            cnt: 0
+        }
+    }
+
+    updateCursorPath() {
+
+        // console.log("updateCursorPath this.cursorPath:", this.cursorPath);
+        // return;
+        if (this.cursorPath.tail == null) {
+            this.cursorPath.tail = new Point(this.cursor.x, this.cursor.y);
+            this.cursorPath.head = this.cursorPath.tail;
+            this.cursorPath.cnt = 1;
+        } else {
+            
+            this.cursorPath.tail.next = new Point(this.cursor.x, this.cursor.y);
+            this.cursorPath.tail = this.cursorPath.tail.next;
+            this.cursorPath.cnt ++;
+            if (this.cursorPath > 50) {
+                this.cursorPath.head = this.cursorPath.head.next;
+                this.cursorPath = 50;
+            }
+        }
+    }
+
+    resetCursorPath() {
+        this.cursorPath.head = null;
+        this.cursorPath.tail = null;
+        this.cursorPath.cnt = 0;
+        this.cursorPath.show = false;
+    }
+
+    lockSelection() {
+        if (!this.selection.locked) {
+            this.selection.locked = true;
+            this.selection.lastLockTime = performance.now();
+        }
     }
 
     palmRect() {

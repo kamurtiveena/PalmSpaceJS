@@ -29,11 +29,20 @@ class Trial {
         this.targetsEndTime     = new Array(21);
         this.targetsDuration    = new Array(21);
         this.targetSeq          = new Array(21);
+
+        this.stats = {
+            attempts: (new Array(21)).fill(0)
+        }
+    }
+
+    incrementAttempts() {
+        this.stats.attempts[this.targetID] ++;
     }
 
     started() {
         return this.status == TrialState.STARTED;
     }
+
     isCursorOverStartBtn(state) {
         // console.log("isCursorOverBtn startBtn.rect:", this.startBtn.rect);
         
@@ -164,9 +173,9 @@ class Trial {
         }
 
 
-        if (this.status == TrialState.STARTED) {
-            this.startBtn.color = new cv.Scalar(220, 248, 255);
-        }
+        // if (this.status == TrialState.STARTED) {
+        //     this.startBtn.color = new cv.Scalar(220, 248, 255);
+        // }
 
         if (this.status == TrialState.OPEN ||
             this.status == TrialState.PAUSED) {
@@ -245,6 +254,8 @@ class Trial {
         this.targetsEndTime[this.targetID] = performance.now();
         this.targetsDuration[this.targetID] =
             (this.targetsEndTime[this.targetID] - this.targetsStartTime[this.targetID]);
+    
+        this.status = TrialState.PAUSED;
     }
 
     drawTarget(state) {
