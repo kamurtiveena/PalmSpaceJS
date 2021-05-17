@@ -7,14 +7,13 @@ import {Trigger} from './trigger/trigger.js';
 import {TRIGGER} from './trigger/triggerstate.js';
 import { Trial } from './userstudies/trial.js';
 import {TrialState} from './userstudies/constant.js';
+import {TechniqueType} from "./technique/constant.js";
 
 // previous code is here
 
 
 
 window.onload = function() {
-
-    let firstTime = true;
     // navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
     // if (navigator.mediaDevices.getUserMedia) {
     //     navigator.mediaDevices.getUserMedia({  audio: true, video: true })
@@ -71,7 +70,7 @@ window.onload = function() {
         state.menu.practice     = document.getElementById("practiceCheck").checked; 
         state.menu.debug        = document.getElementById("debugCheck").checked;
         state.menu.cellscnt     = parseInt(checkSelectList("selectCells"));
-        state.menu.targetscnt   = 3;
+        state.menu.targetscnt   = 12;
         state.height            = state.config.CAMHEIGHT; 
         state.width             = state.config.CAMWIDTH;
 
@@ -140,8 +139,14 @@ window.onload = function() {
             results.image, 0, 0, canvasElement.width, canvasElement.height
         );
         
-        state.imageCV = cv.imread('output_canvas');
-        state.outputCV = state.imageCV.clone();
+        
+        if (state.technique.type == TechniqueType.S2H_Relative) {
+            state.imageCV = state.technique.images.background.image.clone();            
+            state.outputCV = state.technique.images.background.image.clone();
+        } else {
+            state.imageCV = cv.imread('output_canvas');
+            state.outputCV = state.imageCV.clone();
+        }
 
         state.initiator.initiate(state, results);
         
@@ -161,8 +166,11 @@ window.onload = function() {
 
             // document.getElementById('stats').innerHTML = state.experiment.trial.targetsDuration;
             if (state.trigger.status != TRIGGER.PRESSED) {
+                state.selection.locked = false;
                 state.resetCursorPath();
             }
+
+            let resetAnchor = false;
 
             switch(state.trigger.status) {
                 case TRIGGER.ONHOLD:
@@ -173,7 +181,10 @@ window.onload = function() {
                     break;
                 case TRIGGER.PRESSED:
                     // console.log("switch TRIGGER.PRESSED");
-                    state.lockSelection();
+                    if (state.technique.grid.input.isCursorInside(state)) {
+                        state.selection.adjustSelection();
+                        state.lockSelection();
+                    }
                     state.updateCursorPath();
                     break;
                 case TRIGGER.RELEASED:
@@ -182,20 +193,20 @@ window.onload = function() {
                     if (state.experiment.trial.isCursorOverStartBtn(state)) {
                         // console.log("RELASED over trial btn")
                         state.experiment.trial.clickStartBtn(state);
-                        state.selection.locked = false;
+                        state.technique.stats.visitedCells = 0;
+                        resetAnchor = true;
                     } else if(state.experiment.trial.isCursorOverBackBtn(state)) {
                         console.log("RELEASED over back btn");
                         goBackToMenu();
                     } else if (state.experiment.trial.status == TrialState.STARTED){
                         
-                        if (state.technique.grid.input.isCursorInside(state)) {
-                            state.technique.markSelected(state);
-                            state.experiment.trial.incrementAttempts();
-                        }
+                        state.technique.markSelected(state);
+                        state.experiment.trial.incrementAttempts();
                         
                         if (state.experiment.trial.matched(state)) {
                             state.experiment.trial.clickTarget(state);
                             state.experiment.trial.generateTarget(state);
+                            resetAnchor = true;
                         }
                     }
 
@@ -205,14 +216,19 @@ window.onload = function() {
                     state.trigger.reset(state);
                     break;
             }
+
+            if (resetAnchor) {
+                state.selection.reset();
+                state.technique.resetLastTimeVisited();
+            }
             
             state.overlay = state.imageCV.clone();
             
+            state.technique.draw(state);
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
 
-            state.technique.draw(state);
             
             cv.addWeighted(
                 state.overlay, 
@@ -279,14 +295,18 @@ window.onload = function() {
             
             let p = state.cursorPath.head;
             let q = p.next;
+
+            let r = p;
             
             canvasCVOutCtx.beginPath();
             canvasCVOutCtx.lineWidth = 3;
             canvasCVOutCtx.globalAlpha = 0.6;
             canvasCVOutCtx.strokeStyle = "purple";
             while (q != null) {
-                canvasCVOutCtx.moveTo(p.x, p.y);
-                canvasCVOutCtx.lineTo(q.x, q.y);                
+                canvasCVOutCtx.moveTo(r.x, r.y);
+                // canvasCVOutCtx.lineTo(q.x, q.y);                
+                canvasCVOutCtx.quadraticCurveTo(p.x, p.y, q.x, q.y);                
+                r = p;
                 p = q;
                 q = p.next;    
             }

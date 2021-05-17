@@ -1,18 +1,9 @@
 import {Config} from './config.js';
 import {ButtonSelection} from './ds/btnselection.js';
+import {Point} from './ds/point.js';
 
-
-class Point{
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.next = null;
-    }
-}
 
 class State {
-    
-    
     constructor() {
         this.menu = {};
         this.menu.showMenu = true;
@@ -22,7 +13,7 @@ class State {
         this.menu.practice = false;
         this.menu.debug = false;
         this.menu.cellscnt = null;
-        this.menu.targetscnt = 3;
+        this.menu.targetscnt = 12;
         this.data = null;
         this.initiator = null;
         this.cursor = null;
@@ -48,6 +39,8 @@ class State {
 
         // console.log("updateCursorPath this.cursorPath:", this.cursorPath);
         // return;
+        if (!this.cursor) return;
+
         if (this.cursorPath.tail == null) {
             this.cursorPath.tail = new Point(this.cursor.x, this.cursor.y);
             this.cursorPath.head = this.cursorPath.tail;

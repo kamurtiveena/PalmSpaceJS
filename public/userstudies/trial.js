@@ -53,13 +53,13 @@ class Trial {
                 if (this.status != TrialState.STARTED &&
                     r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 50 &&
                     r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 50) {
+                        return true;
+                        // if (!this.cursorOverBtn) {
+                        //     this.cursorOverBtn = true;
+                        //     this.visitTimeBtn = performance.now();
+                        // }
     
-                        if (!this.cursorOverBtn) {
-                            this.cursorOverBtn = true;
-                            this.visitTimeBtn = performance.now();
-                        }
-    
-                        return (performance.now() - this.visitTimeBtn) > 5;
+                        // return (performance.now() - this.visitTimeBtn) > 5;
                     }
             }
         } 
@@ -77,14 +77,14 @@ class Trial {
                 if (this.status == TrialState.DONE &&
                     b.x <= state.cursor.x && state.cursor.x <= b.x + b.width &&
                     b.y <= state.cursor.y && state.cursor.y <= b.y + b.height) {
+                        return true;
+                        // if (!this.cursorOverBackBtn) {
+                        //     this.cursorOverBackBtn = true;
+                        //     this.visitTimeBackBtn = performance.now();
+                        // }
+                        // console.log("isCursorOverBackBtn backbtn:", b);
                         
-                        if (!this.cursorOverBackBtn) {
-                            this.cursorOverBackBtn = true;
-                            this.visitTimeBackBtn = performance.now();
-                        }
-                        console.log("isCursorOverBackBtn backbtn:", b);
-                        
-                        return (performance.now() - this.visitTimeBackBtn) > 5;
+                        // return (performance.now() - this.visitTimeBackBtn) > 5;
                     }
             }
         } 
