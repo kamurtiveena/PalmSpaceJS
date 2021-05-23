@@ -31,7 +31,7 @@ class Tap {
         this.palmbase.x = 0.6*this.palmbase.x + 0.4*state.initiator.right.landmarks[0].x;
         this.palmbase.y = 0.6*this.palmbase.y + 0.4*state.initiator.right.landmarks[0].y;
         
-        if (pbdiff > 12.0) {
+        if (pbdiff > 20.0) {
             this.parent.status = TRIGGER.OPEN;
             this._resetDepthTracking();
             return;
@@ -43,7 +43,7 @@ class Tap {
         this.diff = (relDepth - this.baseRelDepth) * 2;
 
         
-        if (state.technique.invertTrigger) this.diff = - this.diff;
+        if (state.technique.invertTrigger) this.diff = -this.diff;
         
         this.diff = this.diff.toFixed(1);
         

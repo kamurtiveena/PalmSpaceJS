@@ -8,11 +8,20 @@ body {
 .input_video.selfie {
   transform: scale(-1, 1); }
 
-.output_canvas {
-  height: 480px;
-  width: 640px; }
-
 .menu {
   background-color: #444141;
   height: 480px;
   width: 640px; }
+
+div .no-padding {
+  padding: 0; }
+
+.full-width {
+  width: 80%; }
+
+div .fixed-size {
+  width: 2280px;
+  /* or whatever width you want. */
+  max-width: 2280px;
+  /* or whatever width you want. */
+  display: inline-block; }

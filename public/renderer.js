@@ -15,6 +15,7 @@ import {TechniqueType} from "./technique/constant.js";
 
 window.onload = function() {
 
+
     const userIDElement = document.getElementById('selectUserID');
     
     for (let i = 1; i < 101; i ++) {
@@ -61,7 +62,8 @@ window.onload = function() {
 
     const canvasElement =
         document.getElementById('output_canvas');
-
+    canvasElement.style.width = state.config.CAMWIDTH + "px";
+    canvasElement.style.height = state.config.CAMHEIGHT + "px";
     canvasElement.style.display = "none";
 
     const canvasCtx = canvasElement.getContext('2d');
@@ -69,9 +71,24 @@ window.onload = function() {
 
     const canvasCVOut = 
         document.getElementById('cv_output_canvas');
-    const canvasCVOutCtx = canvasCVOut.getContext('2d');
+    canvasCVOut.style.width = state.config.CAMWIDTH + "px";
+    canvasCVOut.style.height = state.config.CAMHEIGHT + "px";
     
+    const canvasCVOutCtx = canvasCVOut.getContext('2d');
+    state.canvasCVOutCtx = canvasCVOutCtx;
+
     const startBtn = document.getElementById("start_btn");
+
+    document.addEventListener("keypress", function(event) {
+        console.group("document keypress event");
+        console.table(event);
+        console.groupEnd();
+        if (event.key == "Enter") {
+            event.preventDefault();
+            startBtn.click();
+        }
+    });
+
     startBtn.onclick = function() {
         state.menu.showMenu     = false;
         state.menu.technique    = checkRadio("menutechnique");
@@ -172,6 +189,7 @@ window.onload = function() {
             state.technique.calculate(state);
             
             state.experiment.trial.updateStartBtnInputLoc(state);
+            state.experiment.trial.updateBackBtnInputLoc(state);
 
             state.trigger.update(state);
 
@@ -239,7 +257,8 @@ window.onload = function() {
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
-
+            state.experiment.trial.drawTarget(state);
+            
             
             cv.addWeighted(
                 state.overlay, 
@@ -250,7 +269,6 @@ window.onload = function() {
                 state.outputCV, 
                 -1);
                 
-            state.experiment.trial.drawTarget(state);
 
             state.overlay.delete();
 
@@ -287,6 +305,8 @@ window.onload = function() {
 
         cv.imshow('cv_output_canvas', state.outputCV);
 
+
+
         if (state.initiator.left.show &&
             state.selection.currentBtn.row_i != -1 &&
             state.selection.currentBtn.col_j != -1) {
@@ -297,8 +317,8 @@ window.onload = function() {
                 canvasCVOutCtx.strokeRect(
                     state.technique.grid.output.x_cols[state.selection.currentBtn.col_j], 
                     state.technique.grid.output.y_rows[state.selection.currentBtn.row_i], 
-                    state.technique.grid.output.dx_col,
-                    state.technique.grid.output.dy_row
+                    state.technique.grid.output.x_cols[state.selection.currentBtn.col_j+1] - state.technique.grid.output.x_cols[state.selection.currentBtn.col_j], 
+                    state.technique.grid.output.y_rows[state.selection.currentBtn.row_i+1] - state.technique.grid.output.y_rows[state.selection.currentBtn.row_i]
                 );                
         }
 

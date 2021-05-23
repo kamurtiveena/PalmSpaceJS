@@ -23,16 +23,24 @@ body {
   }
 }
 
-.output_canvas {
-  // position:relative;
-  height: 480px;
-  width: 640px;
-  // left: 0;
-  // top: 0;
-}
 
 .menu {
   background-color: rgb(68, 65, 65);
   height: 480px;
   width: 640px;
+}
+
+div .no-padding {
+  padding:0;
+}
+
+.full-width{
+  width:80%;
+  // display:block; //only if you're having issues
+}
+
+div .fixed-size {
+  width: 2280px; /* or whatever width you want. */
+  max-width: 2280px; /* or whatever width you want. */
+  display: inline-block;
 }
