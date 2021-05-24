@@ -184,6 +184,15 @@ window.onload = function() {
             state.trigger.reset(state);
         }
 
+
+        // todo move to webworker
+        if (state.experiment.trial.status == TrialState.STARTED) {
+            state.experiment.trial.updateCursorDistTraveled(state);
+            state.experiment.trial.updateLeftPalmDist(state);
+            state.experiment.trial.updateRightPalmDist(state);
+
+        }
+
         if (state.initiator.show || state.technique.alwaysShow) {
 
             state.technique.calculate(state);

@@ -30,9 +30,78 @@ class Trial {
         this.targetsDuration    = new Array(21);
         this.targetSeq          = new Array(21);
 
+
+
         this.stats = {
-            attempts: (new Array(21)).fill(0)
+            attempts: (new Array(21)).fill(0),
+            distance: {
+                cursor: (new Array(21)).fill(0),
+                palm: {
+                    left: (new Array(21)).fill(0),
+                    right: (new Array(21)).fill(0)
+                }
+            }, 
+            lastPos: {
+                cursor: (new Array(21)).fill(null),
+                palm: {
+                    left: (new Array(21)).fill(null),
+                    right: (new Array(21)).fill(null)
+                }
+            } 
         }
+    }
+
+    updateRightPalmDist(state) {
+        if (state.initiator.right && 
+            state.initiator.right.landmarks[0].x > 0 && 
+            state.initiator.right.landmarks[0].y > 0) {
+                if (this.stats.lastPos.palm.right[this.targetID]) {
+                    this.stats.distance.palm.right[this.targetID] += Math.hypot(
+                        state.initiator.right.landmarks[0].x - this.stats.lastPos.palm.right[this.targetID].x,
+                        state.initiator.right.landmarks[0].y - this.stats.lastPos.palm.right[this.targetID].y
+                    ); 
+                }
+
+                this.stats.lastPos.palm.right[this.targetID] = 
+                    state.initiator.right.landmarks[0];
+            
+            } else {
+                this.stats.lastPos.palm.right[this.targetID] = null;
+            }
+    }
+
+    updateLeftPalmDist(state) {
+        if (state.initiator.left && 
+            state.initiator.left.landmarks[0].x > 0 && 
+            state.initiator.left.landmarks[0].y > 0) {
+                if (this.stats.lastPos.palm.left[this.targetID]) {
+                    this.stats.distance.palm.left[this.targetID] += Math.hypot(
+                        state.initiator.left.landmarks[0].x - this.stats.lastPos.palm.left[this.targetID].x,
+                        state.initiator.left.landmarks[0].y - this.stats.lastPos.palm.left[this.targetID].y                    ); 
+                }
+
+                this.stats.lastPos.palm.left[this.targetID] = 
+                    state.initiator.left.landmarks[0];
+            
+            } else {
+                this.stats.lastPos.palm.left[this.targetID] = null;
+            }
+    }
+
+    updateCursorDistTraveled(state) {
+        if (state.cursor && 
+            state.cursor.x > 0 && 
+            state.cursor.y > 0) {
+            
+                if (this.stats.lastPos.cursor[this.targetID]) {
+                    this.stats.distance.cursor[this.targetID] += Math.hypot(
+                        state.cursor.x - this.stats.lastPos.cursor[this.targetID].x,
+                        state.cursor.y - this.stats.lastPos.cursor[this.targetID].y
+                    );
+                }
+        }
+
+        this.stats.lastPos.cursor[this.targetID] = state.cursor;
     }
 
     incrementAttempts() {
