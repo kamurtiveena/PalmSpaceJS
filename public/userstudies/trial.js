@@ -42,31 +42,67 @@ class Trial {
                 }
             }, 
             lastPos: {
-                cursor: (new Array(21)).fill(null),
+                cursor: {x: -1, y: -1},
                 palm: {
-                    left: (new Array(21)).fill(null),
-                    right: (new Array(21)).fill(null)
+                    left: {x: -1, y: -1},
+                    right: {x: -1, y: -1}
                 }
-            } 
+            },
+            visitedCells: (new Array(21)).fill(0),
+            targetsLastVisitedTime: (new Array(21)).fill(0) 
         }
+    }
+
+    
+
+    elapsedTime() {
+        if (this.targetsStartTime[this.targetID]) {
+            return (performance.now() - this.targetsStartTime[this.targetID]).toFixed(1);
+        }
+
+        return 0.0;
+    }
+
+    lastVisitTime() {
+        return this.stats.targetsLastVisitedTime[this.targetID].toFixed(1);
+    }
+
+    updateTargetLastVisitTime(state) {
+        const p = this.targetSeq[this.targetID];
+        this.stats.targetsLastVisitedTime[this.targetID] =
+            state.technique.stats.lastVisitTime[p.row_i][p.col_j] -
+                this.targetsStartTime[this.targetID];
+    }
+
+    updateVisitedCells(state) {
+        this.stats.visitedCells[this.targetID] = 
+            state.technique.stats.visitedCells;
+    }
+
+    updateTargetTime() {
+        this.targetsEndTime[this.targetID] = performance.now();
+        this.targetsDuration[this.targetID] = 
+            this.targetsEndTime[this.targetID] - this.targetsStartTime[this.targetID];
+    
     }
 
     updateRightPalmDist(state) {
         if (state.initiator.right && 
             state.initiator.right.landmarks[0].x > 0 && 
             state.initiator.right.landmarks[0].y > 0) {
-                if (this.stats.lastPos.palm.right[this.targetID]) {
+                if (this.stats.lastPos.palm.right.x > 0) {
                     this.stats.distance.palm.right[this.targetID] += Math.hypot(
-                        state.initiator.right.landmarks[0].x - this.stats.lastPos.palm.right[this.targetID].x,
-                        state.initiator.right.landmarks[0].y - this.stats.lastPos.palm.right[this.targetID].y
+                        state.initiator.right.landmarks[0].x - this.stats.lastPos.palm.right.x,
+                        state.initiator.right.landmarks[0].y - this.stats.lastPos.palm.right.y
                     ); 
                 }
 
-                this.stats.lastPos.palm.right[this.targetID] = 
-                    state.initiator.right.landmarks[0];
+                this.stats.lastPos.palm.right.x = state.initiator.right.landmarks[0].x;
+                this.stats.lastPos.palm.right.y = state.initiator.right.landmarks[0].y;
             
             } else {
-                this.stats.lastPos.palm.right[this.targetID] = null;
+                this.stats.lastPos.palm.right.x = -1;
+                this.stats.lastPos.palm.right.y = -1;
             }
     }
 
@@ -74,17 +110,19 @@ class Trial {
         if (state.initiator.left && 
             state.initiator.left.landmarks[0].x > 0 && 
             state.initiator.left.landmarks[0].y > 0) {
-                if (this.stats.lastPos.palm.left[this.targetID]) {
+                if (this.stats.lastPos.palm.left.x > 0) {
                     this.stats.distance.palm.left[this.targetID] += Math.hypot(
-                        state.initiator.left.landmarks[0].x - this.stats.lastPos.palm.left[this.targetID].x,
-                        state.initiator.left.landmarks[0].y - this.stats.lastPos.palm.left[this.targetID].y                    ); 
+                        state.initiator.left.landmarks[0].x - this.stats.lastPos.palm.left.x,
+                        state.initiator.left.landmarks[0].y - this.stats.lastPos.palm.left.y                    
+                    ); 
                 }
 
-                this.stats.lastPos.palm.left[this.targetID] = 
-                    state.initiator.left.landmarks[0];
+                this.stats.lastPos.palm.left.x = state.initiator.left.landmarks[0].x;
+                this.stats.lastPos.palm.left.y = state.initiator.left.landmarks[0].y;
             
             } else {
-                this.stats.lastPos.palm.left[this.targetID] = null;
+                this.stats.lastPos.palm.left.x = -1;
+                this.stats.lastPos.palm.left.y = -1;
             }
     }
 
@@ -92,16 +130,24 @@ class Trial {
         if (state.cursor && 
             state.cursor.x > 0 && 
             state.cursor.y > 0) {
-            
-                if (this.stats.lastPos.cursor[this.targetID]) {
-                    this.stats.distance.cursor[this.targetID] += Math.hypot(
-                        state.cursor.x - this.stats.lastPos.cursor[this.targetID].x,
-                        state.cursor.y - this.stats.lastPos.cursor[this.targetID].y
+
+                if (this.stats.lastPos.cursor.x > 0) {
+                    const d = Math.hypot(
+                        state.cursor.x - this.stats.lastPos.cursor.x,
+                        state.cursor.y - this.stats.lastPos.cursor.y
                     );
+                    
+                    this.stats.distance.cursor[this.targetID] += d;
                 }
+
+                this.stats.lastPos.cursor.x = state.cursor.x;
+                this.stats.lastPos.cursor.y = state.cursor.y;
+    
+        } else {
+            this.stats.lastPos.cursor.x = -1;
+            this.stats.lastPos.cursor.y = -1;
         }
 
-        this.stats.lastPos.cursor[this.targetID] = state.cursor;
     }
 
     incrementAttempts() {
@@ -112,10 +158,7 @@ class Trial {
         return this.status == TrialState.STARTED;
     }
 
-    isCursorOverStartBtn(state) {
-        // console.log("isCursorOverBtn startBtn.rect:", this.startBtn.rect);
-        
-        
+    isCursorOverStartBtn(state) {     
         if (state.cursor) {
             if (this.status != TrialState.DONE) {
                 const r = this.startBtn.rect;
@@ -138,7 +181,6 @@ class Trial {
     }
 
     isCursorOverBackBtn(state) {
-        // console.log("isCursorOverBtn startBtn.rect:", this.startBtn.rect);
         if (state.cursor) {
             if (this.status == TrialState.DONE) {
                 const b = this.backBtn.rect;
@@ -151,7 +193,6 @@ class Trial {
                         //     this.cursorOverBackBtn = true;
                         //     this.visitTimeBackBtn = performance.now();
                         // }
-                        // console.log("isCursorOverBackBtn backbtn:", b);
                         
                         // return (performance.now() - this.visitTimeBackBtn) > 5;
                     }

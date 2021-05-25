@@ -25,9 +25,9 @@ class GridFishEye {
             row_y: -1
         };
 
-        console.group(`gridfisheye: ${this.name}`);
-        console.table(state.config);
-        console.groupEnd();
+        // console.group(`gridfisheye: ${this.name}`);
+        // console.table(state.config);
+        // console.groupEnd();
 
         for (let i = 1; i <= this.divisions; i++) {
             this.col_weights[i] = state.config.fisheye.weights.NORMAL;
