@@ -25,22 +25,24 @@ class GridFishEye {
             row_y: -1
         };
 
+        this._resetWeights();
         // console.group(`gridfisheye: ${this.name}`);
         // console.table(state.config);
         // console.groupEnd();
-
+    }
+    
+    _resetWeights() {
         for (let i = 1; i <= this.divisions; i++) {
             this.col_weights[i] = state.config.fisheye.weights.NORMAL;
             this.row_weights[i] = state.config.fisheye.weights.NORMAL;
         }
 
-        this.weightSum.col = 0;
-        for (let i = 1; i <= this.divisions; i++)
-            this.weightSum.col += this.col_weights[i];
+        this.weightSum.col = state.config.fisheye.weights.NORMAL * this.divisions;
+        this.weightSum.row = state.config.fisheye.weights.NORMAL * this.divisions;
+    }
 
-        this.weightSum.row = 0;
-        for (let i = 1; i <= this.divisions; i++)
-            this.weightSum.row += this.row_weights[i];
+    reset() {
+        _resetWeights();
     }
 
     getBottomMiddle() {
