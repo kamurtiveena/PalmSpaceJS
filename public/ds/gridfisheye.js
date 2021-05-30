@@ -24,21 +24,22 @@ class GridFishEye {
             col_x: -1,
             row_y: -1
         };
-
+		
+		this.config = state.config;
         this._resetWeights();
         // console.group(`gridfisheye: ${this.name}`);
         // console.table(state.config);
         // console.groupEnd();
-    }
+		}
     
     _resetWeights() {
         for (let i = 1; i <= this.divisions; i++) {
-            this.col_weights[i] = state.config.fisheye.weights.NORMAL;
-            this.row_weights[i] = state.config.fisheye.weights.NORMAL;
+            this.col_weights[i] = this.config.fisheye.weights.NORMAL;
+            this.row_weights[i] = this.config.fisheye.weights.NORMAL;
         }
 
-        this.weightSum.col = state.config.fisheye.weights.NORMAL * this.divisions;
-        this.weightSum.row = state.config.fisheye.weights.NORMAL * this.divisions;
+        this.weightSum.col = this.config.fisheye.weights.NORMAL * this.divisions;
+        this.weightSum.row = this.config.fisheye.weights.NORMAL * this.divisions;
     }
 
     reset() {
