@@ -77,13 +77,39 @@ app.post('/create/table/:name', async (req, res) => {
 
         res.send(result)
     } catch (error) {
-        throw error
+        // throw error
+        console.error(error);
+        if (error.code == "ER_TABLE_EXISTS_ERROR") {
+            res.send({msg: "table exists"});
+        }
     } finally {
         if (conn) {
             conn.release()
         }
     }
 })
+
+app.post('/delete/table/:name', async (req, res) => {
+    let conn
+    try {
+        conn = await pool.getConnection()
+
+        let sql = `DROP TABLE IF EXISTS ${req.params.name}`;
+        let result = await conn.query(sql);
+
+        res.send(result)
+    } catch (error) {
+        // throw error
+        console.error(error);
+        if (error.code == "ER_TABLE_EXISTS_ERROR") {
+            res.send({msg: "table exists"});
+        }
+    } finally {
+        if (conn) {
+            conn.release()
+        }
+    }
+});
 
 // todo add middleware to print request host
 // todo middleware for error handling
