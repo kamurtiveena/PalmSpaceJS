@@ -80,6 +80,11 @@ class Technique {
         this.anchor.draw(state);        
     }
 
+    reset() {
+        this.grid.input.reset();
+        this.grid.output.reset();
+    }
+
     resetLastTimeVisited() {
         const t = performance.now();
         for (let i = 0; i < 11; i ++) {

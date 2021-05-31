@@ -1,0 +1,37 @@
+version: '3.8'
+
+services: 
+
+  # node:
+  #   image: ps
+  #   container_name: palmspace-app
+  #   env_file: ./.env
+  #   ports:
+  #     - $PORT:$DOCKER_PORT
+  #   networks:
+  #     - docker-service
+  #   depends_on: 
+  #     - mariadb
+
+  mariadb:
+    image: mariadb:latest
+    container_name: palmspace-db
+    restart: always
+    env_file: ./.env
+    environment: 
+      MYSQL_ROOT_PASSWORD: $DB_pass
+      MYSQL_DATABASE: $DB_database
+    ports:
+      - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    # networks:
+    #   - docker-service
+    volumes:
+      - maria-data:/data/db
+
+# networks:
+#   docker-service:
+#     driver: bridge
+
+volumes:
+  maria-data:
+    driver: local

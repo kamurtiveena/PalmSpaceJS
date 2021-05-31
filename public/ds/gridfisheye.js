@@ -43,7 +43,7 @@ class GridFishEye {
     }
 
     reset() {
-        _resetWeights();
+        this._resetWeights();
     }
 
     getBottomMiddle() {

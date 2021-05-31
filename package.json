@@ -5,9 +5,11 @@
   "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node-sass public/styles.scss public/styles.css && tsc --watch & sleep 3 && firefox localhost:3000 &>/dev/null & sleep 1 && nodemon dist/app.js",
+    "start": "node-sass public/styles.scss public/styles.css && tsc --noImplicitThis --watch & sleep 3 && firefox localhost:3000 &>/dev/null & sleep 1 && nodemon dist/app.js",
     "kill": "sudo kill $(ps -s $$ -o pid=); sudo kill -9 $(lsof -t -i:3000)",
-    "prod": "node-sass public/styles.scss public/styles.css && tsc && node dist/app.js"
+    "prod": "node-sass public/styles.scss public/styles.css && tsc && node dist/app.js",
+    "clean_docker": "docker system prune -a",
+    "up": "docker-compose up"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,7 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mariadb": "^2.5.3",
     "node-sass": "^5.0.0"
   }
 }
