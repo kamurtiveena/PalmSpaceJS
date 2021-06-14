@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node-sass public/styles.scss public/styles.css && tsc --noImplicitThis --watch & sleep 3 && firefox localhost:3000 &>/dev/null & sleep 1 && nodemon dist/app.js",
+    "start": "node-sass public/styles.scss public/styles.css && tsc --noImplicitThis --watch & sleep 3 && firefox localhost:3000 &>/dev/null & sleep 1 && nodemon --trace-warnings dist/app.js",
     "kill": "sudo kill $(ps -s $$ -o pid=); sudo kill -9 $(lsof -t -i:3000)",
     "prod": "node-sass public/styles.scss public/styles.css && tsc && node dist/app.js",
     "clean_docker": "docker system prune -a",

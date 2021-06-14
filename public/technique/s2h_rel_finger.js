@@ -1,18 +1,19 @@
 import {TechniqueType} from "./constant.js";
 
-export class S2HRelative {
+export class S2HRelativeFinger {
     constructor(parent, state) {
-        this.name = "S2H_Relative";
+        this.name = "S2H_Relative_Finger";
         this.parent = parent;
-        this.parent.type = TechniqueType.S2H_Relative;
+        this.parent.type = TechniqueType.S2H_Relative_Finger;
     }
 
     calculate(state) {
 
         if (!state.initiator.left.show) return;
 
-        let palm = state.palmRect();
-        
+        // let palm = state.palmRect();
+        let palm = state.fingersRect();
+
         const w = Math.max(64, Math.min(400, palm.maxDim));
         
         this.parent.grid.input.width    = w;
@@ -44,7 +45,7 @@ export class S2HRelative {
         this.parent._drawTextMarked(state);
         this.parent._drawProgressBar(state);
     }
-
+    
     adjustSelection(state) {
         state.selection.adjustSelection();
     }
