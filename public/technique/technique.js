@@ -10,6 +10,7 @@ import {GridFishEye}            from '../ds/gridfisheye.js';
 import {S2HRelativeFinger}      from './s2h_rel_finger.js';
 import {H2SRelativeFinger}      from './h2s_rel_finger.js';
 import {LandmarkBtn}            from './landmark_btn.js';
+import {LandmarkBtnFishEye}     from './landmark_btn_fisheye.js';
 
 
 class Technique {
@@ -80,6 +81,9 @@ class Technique {
             case "Landmark_Btn":
                 this.anchor = new LandmarkBtn(this, state);
                 break;
+            case "Landmark_Btn_FishEye":
+                this.anchor = new LandmarkBtnFishEye(this, state);
+                break;
             default:
                 break;
         }
@@ -94,7 +98,7 @@ class Technique {
     }
 
     reset() {
-        if (this.type == TechniqueType.Landmark_Btn) {
+        if (this.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             console.log("landmark btn technique reset");
         } else {
             this.grid.input.reset();
@@ -112,7 +116,7 @@ class Technique {
     }
 
     isCursorInside(state) {
-        if (this.type == TechniqueType.Landmark_Btn) {
+        if (this.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             return this._isCursorInsideBtnID(state);
         }
 
@@ -146,11 +150,12 @@ class Technique {
     }
 
     _setupPalmImageTopLeft(state) {
-        const g = this.grid.input.getBottomMiddle();
+        // const g = this.grid.input.getBottomMiddle();
+        const g = state.initiator.left.landmarks[0];
         
         if (g.x != -1 && g.y != -1) {
             this.images.palm.topleft.x = g.x - this.images.palm.image.cols/2;
-            this.images.palm.topleft.y = g.y - this.images.palm.image.rows;
+            this.images.palm.topleft.y = g.y - this.images.palm.image.rows + this.images.palm.image.rows/4;
             
             if (this.images.palm.topleft.x < 0) this.images.palm.topleft.x = 0;
             if (this.images.palm.topleft.y < 0) this.images.palm.topleft.y = 0;

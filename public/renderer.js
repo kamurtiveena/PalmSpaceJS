@@ -1,6 +1,6 @@
 "use strict";
 
-import {checkRadio, checkSelectList, getState} from './state.js';
+import {checkRadio, checkSelectList, State} from './state.js';
 import {Initiator} from './initiator.js';
 import { Technique } from './technique/technique.js';
 import {Trigger} from './trigger/trigger.js';
@@ -42,7 +42,7 @@ window.onload = function() {
     //         function () { logError("Web cam is not accessible."); });
     // }
 
-    let state = getState();
+    let state = new State();
 
 
     state.experiment = {
@@ -99,8 +99,33 @@ window.onload = function() {
         state.menu.debug        = document.getElementById("debugCheck").checked;
         state.menu.cellscnt     = parseInt(checkSelectList("selectCells"));
         state.menu.targetscnt   = 12;
+        state.menu.buttonSize   = checkRadio("buttonSize");
         state.height            = state.config.CAMHEIGHT; 
         state.width             = state.config.CAMWIDTH;
+
+        switch (state.menu.buttonSize) {
+            case "Small":
+                state.config.landmarkButtons.width = 30;
+                state.config.landmarkButtons.height = 30;
+                state.config.landmarkButtons.widthHalf = 15;
+                state.config.landmarkButtons.heightHalf = 15;
+                break;
+
+            case "Large":
+                console.log("Large");
+                state.config.landmarkButtons.width = 50;
+                state.config.landmarkButtons.height = 50;
+                state.config.landmarkButtons.widthHalf = 25;
+                state.config.landmarkButtons.heightHalf = 25;
+                break;
+
+            default:
+                state.config.landmarkButtons.width = 30;
+                state.config.landmarkButtons.height = 30;
+                state.config.landmarkButtons.widthHalf = 15;
+                state.config.landmarkButtons.heightHalf = 15;
+
+        }
 
         menu.style.display = "none";
         videoContainer.style.display = "block";
@@ -173,7 +198,9 @@ window.onload = function() {
         
         
         if (state.technique.type == TechniqueType.H2S_Relative ||
-            state.technique.type == TechniqueType.H2S_Absolute) {
+            state.technique.type == TechniqueType.H2S_Absolute ||
+            state.technique.type == TechniqueType.H2S_Relative_Finger
+            ) {
             state.imageCV = state.technique.images.background.image.clone();            
             state.outputCV = state.technique.images.background.image.clone();
         } else {
@@ -346,12 +373,12 @@ window.onload = function() {
 
                 console.table(state.selection.currentBtn);
 
-                if (state.technique.type == TechniqueType.Landmark_Btn) {
+                if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
                     canvasCVOutCtx.strokeRect(
-                        state.initiator.left.landmarks[state.selection.currentBtn.btn_id].x - state.config.landmarkButtons.widthHalf,
-                        state.initiator.left.landmarks[state.selection.currentBtn.btn_id].y - state.config.landmarkButtons.heightHalf,
-                        state.config.landmarkButtons.width,
-                        state.config.landmarkButtons.height,
+                        state.initiator.left.landmarks[state.selection.currentBtn.btn_id].x - state.technique.buttons.output[state.selection.currentBtn.btn_id].widthHalf,
+                        state.initiator.left.landmarks[state.selection.currentBtn.btn_id].y - state.technique.buttons.output[state.selection.currentBtn.btn_id].heightHalf,
+                        state.technique.buttons.output[state.selection.currentBtn.btn_id].width,
+                        state.technique.buttons.output[state.selection.currentBtn.btn_id].height,
                     );
                 } else {
                     canvasCVOutCtx.strokeRect(

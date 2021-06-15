@@ -1,12 +1,15 @@
-export class Button {
-    constructor(parent, id) {
+export class LandmarkButton {
+    constructor(parent, id, state) {
         this.id = id;
         this.parent = parent;
-        this.width = 30;
-        this.height = 30;
+        this.widthMin = state.config.landmarkButtons.width;
+        this.heightMin = state.config.landmarkButtons.height;
+
+        this.width = this.widthMin;
+        this.height = this.heightMin;
+
         this.widthHalf = this.width / 2;
         this.heightHalf = this.height / 2;
-        
     }
 
     reset() {}
@@ -18,10 +21,10 @@ export class Button {
         const {x, y} = state.cursor;
         console.log("landmark btn cursor x:", x, "y:", y);
         return (
-            state.initiator.left.landmarks[this.id].x <= x + 10 &&
-            x <= state.initiator.left.landmarks[this.id].x + this.width  + 10 &&
-            state.initiator.left.landmarks[this.id].y <= y + 10 &&
-            y <= state.initiator.left.landmarks[this.id].y + this.height + 10
+            state.initiator.left.landmarks[this.id].x - this.widthHalf <= x + 10 &&
+            x <= state.initiator.left.landmarks[this.id].x + this.widthHalf  + 10 &&
+            state.initiator.left.landmarks[this.id].y - this.heightHalf <= y + 10 &&
+            y <= state.initiator.left.landmarks[this.id].y + this.heightHalf + 10
         );
     }
 

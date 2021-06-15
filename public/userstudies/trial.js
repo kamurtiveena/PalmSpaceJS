@@ -203,7 +203,7 @@ export class Trial {
         return false;
     }
     updateBackBtnInputLoc(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             this._updateBackBtnInputLocBtnID(state);
         } else {
             this._updateBackBtnInputLoc(state);
@@ -254,7 +254,7 @@ export class Trial {
     }
 
     updateStartBtnInputLoc(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             this._updateStartBtnInputLocBtnID(state);
         } else {
             this._updateStartBtnInputLoc(state);
@@ -310,7 +310,7 @@ export class Trial {
 
             let tl = null, br = null;
 
-            if (state.technique.type == TechniqueType.Landmark_Btn) {
+            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
                 const p = this._drawBackBtnBtnID(state);
                 tl = p.tl;
                 br = p.br;
@@ -389,7 +389,7 @@ export class Trial {
         }
 
         let tl = null, br = null;
-        if (state.technique.type == TechniqueType.Landmark_Btn) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             const p = this._drawStartBtnBtnID(state);
             tl = p.tl;
             br = p.br;
@@ -504,7 +504,7 @@ export class Trial {
             this.status = TrialState.DONE;
         }
 
-        if (state.technique.type == TechniqueType.Landmark_Btn) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             this.targetSeq[this.targetID] = this._generateTargetBtnID(state);
         } else {
             this.targetSeq[this.targetID] = this._generateTarget(state);
@@ -534,7 +534,7 @@ export class Trial {
     }
 
     matched(state) {        
-        if (state.technique.type == TechniqueType.Landmark_Btn) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
             return this._matchedBtnID(state);
         } else {
             return this._matched(state);
@@ -566,7 +566,7 @@ export class Trial {
         }
 
         if (this.status == TrialState.STARTED) {
-            if (state.technique.type == TechniqueType.Landmark_Btn) {
+            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
                 this._drawTargetBtnID(state);
             } else {
                 this._drawTarget(state);

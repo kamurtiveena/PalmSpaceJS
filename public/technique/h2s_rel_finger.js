@@ -39,9 +39,9 @@ export class H2SRelativeFinger {
                 this.parent._setupPalmImageTopLeft(state);
 
                 this.parent.grid.input.x    = this.parent.images.palm.topleft.x + this.parent.images.palm.image.cols/5;
-                this.parent.grid.input.y    = this.parent.images.palm.topleft.y + this.parent.images.palm.image.rows/2;
+                this.parent.grid.input.y    = this.parent.images.palm.topleft.y + this.parent.images.palm.image.rows/10;
                 this.parent.grid.output.x   = this.parent.images.palm.topleft.x + this.parent.images.palm.image.cols/5;
-                this.parent.grid.output.y   = this.parent.images.palm.topleft.y + this.parent.images.palm.image.rows/2;
+                this.parent.grid.output.y   = this.parent.images.palm.topleft.y + this.parent.images.palm.image.rows/10;
                 
                 this.parent.grid.input.align(state);
                 this.parent.grid.output.align(state);
