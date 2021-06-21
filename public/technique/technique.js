@@ -98,7 +98,7 @@ class Technique {
     }
 
     reset() {
-        if (this.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
+        if (this.type == TechniqueType.Landmark_Btn || this.type == TechniqueType.Landmark_Btn_FishEye) {
             console.log("landmark btn technique reset");
         } else {
             this.grid.input.reset();
@@ -237,7 +237,7 @@ class Technique {
                 
                 this.stats.lastVisitTime[btn.row_i][btn.col_j] = performance.now();
                 state.selection.messages.selected = 
-                    `Highlighted: ${(btn.row_i-1)*this.grid.input.divisions + btn.col_j}`;
+                    `Highlighted: ${(btn.row_i-1)*this.grid.input.divisions.col + btn.col_j}`;
                 this.stats.visitedCells ++;
             }
             
@@ -276,8 +276,8 @@ class Technique {
     }
 
     _drawCells(state) {
-        for (let i = 1; i <= this.grid.output.divisions; i ++) {
-            for (let j = 1; j <= this.grid.output.divisions; j ++) {
+        for (let i = 1; i <= this.grid.output.divisions.row; i ++) {
+            for (let j = 1; j <= this.grid.output.divisions.col; j ++) {
                 let c = new cv.Scalar(255, 25, 25);
                 
                 if(i == state.selection.markedBtn.row_i && 
@@ -311,7 +311,7 @@ class Technique {
         
         if (state.selection.markedBtn.row_i > 0 &&
             state.selection.markedBtn.col_j > 0) {
-                state.selection.messages.marked = `Marked: ${(state.selection.currentBtn.row_i-1)*this.grid.input.divisions + state.selection.currentBtn.col_j}`;
+                state.selection.messages.marked = `Marked: ${(state.selection.currentBtn.row_i-1)*this.grid.input.divisions.col + state.selection.currentBtn.col_j}`;
             }
     }      
 

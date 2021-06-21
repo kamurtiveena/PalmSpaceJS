@@ -10,6 +10,7 @@ class Config {
             MAXWIDTH: this.CAMWIDTH/8,
             MAXHEIGHT: this.CAMHEIGHT/28
         }; // todo use this
+        
         this.fisheye = {
             weights: {
                 MAX: 8,
@@ -21,6 +22,10 @@ class Config {
                 SUMMAX2NEIGHBOR: 16
             }
         };
+        
+        this.grid = {
+            gap: 3
+        }
 
         this.landmarkButtons = {
             total: 17,
