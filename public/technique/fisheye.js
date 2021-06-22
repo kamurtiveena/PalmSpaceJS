@@ -5,6 +5,11 @@ export class FishEye {
         this.name = "FishEye";
         this.parent = parent;
         this.parent.type = TechniqueType.FishEye;
+
+        this.parent.grid.input.width = state.config.grid.width;
+        this.parent.grid.input.height = state.config.grid.height;
+        this.parent.grid.output.width = state.config.grid.width;
+        this.parent.grid.output.height = state.config.grid.height;
     }
 
     calculate(state) {
@@ -15,10 +20,12 @@ export class FishEye {
 
         const w = Math.max(64, Math.min(400, palm.maxDim));
 
-        this.parent.grid.input.width = w;
-        this.parent.grid.input.height = w;
-        this.parent.grid.output.width = w;
-        this.parent.grid.output.height = w;
+        if (state.config.buttons.isDynamic) {
+            this.parent.grid.input.width = w;
+            this.parent.grid.input.height = w;
+            this.parent.grid.output.width = w;
+            this.parent.grid.output.height = w;
+        }
 
         this.parent.grid.input.x = palm.x;
         this.parent.grid.input.y = palm.y;

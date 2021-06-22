@@ -1,8 +1,8 @@
 export class Grid {
     constructor(state, name) {
         this.name = name;
-        this.height = state.height / 4;
-        this.width = state.width / 4;
+        this.height = state.config.grid.height;
+        this.width = state.config.grid.width;
         this.x = 0;
         this.y = 0;
         this.gap = state.config.grid.gap;

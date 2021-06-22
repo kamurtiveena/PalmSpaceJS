@@ -26,6 +26,22 @@ window.onload = function () {
         userIDElement.appendChild(opt);
     }
 
+    document.getElementById('buttonSize_dynamic').onchange = function () {
+        document.getElementById('size_input').style.display = 'none';
+    }
+
+    document.getElementById('buttonSize_small').onchange = function () {
+        document.getElementById('size_input').style.display = 'none';
+    }
+
+    document.getElementById('buttonSize_large').onchange = function () {
+        document.getElementById('size_input').style.display = 'none';
+    }
+
+    document.getElementById('buttonSize_custom').onchange = function () {
+        document.getElementById('size_input').style.display = 'block';
+    }
+
     // navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
     // if (navigator.mediaDevices.getUserMedia) {
     //     navigator.mediaDevices.getUserMedia({  audio: true, video: true })
@@ -109,28 +125,54 @@ window.onload = function () {
         state.width = state.config.CAMWIDTH;
 
         switch (state.menu.buttonSize) {
+            case "Dynamic":
+                state.config.landmarkButtons.width = 30;
+                state.config.landmarkButtons.height = 30;
+                state.config.buttons.width = 30;
+                state.config.buttons.height = 30;
+                state.config.buttons.isDynamic = true;
+                break;
             case "Small":
                 state.config.landmarkButtons.width = 30;
                 state.config.landmarkButtons.height = 30;
-                state.config.landmarkButtons.widthHalf = 15;
-                state.config.landmarkButtons.heightHalf = 15;
+                state.config.buttons.width = 30;
+                state.config.buttons.height = 30;
                 break;
-
             case "Large":
                 console.log("Large");
                 state.config.landmarkButtons.width = 50;
                 state.config.landmarkButtons.height = 50;
-                state.config.landmarkButtons.widthHalf = 25;
-                state.config.landmarkButtons.heightHalf = 25;
-                break;
+                state.config.buttons.width = 50;
+                state.config.buttons.height = 50;
 
+                break;
+            case "Custom":
+                state.config.landmarkButtons.width = parseInt(document.getElementById('cell_width').value, 10);
+                state.config.landmarkButtons.height = parseInt(document.getElementById('cell_height').value, 10);
+                state.config.buttons.width = parseInt(document.getElementById('cell_width').value, 10);
+                state.config.buttons.height = parseInt(document.getElementById('cell_height').value, 10);
+                console.table(state.config.buttons);
+                console.table(state.config.landmarkButtons);
+                break;
             default:
                 state.config.landmarkButtons.width = 30;
                 state.config.landmarkButtons.height = 30;
-                state.config.landmarkButtons.widthHalf = 15;
-                state.config.landmarkButtons.heightHalf = 15;
-
+                state.config.buttons.width = 30;
+                state.config.buttons.height = 30;
         }
+
+        state.config.landmarkButtons.widthHalf = state.config.landmarkButtons.width / 2;
+        state.config.landmarkButtons.heightHalf = state.config.landmarkButtons.height / 2;
+        state.config.buttons.widthHalf = state.config.buttons.width / 2;
+        state.config.buttons.heightHalf = state.config.buttons.height / 2;
+
+        state.config.grid.width = state.config.grid.gap * (state.menu.cellscnt.col + 1) + state.config.buttons.width * (state.menu.cellscnt.col);
+        state.config.grid.height = state.config.grid.gap * (state.menu.cellscnt.row + 1) + state.config.buttons.height * (state.menu.cellscnt.row);
+
+        console.group("state.config.grid");
+        console.table(state.config.grid);
+        console.table(state.width, state.height);
+        console.groupEnd();
 
         menu.style.display = "none";
         videoContainer.style.display = "block";
@@ -273,11 +315,8 @@ window.onload = function () {
                 case TRIGGER.PRESSED:
                     console.log("rendered triggger preseed");
 
-                    // if (state.technique.grid.input.isCursorInside(state)) {
                     if (state.technique.isCursorInside(state)) {
-
                         state.technique.anchor.adjustSelection(state);
-
                         state.lockSelection();
                     }
                     state.updateCursorPath();
