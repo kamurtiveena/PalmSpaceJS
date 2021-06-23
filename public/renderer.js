@@ -66,6 +66,26 @@ window.onload = function () {
         study2: {},
     };
 
+
+    if (window.Worker) {
+        state.myWorker = new Worker("worker.js");
+
+        state.myWorker.postMessage(["test_worker", 4, 5]);
+        console.log('Message posted to worker');
+
+        state.myWorker.onmessage = function (e) {
+            console.log("Message received from state.myWorker:", e.data);
+        }
+
+        state.myWorker.onerror = function (e) {
+            console.log("Error from state.myWorker:");
+            console.log({"message": e.message, "filename": e.filename, "lineno": e.lineno});
+        }
+    } else {
+        console.log('Your browser doesn\'t support web workers.');
+        state.myWorker = null;
+    }
+
     let menuElement = document.getElementById("menu");
 
     // Our input frames will come from here.
@@ -343,11 +363,12 @@ window.onload = function () {
                         state.experiment.trial.incrementAttempts();
 
                         if (state.experiment.trial.matched(state)) {
+                            state.experiment.trial.clickTarget(state);
+
                             if (!state.menu.practice) {
-                                state.experiment.study1.save(state);
+                                state.experiment.study1.save(state); // should use worker to send save request
                             }
 
-                            state.experiment.trial.clickTarget(state);
                             state.experiment.trial.generateTarget(state);
                             resetAnchor = true;
                         }

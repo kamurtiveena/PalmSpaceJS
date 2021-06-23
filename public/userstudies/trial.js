@@ -541,10 +541,14 @@ export class Trial {
         }
     }
 
+    currentTarget() {
+        return this.targetSeq[this.targetID];
+    }
+
     _matchedBtnID(state) {
         return state.selection.currentBtn.btn_id == this.targetSeq[this.targetID].btn_id;
     }
-
+    
     _matched(state) {        
         return (
             state.selection.currentBtn.row_i == this.targetSeq[this.targetID].row_i &&

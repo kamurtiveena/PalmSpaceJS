@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import https from 'https';
 import fs from 'fs';
 import createDBPool from './db';
+import logger from './middleware/logger';
+import authenticator from './middleware/authenticator';
 
 dotenv.config();
 
@@ -16,12 +18,12 @@ const dbConfig = {
     port: process.env.DB_port || 3306,
     user: process.env.DB_user || "prantoran",
     pass: process.env.DB_pass || "",
-    database: process.env.DB_database || "prantordb"
+    database: process.env.DB_database || "prantordb",
 }
- 
+
 console.group("environment");
 //console.table(process.env);
-console.table({HOST, PORT, NODE_ENV});
+console.table({ HOST, PORT, NODE_ENV });
 console.groupEnd();
 
 console.group("db");
@@ -30,9 +32,9 @@ console.table(dbConfig);
 console.groupEnd();
 
 const pool = createDBPool(
-    dbConfig.host, 
-    dbConfig.user, 
-    dbConfig.pass, 
+    dbConfig.host,
+    dbConfig.user,
+    dbConfig.pass,
     dbConfig.database);
 
 // console.group("db-pool");
@@ -42,6 +44,10 @@ const pool = createDBPool(
 
 
 app.use(express.static('public'));
+app.use(express.json());
+app.use(logger);
+app.use(authenticator);
+
 
 app.get('/', (req, res) => {
     res.send(`${PORT} working`);
@@ -67,12 +73,34 @@ app.get('/:tableName', async (req, res) => {
 });
 
 
-app.post('/create/table/:name', async (req, res) => {
+app.post('/admin/create/table/:name', async (req, res) => {
+
     let conn
     try {
         conn = await pool.getConnection()
 
-        let sql = `CREATE TABLE ${req.params.name} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255))`;
+        let sql = `
+        CREATE TABLE ${req.params.name} (
+            id INT AUTO_INCREMENT PRIMARY KEY, 
+            user_id VARCHAR(255), 
+            technique VARCHAR(255),
+            cells_row INT,
+            cells_col INT,
+            button_sz VARCHAR(255),
+            btn_width INT,
+            btn_height INT,
+            target_btn_id VARCHAR(255),
+            target_rowcol VARCHAR(255),
+            target_id INT,
+            targets_visit_time_ms FLOAT,
+            elapsed_time_ms FLOAT,
+            cursor_dist_px FLOAT,
+            attempts INT,
+            visited_cells INT
+        );`;
+
+        console.log(sql);
+
         let result = await conn.query(sql);
 
         res.send(result)
@@ -80,7 +108,9 @@ app.post('/create/table/:name', async (req, res) => {
         // throw error
         console.error(error);
         if (error.code == "ER_TABLE_EXISTS_ERROR") {
-            res.send({msg: "table exists"});
+            res.send({ msg: "table exists" });
+        } else {
+            res.send("internal server error");
         }
     } finally {
         if (conn) {
@@ -89,21 +119,42 @@ app.post('/create/table/:name', async (req, res) => {
     }
 })
 
-app.post('/delete/table/:name', async (req, res) => {
-    let conn
+app.post('/save/study1/record', async (req, res) => {
+    let conn;
     try {
-        conn = await pool.getConnection()
+        conn = await pool.getConnection();
+        let sql = `
+            INSERT INTO study1 (user_id, technique, cells_row, cells_col, button_sz, btn_width, btn_height, target_btn_id, target_rowcol, target_id, targets_visit_time_ms, elapsed_time_ms, cursor_dist_px, attempts, visited_cells)
+            VALUES (${req.body.user_id}, ${req.body.technique}, ${req.body.cells_row}, ${req.body.cells_col}, ${req.body.button_sz}, ${req.body.btn_width}, ${req.body.btn_height}, ${req.body.target_btn_id}, ${req.body.target_rowcol}, ${req.body.target_id}, ${req.body.targets_visit_time_ms}, ${req.body.elapsed_time_ms}, ${req.body.cursor_dist_px}, ${req.body.attempts}, ${req.body.visited_cells});
+        `;
+        
+        let result = await conn.query(sql);
+        console.log(result);
+
+        res.send(result);
+        
+    } catch (error) {
+        console.error(error);
+    } finally {
+        if (conn) conn.release();
+    }
+})
+
+app.post('/admin/delete/table/:name', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
 
         let sql = `DROP TABLE IF EXISTS ${req.params.name}`;
         let result = await conn.query(sql);
 
-        res.send(result)
+        console.log(result);
+
+        res.send(result);
     } catch (error) {
         // throw error
         console.error(error);
-        if (error.code == "ER_TABLE_EXISTS_ERROR") {
-            res.send({msg: "table exists"});
-        }
+        res.send(error);
     } finally {
         if (conn) {
             conn.release()
@@ -120,16 +171,16 @@ if (NODE_ENV == "production") {
 
     console.group("ssl");
     //console.table(process.env);
-    console.table({SSL_CERT, SSL_KEY});
+    console.table({ SSL_CERT, SSL_KEY });
     console.groupEnd();
-    
+
     https.createServer({
         key: fs.readFileSync(SSL_KEY),
         cert: fs.readFileSync(SSL_CERT)
     }, app)
-    .listen(PORT, function() { 
-        return console.log(`server is listening on ${PORT}`);
-    });
+        .listen(PORT, function () {
+            return console.log(`server is listening on ${PORT}`);
+        });
 } else {
     app.listen(PORT, HOST, () => {
         return console.log(`server is listening on ${PORT}`);
