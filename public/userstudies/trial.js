@@ -23,7 +23,7 @@ export class Trial {
         }
 
         this.targetID       = -1;
-        this.targetSeqSize  = state.menu.targetscnt;
+        this.targetSeqSize  = state.config.experiment.repetitions;
 
         this.targetsStartTime   = new Array(21);
         this.targetsEndTime     = new Array(21);

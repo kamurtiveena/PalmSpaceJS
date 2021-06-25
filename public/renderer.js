@@ -116,6 +116,54 @@ window.onload = function () {
 
     const startBtn = document.getElementById("start_btn");
 
+    document.getElementById('download_study1_btn').onclick = async function() {
+        const data = await fetch(`${state.config.host.url}/study1`)
+        .then(response => {
+            if (!response || !response.ok) throw new TypeError(`response not ok`);
+            return response.json();
+        })
+        .catch(err => {
+            console.error(err);
+            postMessage("err");
+        });
+
+        console.log(data);
+        
+        let csv = 'id,user_id,technique,selection,cells_row,cells_col,button_sz,btn_width,btn_height,target_btn_id,target_rowcol,target_id,targets_visit_time_ms,elapsed_time_ms,cursor_dist_px,attempts,visited_cells\n';
+        
+        data.forEach(function(row) {
+            console.log("row:", row);
+            let r = "";
+            r += row.id + ","
+            r += row.user_id + ","
+            r += row.technique + ","
+            r += row.selection + ","
+            r += row.cells_row + ","
+            r += row.cells_col + ","
+            r += row.button_sz + ","
+            r += row.btn_width + ","
+            r += row.btn_height + ","
+            r += row.target_btn_id + ","
+            r += row.target_rowcol + ","
+            r += row.target_id + ","
+            r += row.targets_visit_time_ms + ","
+            r += row.elapsed_time_ms + ","
+            r += row.cursor_dist_px + ","
+            r += row.attempts + ","
+            r += row.visited_cells;
+
+            csv += r + '\n';
+        });
+    
+        console.log(csv);
+
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = 'study1.csv';
+        hiddenElement.click();
+    };
+
     document.addEventListener("keypress", function (event) {
         console.group("document keypress event");
         console.table(event);
@@ -139,7 +187,6 @@ window.onload = function () {
             col: parseInt(checkSelectList("selectCellsCol"))
         };
 
-        state.menu.targetscnt = 12;
         state.menu.buttonSize = checkRadio("buttonSize");
         state.height = state.config.CAMHEIGHT;
         state.width = state.config.CAMWIDTH;
@@ -251,8 +298,6 @@ window.onload = function () {
     }
 
     function onResults(results) {
-
-        state.data = results;
 
         // document.body.classList.add('loaded');
         // Update the frame rate.

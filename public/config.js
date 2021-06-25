@@ -43,6 +43,14 @@ class Config {
             height: 30,
             isDynamic: false
         };
+
+        this.host = {
+            url: 'http://localhost:3000'
+        };
+
+        this.experiment = {
+            repetitions: 5,
+        };
     };
 }
 

@@ -73,6 +73,25 @@ app.get('/:tableName', async (req, res) => {
 });
 
 
+app.get('/csv/:tableName', async (req, res) => {
+    let conn
+    try {
+        conn = await pool.getConnection()
+
+        let sql = `SELECT * FROM ${req.params.tableName}`
+        let result = await conn.query(sql)
+
+        res.send(result)
+    } catch (error) {
+        throw error
+    } finally {
+        if (conn) {
+            conn.release()
+        }
+    }
+});
+
+
 app.post('/admin/create/table/:name', async (req, res) => {
 
     let conn
@@ -84,6 +103,7 @@ app.post('/admin/create/table/:name', async (req, res) => {
             id INT AUTO_INCREMENT PRIMARY KEY, 
             user_id VARCHAR(255), 
             technique VARCHAR(255),
+            selection VARCHAR(255),
             cells_row INT,
             cells_col INT,
             button_sz VARCHAR(255),
@@ -123,10 +143,55 @@ app.post('/save/study1/record', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
+        console.log(req.body);
+
+        let body = req.body;
+        if (Array.isArray(body)) {
+            if (body.length > 0) body = body[0];
+            else {
+                res.send("request body empty");
+                return;
+            }
+        }
+
         let sql = `
-            INSERT INTO study1 (user_id, technique, cells_row, cells_col, button_sz, btn_width, btn_height, target_btn_id, target_rowcol, target_id, targets_visit_time_ms, elapsed_time_ms, cursor_dist_px, attempts, visited_cells)
-            VALUES (${req.body.user_id}, ${req.body.technique}, ${req.body.cells_row}, ${req.body.cells_col}, ${req.body.button_sz}, ${req.body.btn_width}, ${req.body.btn_height}, ${req.body.target_btn_id}, ${req.body.target_rowcol}, ${req.body.target_id}, ${req.body.targets_visit_time_ms}, ${req.body.elapsed_time_ms}, ${req.body.cursor_dist_px}, ${req.body.attempts}, ${req.body.visited_cells});
-        `;
+            INSERT INTO 
+            study1 (
+                user_id, 
+                technique,
+                selection,
+                cells_row, 
+                cells_col, 
+                button_sz, 
+                btn_width, 
+                btn_height, 
+                target_btn_id, 
+                target_rowcol, 
+                target_id, 
+                targets_visit_time_ms, 
+                elapsed_time_ms, 
+                cursor_dist_px, 
+                attempts, 
+                visited_cells
+            ) 
+            VALUES (
+                ${body.user_id}, 
+                "${body.technique}", 
+                "${body.trigger}",
+                ${body.cells_row}, 
+                ${body.cells_col}, 
+                "${body.button_sz}", 
+                ${body.btn_width}, 
+                ${body.btn_height}, 
+                ${body.target_btn_id}, 
+                "${body.target_rowcol}", 
+                ${body.target_id}, 
+                ${body.targets_visit_time_ms}, 
+                ${body.elapsed_time_ms}, 
+                ${body.cursor_dist_px}, 
+                ${body.attempts}, 
+                ${body.visited_cells}
+            );`;
         
         let result = await conn.query(sql);
         console.log(result);

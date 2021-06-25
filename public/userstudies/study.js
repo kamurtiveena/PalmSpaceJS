@@ -28,7 +28,7 @@ class Study {
             visited_cells: state.experiment.trial.stats.visitedCells[state.experiment.trial.targetID] 
         }
 
-        state.myWorker.postMessage([`post_record`, `http://localhost:3000/save/record`, body]);
+        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study1/record`, body]);
 
         console.log("study1.save() body:", JSON.stringify(body));
     }

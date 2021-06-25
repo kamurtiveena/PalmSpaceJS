@@ -68,9 +68,9 @@
             <div class="form-group">
               <label class="mr-sm-2" for="selectCellsRow">Number of cells per row</label>
               <select class="custom-select mr-sm-2" id="selectCellsRow">
-                <option value="2">2</option>
+                <option value="2" selected>2</option>
                 <option value="3">3</option>
-                <option value="4" selected>4</option>
+                <option value="4">4</option>
                 <option value="6">6</option>
               </select>
             </div>
@@ -127,7 +127,7 @@
                 <div class="form-group row">
                   <label for="cell_height" class="col-sm-2 col-form-label">Height</label>
                   <div class="col-sm-3">
-                    <input type="text" class="form-control" id="cell_height" placeholder="Cell height in pixels" value = 60 style="width: 7em;">
+                    <input type="text" class="form-control" id="cell_height" placeholder="Cell height in pixels" value = 30 style="width: 7em;">
                   </div>
                   <label for="cell_height" class="col-sm-2 col-form-label">pixels</label>
                 </div>
@@ -247,6 +247,7 @@
             <button type="button" class="btn btn-success full-width" id="start_btn">Start</button>
           </div>
           <div class="col-md-3">
+            <button type="button" class="btn btn-success full-width" id="download_study1_btn">Download Study 1 data</button>
           </div>
         </div>
       </form>

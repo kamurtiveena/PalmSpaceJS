@@ -5,6 +5,7 @@ import {Point} from './ds/point.js';
 
 class State {
     constructor() {
+
         this.menu = {};
         this.menu.showMenu = true;
         this.menu.technique = null;
@@ -13,8 +14,7 @@ class State {
         this.menu.practice = false;
         this.menu.debug = false;
         this.menu.cellscnt = null;
-        this.menu.targetscnt = 12;
-        this.data = null;
+
         this.initiator = null;
         this.cursor = null;
         this.palmLandmarkIDs = [0, 1, 5, 9, 13, 17]; // TODO make it static
