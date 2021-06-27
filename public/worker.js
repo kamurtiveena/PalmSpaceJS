@@ -42,8 +42,7 @@ async function postData(url, data) {
         postMessage(response.json());
     })
     .catch(err => {
-        console.error(err);
-        postMessage("err");
+        postMessage({"error": err});
     });
 }
 

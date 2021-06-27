@@ -42,6 +42,25 @@ window.onload = function () {
         document.getElementById('size_input').style.display = 'block';
     }
 
+    {
+        const techniqueList = document.getElementById('technique_list');
+
+        for (let i = 0; i < techniqueList.children.length; i++) {
+            const c = techniqueList.children[i];
+            if (c.className.includes('form-check')) {
+                const u = c.firstElementChild;
+                if (u.value.includes('Landmark')) {
+                    u.onclick = function () {
+                        document.getElementById('no_of_cells_per_rowcol').style.display = 'none';
+                    }
+                } else {
+                    u.onclick = function () {
+                        document.getElementById('no_of_cells_per_rowcol').style.display = 'block';
+                    }
+                }
+            }
+        }
+    }
     // navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
     // if (navigator.mediaDevices.getUserMedia) {
     //     navigator.mediaDevices.getUserMedia({  audio: true, video: true })
@@ -79,7 +98,7 @@ window.onload = function () {
 
         state.myWorker.onerror = function (e) {
             console.log("Error from state.myWorker:");
-            console.log({"message": e.message, "filename": e.filename, "lineno": e.lineno});
+            console.log({ "message": e.message, "filename": e.filename, "lineno": e.lineno });
         }
     } else {
         console.log('Your browser doesn\'t support web workers.');
@@ -116,22 +135,22 @@ window.onload = function () {
 
     const startBtn = document.getElementById("start_btn");
 
-    document.getElementById('download_study1_btn').onclick = async function() {
+    document.getElementById('download_study1_btn').onclick = async function () {
         const data = await fetch(`${state.config.host.url}/study1`)
-        .then(response => {
-            if (!response || !response.ok) throw new TypeError(`response not ok`);
-            return response.json();
-        })
-        .catch(err => {
-            console.error(err);
-            postMessage("err");
-        });
+            .then(response => {
+                if (!response || !response.ok) throw new TypeError(`response not ok`);
+                return response.json();
+            })
+            .catch(err => {
+                console.error(err);
+                postMessage("err");
+            });
 
         console.log(data);
-        
+
         let csv = 'id,user_id,technique,selection,cells_row,cells_col,button_sz,btn_width,btn_height,target_btn_id,target_rowcol,target_id,targets_visit_time_ms,elapsed_time_ms,cursor_dist_px,attempts,visited_cells\n';
-        
-        data.forEach(function(row) {
+
+        data.forEach(function (row) {
             console.log("row:", row);
             let r = "";
             r += row.id + ","
@@ -154,7 +173,7 @@ window.onload = function () {
 
             csv += r + '\n';
         });
-    
+
         console.log(csv);
 
         var hiddenElement = document.createElement('a');
