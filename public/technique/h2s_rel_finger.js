@@ -35,8 +35,8 @@ export class H2SRelativeFinger {
         this.parent.grid.output.y = palm.y;
 
         this.parent._setupPalmImage(
-            Math.min(state.width - 50.0, (5 * w) / 2),
-            Math.min(state.height - 50.0, (19 * w) / 8)
+            Math.min(state.width - 50.0, 2 * w),
+            Math.min(state.height - 50.0, 3 * w)
         );
 
         if (this.parent.grid.input.x > 0 &&

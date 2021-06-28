@@ -61,6 +61,36 @@ window.onload = function () {
             }
         }
     }
+
+    {
+        document.getElementById('selectCellsRow').onchange = function() {
+            if (document.getElementById('cellsPerRowColSameCheck').checked) {
+                const cellsPerCol = document.getElementById('selectCellsCol');
+                const v = document.getElementById('selectCellsRow').value;
+                const opts = cellsPerCol.options;
+                for (let opt, j = 0; opt = opts[j]; j ++) {
+                    if (opt.value == v) {
+                        cellsPerCol.selectedIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        document.getElementById('selectCellsCol').onchange = function() {
+            if (document.getElementById('cellsPerRowColSameCheck').checked) {
+                const cellsPerRow = document.getElementById('selectCellsRow');
+                const v = document.getElementById('selectCellsCol').value;
+                const opts = cellsPerRow.options;
+                for (let opt, j = 0; opt = opts[j]; j ++) {
+                    if (opt.value == v) {
+                        cellsPerRow.selectedIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
+    }
     // navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
     // if (navigator.mediaDevices.getUserMedia) {
     //     navigator.mediaDevices.getUserMedia({  audio: true, video: true })
