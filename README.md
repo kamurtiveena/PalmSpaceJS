@@ -29,3 +29,23 @@ INSERT INTO prantordb.desserts VALUES ('churros'), ('gelato'), ('halo-halo'), ('
 curl requests
 curl localhost:3000/desserts
 curl -X POST localhost:3000/create/users
+
+
+
+
+
+
+
+
+
+
+
++ start btn 125% larger
++ debug mode deactivate
++ dynamic active
++ practice session repetitions 2
++ remove marked cell info from previous trial
++ increase width of hand image
++ hide techniques not used
+update sequence of combinations to be shown to userIDs
++ check input space of start button for  H2S Relative Finger 

@@ -26,20 +26,31 @@ class ButtonSelection {
         }
     }
 
-    reset() {
+    resetSelectedButton() {
         this.currentBtn.row_i = -1;
         this.currentBtn.col_j = -1;
         
         this.previousBtn.row_i = -1;
         this.previousBtn.col_j = -1;
 
-        this.locked = false;
         this.messages.selected = "";
-        this.lastLockTime = performance.now();
-        
+
         this.pastSelections.head = null;
         this.pastSelections.tail = null;
         this.pastSelections.cnt = 0;
+    }
+
+    resetMarkedButton() {
+        this.markedBtn.row_i = -1;
+        this.markedBtn.col_j = -1;
+        this.messages.marked = "";
+    }
+
+    reset() {
+        this.resetSelectedButton();
+
+        this.locked = false;
+        this.lastLockTime = performance.now();
     }
 
     adjustSelection() {

@@ -188,8 +188,8 @@ export class Trial {
             if (this.status != TrialState.DONE) {
                 const r = this.startBtn.rect;
                 if (this.status != TrialState.STARTED &&
-                    r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 50 &&
-                    r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 50) {
+                    r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 5 &&
+                    r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 5) {
                     return true;
                     // if (!this.cursorOverBtn) {
                     //     this.cursorOverBtn = true;
@@ -291,13 +291,13 @@ export class Trial {
         const p = state.initiator.left.landmarks[4];
 
         const tl = new cv.Point(
-            p.x - state.config.landmarkButtons.widthHalf - 45,
-            p.y - state.config.landmarkButtons.heightHalf - 50,
+            p.x - state.config.landmarkButtons.widthHalf - state.config.experiment.startButton.widthHalf,
+            p.y - state.config.landmarkButtons.heightHalf - state.config.experiment.startButton.heightHalf,
         );
 
         const br = new cv.Point(
-            p.x + state.config.landmarkButtons.widthHalf + 45,
-            p.y + state.config.landmarkButtons.heightHalf + 50,
+            p.x + state.config.landmarkButtons.widthHalf + state.config.experiment.startButton.widthHalf,
+            p.y + state.config.landmarkButtons.heightHalf + state.config.experiment.startButton.heightHalf,
         );
 
         this.startBtn.rect = new cv.Rect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
@@ -307,23 +307,23 @@ export class Trial {
 
         let tl = new cv.Point(
             state.technique.grid.input.x_cols[0] + state.technique.grid.input.width + 10,
-            state.technique.grid.input.y_rows[0] + state.technique.grid.input.height / 2 - 45
+            state.technique.grid.input.y_rows[0] + state.technique.grid.input.height / 2 - state.config.experiment.startButton.heightHalf
         );
 
         let br = new cv.Point(
-            state.technique.grid.input.x_cols[0] + state.technique.grid.input.width + 10 + 100,
-            state.technique.grid.input.y_rows[0] + state.technique.grid.input.height / 2 + 45
+            state.technique.grid.input.x_cols[0] + state.technique.grid.input.width + 10 + state.config.experiment.startButton.width,
+            state.technique.grid.input.y_rows[0] + state.technique.grid.input.height / 2 + state.config.experiment.startButton.heightHalf
         );
 
         if (state.technique.type == TechniqueType.H2S_Absolute) {
             tl = new cv.Point(
                 state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10,
-                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 - 45
+                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 - state.config.experiment.startButton.heightHalf
             );
 
             br = new cv.Point(
-                state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10 + 100,
-                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 + 45
+                state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10 + state.config.experiment.startButton.width,
+                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 + state.config.experiment.startButton.heightHalf
             );
         }
 
@@ -456,13 +456,13 @@ export class Trial {
         const p = state.initiator.left.landmarks[4];
 
         const tl = new cv.Point(
-            p.x - state.config.landmarkButtons.widthHalf - 22,
-            p.y - state.config.landmarkButtons.heightHalf - 22,
+            p.x - state.config.landmarkButtons.widthHalf - state.config.experiment.startButton.widthHalf,
+            p.y - state.config.landmarkButtons.heightHalf - state.config.experiment.startButton.heightHalf,
         );
 
         const br = new cv.Point(
-            p.x + state.config.landmarkButtons.widthHalf + 22,
-            p.y + state.config.landmarkButtons.heightHalf + 22,
+            p.x + state.config.landmarkButtons.widthHalf + state.config.experiment.startButton.widthHalf,
+            p.y + state.config.landmarkButtons.heightHalf + state.config.experiment.startButton.heightHalf,
         );
 
         return { tl, br };
@@ -474,23 +474,23 @@ export class Trial {
 
         let tl = new cv.Point(
             state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10,
-            state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 - 22
+            state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 - state.config.experiment.startButton.heightHalf
         );
 
         let br = new cv.Point(
-            state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10 + 50,
-            state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 + 22
+            state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10 + state.config.experiment.startButton.width,
+            state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 + state.config.experiment.startButton.heightHalf
         );
 
         if (state.technique.type == TechniqueType.H2S_Absolute) {
             tl = new cv.Point(
                 state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10,
-                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 - 22
+                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 - state.config.experiment.startButton.heightHalf
             );
 
             br = new cv.Point(
-                state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10 + 50,
-                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 + 22
+                state.technique.grid.output.x_cols[0] + state.technique.grid.output.width + 10 + state.config.experiment.startButton.width,
+                state.technique.grid.output.y_rows[0] + state.technique.grid.output.height / 2 + state.config.experiment.startButton.heightHalf
             );
         }
 

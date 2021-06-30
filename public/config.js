@@ -50,7 +50,14 @@ class Config {
 
         this.experiment = {
             repetitions: 5,
+            startButton: {
+                width: 60,
+                height: 50,
+            }
         };
+
+        this.experiment.startButton.widthHalf = this.experiment.startButton.width / 2;
+        this.experiment.startButton.heightHalf = this.experiment.startButton.height / 2;
     };
 }
 

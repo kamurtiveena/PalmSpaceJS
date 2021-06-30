@@ -26,17 +26,19 @@ window.onload = function () {
         userIDElement.appendChild(opt);
     }
 
+    document.getElementById('size_input').style.display = 'none';
+
     document.getElementById('buttonSize_dynamic').onchange = function () {
         document.getElementById('size_input').style.display = 'none';
     }
 
-    document.getElementById('buttonSize_small').onchange = function () {
-        document.getElementById('size_input').style.display = 'none';
-    }
+    // document.getElementById('buttonSize_small').onchange = function () {
+    //     document.getElementById('size_input').style.display = 'none';
+    // }
 
-    document.getElementById('buttonSize_large').onchange = function () {
-        document.getElementById('size_input').style.display = 'none';
-    }
+    // document.getElementById('buttonSize_large').onchange = function () {
+    //     document.getElementById('size_input').style.display = 'none';
+    // }
 
     document.getElementById('buttonSize_custom').onchange = function () {
         document.getElementById('size_input').style.display = 'block';
@@ -285,6 +287,12 @@ window.onload = function () {
         state.config.grid.width = state.config.grid.gap * (state.menu.cellscnt.col + 1) + state.config.buttons.width * (state.menu.cellscnt.col);
         state.config.grid.height = state.config.grid.gap * (state.menu.cellscnt.row + 1) + state.config.buttons.height * (state.menu.cellscnt.row);
 
+        if (state.menu.practice) {
+            state.config.experiment.repetitions = 2;
+        } else {
+            state.config.experiment.repetitions = 4;
+        }
+
         console.group("state.config.grid");
         console.table(state.config.grid);
         console.table(state.width, state.height);
@@ -399,15 +407,7 @@ window.onload = function () {
             state.experiment.trial.updateBackBtnInputLoc(state);
 
             state.trigger.update(state);
-
-            console.log("state.trigger:", state.trigger);
-
-            if (state.trigger.status == TRIGGER.RELEASED)
-                console.log("##after update trigger released");
-            else if (state.trigger.status == TRIGGER.OPEN) {
-                console.log("##after update trigger open");
-
-            }
+            
 
             if (state.trigger.status != TRIGGER.PRESSED) {
                 state.selection.locked = false;
@@ -458,7 +458,7 @@ window.onload = function () {
 
                         if (state.experiment.trial.matched(state)) {
                             state.experiment.trial.clickTarget(state);
-
+                            state.selection.resetMarkedButton();
                             if (!state.menu.practice) {
                                 state.experiment.study1.save(state); // should use worker to send save request
                             }
@@ -468,6 +468,7 @@ window.onload = function () {
                         }
                     }
 
+                    state.selection.resetSelectedButton();
                     state.trigger.reset(state);
                     break;
                 default:

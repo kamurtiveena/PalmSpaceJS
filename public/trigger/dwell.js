@@ -171,6 +171,7 @@ class Dwell {
 
     reset() {
         this._initGridVisitTime(performance.now());  
+        this.parent.status = TRIGGER.OPEN;
     }
 }
 
