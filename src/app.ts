@@ -1,3 +1,5 @@
+#!/usr/bin/node
+
 import express from 'express';
 import dotenv from 'dotenv';
 import https from 'https';
@@ -200,10 +202,31 @@ app.post('/save/study1/record', async (req, res) => {
         
     } catch (error) {
         console.error(error);
+        res.send({"error": error});
     } finally {
         if (conn) conn.release();
     }
-})
+});
+
+
+app.get('/stats/study1', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        let sql = `
+            SELECT SUM(elapsed_time_ms)/COUNT(elapsed_time_ms) as 'elapsed_time', technique, cells_row, cells_col
+            From study1
+            GROUP BY technique, cells_row, cells_col;`;
+        let result = await conn.query(sql);
+        console.log(result);
+        res.send(result);
+    } catch(error) {
+        console.error(error);
+        res.send({"error": error});
+    } finally {
+        if (conn) conn.release();
+    }
+});
 
 app.post('/admin/delete/table/:name', async (req, res) => {
     let conn;

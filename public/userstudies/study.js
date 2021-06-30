@@ -19,7 +19,7 @@ class Study {
             btn_width: state.config.buttons.width, 
             btn_height: state.config.buttons.height,
             target_btn_id: t.btn_id | "",
-            target_rowcol: `${t.row_i | ""},${t.col_j | "" }`,
+            target_rowcol: `${t.row_i | ""}_${t.col_j | "" }`,
             target_id: state.experiment.trial.targetID,
             targets_visit_time_ms: state.experiment.trial.lastVisitTime(),
             elapsed_time_ms: state.experiment.trial.elapsedTime(),
