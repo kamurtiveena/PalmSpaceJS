@@ -214,7 +214,17 @@ app.get('/stats/study1', async (req, res) => {
     try {
         conn = await pool.getConnection();
         let sql = `
-            SELECT SUM(elapsed_time_ms)/1000 as 'total_time_sec', COUNT(elapsed_time_ms) as 'total_events', (SUM(elapsed_time_ms)/COUNT(elapsed_time_ms))/1000 as 'elapsed_time_per_event_sec', technique, cells_row, cells_col
+            SELECT 
+                SUM(elapsed_time_ms)/1000 as 'total_time_sec', 
+                COUNT(elapsed_time_ms) as 'total_events', 
+                (SUM(elapsed_time_ms)/COUNT(elapsed_time_ms))/1000 as 'avg_elapsed_time_sec', 
+                SUM(attempts) as 'total_attempts', 
+                SUM(attempts)/COUNT(attempts) as 'avg_attempts', 
+                SUM(visited_cells) as 'visited_cells', 
+                SUM(visited_cells)/COUNT(visited_cells) as 'avg_visited_cells', 
+                technique, 
+                cells_row, 
+                cells_col
             From study1
             GROUP BY technique, cells_row, cells_col;`;
         let result = await conn.query(sql);
