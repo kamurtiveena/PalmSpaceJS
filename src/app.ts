@@ -118,7 +118,8 @@ app.post('/admin/create/table/:name', async (req, res) => {
             elapsed_time_ms FLOAT,
             cursor_dist_px FLOAT,
             attempts INT,
-            visited_cells INT
+            visited_cells INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`;
 
         console.log(sql);
@@ -259,6 +260,29 @@ app.post('/admin/delete/table/:name', async (req, res) => {
         }
     }
 });
+
+app.post('/admin/sql', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+
+        let sql = req.body.query;
+        let result = await conn.query(sql);
+
+        console.log(result);
+
+        res.send(result);
+    } catch (error) {
+        // throw error
+        console.error(error);
+        res.send(error);
+    } finally {
+        if (conn) {
+            conn.release()
+        }
+    }
+});
+
 
 // todo add middleware to print request host
 // todo middleware for error handling
