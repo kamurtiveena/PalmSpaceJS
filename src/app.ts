@@ -61,8 +61,8 @@ app.get('/:tableName', async (req, res) => {
     try {
         conn = await pool.getConnection()
 
-        let sql = `SELECT * FROM ${req.params.tableName}`
-        let result = await conn.query(sql)
+        const sql = `SELECT * FROM ${req.params.tableName}`
+        const result = await conn.query(sql)
 
         res.send(result)
     } catch (error) {
@@ -80,8 +80,8 @@ app.get('/csv/:tableName', async (req, res) => {
     try {
         conn = await pool.getConnection()
 
-        let sql = `SELECT * FROM ${req.params.tableName}`
-        let result = await conn.query(sql)
+        const sql = `SELECT * FROM ${req.params.tableName}`
+        const result = await conn.query(sql)
 
         res.send(result)
     } catch (error) {
@@ -100,7 +100,7 @@ app.post('/admin/create/table/:name', async (req, res) => {
     try {
         conn = await pool.getConnection()
 
-        let sql = `
+        const sql = `
         CREATE TABLE ${req.params.name} (
             id INT AUTO_INCREMENT PRIMARY KEY, 
             user_id VARCHAR(255), 
@@ -124,7 +124,7 @@ app.post('/admin/create/table/:name', async (req, res) => {
 
         console.log(sql);
 
-        let result = await conn.query(sql);
+        const result = await conn.query(sql);
 
         res.send(result)
     } catch (error) {
@@ -157,7 +157,7 @@ app.post('/save/study1/record', async (req, res) => {
             }
         }
 
-        let sql = `
+        const sql = `
             INSERT INTO 
             study1 (
                 user_id, 
@@ -196,7 +196,7 @@ app.post('/save/study1/record', async (req, res) => {
                 ${body.visited_cells}
             );`;
         
-        let result = await conn.query(sql);
+        const result = await conn.query(sql);
         console.log(result);
 
         res.send(result);
@@ -214,7 +214,7 @@ app.get('/stats/study1', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        let sql = `
+        const sql = `
             SELECT 
                 SUM(elapsed_time_ms)/1000 as 'total_time_sec', 
                 COUNT(elapsed_time_ms) as 'total_events', 
@@ -228,7 +228,7 @@ app.get('/stats/study1', async (req, res) => {
                 cells_col
             From study1
             GROUP BY technique, cells_row, cells_col;`;
-        let result = await conn.query(sql);
+        const result = await conn.query(sql);
         console.log(result);
         res.send(result);
     } catch(error) {
@@ -244,8 +244,8 @@ app.post('/admin/delete/table/:name', async (req, res) => {
     try {
         conn = await pool.getConnection();
 
-        let sql = `DROP TABLE IF EXISTS ${req.params.name}`;
-        let result = await conn.query(sql);
+        const sql = `DROP TABLE IF EXISTS ${req.params.name}`;
+        const result = await conn.query(sql);
 
         console.log(result);
 
@@ -265,9 +265,11 @@ app.post('/admin/sql', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
+        
+        const sql = req.body.query;
+        console.log("sql:", sql);
 
-        let sql = req.body.query;
-        let result = await conn.query(sql);
+        const result = await conn.query(sql);
 
         console.log(result);
 
