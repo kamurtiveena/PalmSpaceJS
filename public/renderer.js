@@ -65,12 +65,31 @@ window.onload = function () {
     }
 
     {
-        document.getElementById('selectCellsRow').onchange = function() {
+        const practiceElem = document.getElementById('practiceCheck');
+        const repetionsElem = document.getElementById('repetitions');
+        
+        practiceElem.onchange = function(ev) {
+            const opts = repetionsElem.options;
+            if (practiceElem.checked) {
+                for (let opt, j = 0; opt = opts[j]; j++) {
+                    if (opt.value == '2') {
+                        repetionsElem.selectedIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        practiceElem.onchange();
+    }
+
+    {
+        document.getElementById('selectCellsRow').onchange = function () {
             if (document.getElementById('cellsPerRowColSameCheck').checked) {
                 const cellsPerCol = document.getElementById('selectCellsCol');
                 const v = document.getElementById('selectCellsRow').value;
                 const opts = cellsPerCol.options;
-                for (let opt, j = 0; opt = opts[j]; j ++) {
+                for (let opt, j = 0; opt = opts[j]; j++) {
                     if (opt.value == v) {
                         cellsPerCol.selectedIndex = j;
                         break;
@@ -79,12 +98,12 @@ window.onload = function () {
             }
         }
 
-        document.getElementById('selectCellsCol').onchange = function() {
+        document.getElementById('selectCellsCol').onchange = function () {
             if (document.getElementById('cellsPerRowColSameCheck').checked) {
                 const cellsPerRow = document.getElementById('selectCellsRow');
                 const v = document.getElementById('selectCellsCol').value;
                 const opts = cellsPerRow.options;
-                for (let opt, j = 0; opt = opts[j]; j ++) {
+                for (let opt, j = 0; opt = opts[j]; j++) {
                     if (opt.value == v) {
                         cellsPerRow.selectedIndex = j;
                         break;
@@ -287,11 +306,7 @@ window.onload = function () {
         state.config.grid.width = state.config.grid.gap * (state.menu.cellscnt.col + 1) + state.config.buttons.width * (state.menu.cellscnt.col);
         state.config.grid.height = state.config.grid.gap * (state.menu.cellscnt.row + 1) + state.config.buttons.height * (state.menu.cellscnt.row);
 
-        if (state.menu.practice) {
-            state.config.experiment.repetitions = 2;
-        } else {
-            state.config.experiment.repetitions = 4;
-        }
+        state.config.experiment.repetitions = parseInt(checkSelectList('repetitions'));
 
         console.group("state.config.grid");
         console.table(state.config.grid);
@@ -407,7 +422,7 @@ window.onload = function () {
             state.experiment.trial.updateBackBtnInputLoc(state);
 
             state.trigger.update(state);
-            
+
 
             if (state.trigger.status != TRIGGER.PRESSED) {
                 state.selection.locked = false;
