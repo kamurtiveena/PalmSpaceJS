@@ -80,14 +80,15 @@ class Initiator {
             for (let i = 0; i < results.multiHandLandmarks.length; i++) {
                 if (results.multiHandedness[i].index == 1) {
                     this.right.dataID = i;
-                    this.right.area = area(results.multiHandLandmarks[i]);
-
+                    
                     for (let j = 0; j < 21; j++) {
-                        this.right.landmarks[j].x = (0.2 * this.right.landmarks[j].x) + (0.8 * results.multiHandLandmarks[i][j].x * state.width);
-                        this.right.landmarks[j].y = (0.2 * this.right.landmarks[j].y) + (0.8 * results.multiHandLandmarks[i][j].y * state.height);
-                        this.right.landmarks[j].z = (0.2 * this.right.landmarks[j].z) + (0.8 * results.multiHandLandmarks[i][j].z);
+                        this.right.landmarks[j].x = (0.3 * this.right.landmarks[j].x) + (0.7 * results.multiHandLandmarks[i][j].x * state.width);
+                        this.right.landmarks[j].y = (0.3 * this.right.landmarks[j].y) + (0.7 * results.multiHandLandmarks[i][j].y * state.height);
+                        this.right.landmarks[j].z = (0.3 * this.right.landmarks[j].z) + (0.7 * results.multiHandLandmarks[i][j].z);
                     }
-
+                    
+                    this.right.area = area(this.right.landmarks);
+                    
                     const rng = getMinMaxZ(this.right.landmarks);
 
                     this.right.scale = getColorSizeValueFromZ(
@@ -102,13 +103,14 @@ class Initiator {
 
                 } else if (results.multiHandedness[i].index == 0) {
                     this.left.dataID = i;
-                    this.left.area = area(results.multiHandLandmarks[i]);
 
                     for (let j = 0; j < 21; j++) {
-                        this.left.landmarks[j].x = (0.4 * this.left.landmarks[j].x) + (0.6 * results.multiHandLandmarks[i][j].x * state.width);
-                        this.left.landmarks[j].y = (0.4 * this.left.landmarks[j].y) + (0.6 * results.multiHandLandmarks[i][j].y * state.height);
-                        this.left.landmarks[j].z = (0.4 * this.left.landmarks[j].z) + (0.6 * results.multiHandLandmarks[i][j].z);
+                        this.left.landmarks[j].x = (0.9 * this.left.landmarks[j].x) + (0.1 * results.multiHandLandmarks[i][j].x * state.width);
+                        this.left.landmarks[j].y = (0.9 * this.left.landmarks[j].y) + (0.1 * results.multiHandLandmarks[i][j].y * state.height);
+                        this.left.landmarks[j].z = (0.9 * this.left.landmarks[j].z) + (0.1 * results.multiHandLandmarks[i][j].z);
                     }
+
+                    this.left.area = area(this.left.landmarks);
 
                     const rng = getMinMaxZ(this.left.landmarks);
 
@@ -126,14 +128,14 @@ class Initiator {
         }
 
         if (lft) {
-            this.left.show = this.left.area > 0.04;
+            this.left.show = this.left.area > (0.04 * state.width * state.height);
         } else {
             this.left.dataID = null;
             this.left.show = false;
         }
 
         if (rgt) {
-            this.right.show = this.right.area > 0.02;
+            this.right.show = this.right.area > (0.02 * state.width * state.height);
         } else {
             this.right.dataID = null;
             this.right.show = false;
