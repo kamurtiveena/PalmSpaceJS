@@ -193,12 +193,12 @@ class Technique {
     }
 
     _setupBackground(state) {
-        this.images.background.image = cv.imread('imgbackground', cv.CV_LOAD_UNCHANGED);
-        cv.resize(
-            this.images.background.image,
-            this.images.background.image,
-            new cv.Size(state.width, state.height)
-        );
+        // this.images.background.image = cv.imread('imgbackground', cv.CV_LOAD_UNCHANGED);
+        // cv.resize(
+        //     this.images.background.image,
+        //     this.images.background.image,
+        //     new cv.Size(state.width, state.height)
+        // );
     }
 
     _setupSelectionLandmarks(state) {
