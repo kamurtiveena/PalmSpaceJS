@@ -66,7 +66,6 @@ export class LandmarkBtnFishEye {
         }
 
         const d = mxm - mnm;
-        console.log("_updateBtnDimensions d:", d, "mnm:", mnm, "mxm:", mxm, "this.dist", this.dist);
         for (let i = 0; i < state.config.landmarkButtons.total; i ++) {
             this.parent.buttons.input[i].width = this.parent.buttons.input[i].widthMin + ((mxm - this.dist[i]) / d) * 30;
             this.parent.buttons.input[i].height = this.parent.buttons.input[i].heightMin + ((mxm - this.dist[i]) / d) * 30;
@@ -77,10 +76,7 @@ export class LandmarkBtnFishEye {
             this.parent.buttons.output[i].height = this.parent.buttons.output[i].heightMin + ((mxm - this.dist[i]) / d) * 30;
             this.parent.buttons.output[i].widthHalf = this.parent.buttons.output[i].width / 2;
             this.parent.buttons.output[i].heightHalf = this.parent.buttons.output[i].height / 2;
-
         }
-
-        console.log("this.parent.buttons:", this.parent.buttons);
     }
 
     btnIDPointedBy(state) {

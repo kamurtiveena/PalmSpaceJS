@@ -28,27 +28,22 @@ export class Trial {
         } else {
             for (let row_i = 1; row_i <= state.menu.cellscnt.row; row_i ++)
                 for (let col_j = 1; col_j <= state.menu.cellscnt.col; col_j ++) {
-                    // console.log("row_i:", row_i, "col_j:", col_j, "this.permutation.length:", this.permutation.length, "this.permutation[this.permutation.length-1]:", this.permutation[this.permutation.length-1]);
                     this.permutation.push({ "row_i": row_i, "col_j": col_j });
                 }
         }
-
-        // console.log("this.permulation:", this.permutation);
 
         this.targetList = [];
         for (let i = 0; i < state.config.experiment.repetitions; i++) {
             for (let j = 0; j < this.permutation.length; j++) {
                 const k = Math.floor(Math.random() *(this.permutation.length - j)) + j;
-                // console.log("j:", j, "k:", k, "this.permutation.length - j:", this.permutation.length - j);
                 const tmp = this.permutation[j];
                 this.permutation[j] = this.permutation[k];
                 this.permutation[k] = tmp;
             }
-            // console.log("this.permulation:", this.permutation);
+
             for (let j = 0; j < this.permutation.length; j ++) this.targetList.push(this.permutation[j]);
         }
 
-        // console.log("this.targetList:", this.targetList);
         this.targetID = -1;
         this.targetSeqSize = this.targetList.length;
 

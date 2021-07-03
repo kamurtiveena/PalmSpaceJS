@@ -19,7 +19,6 @@ export class LandmarkButton {
         if (!state.cursor) return;
 
         const {x, y} = state.cursor;
-        console.log("landmark btn cursor x:", x, "y:", y);
         return (
             state.initiator.left.landmarks[this.id].x - this.widthHalf <= x + 10 &&
             x <= state.initiator.left.landmarks[this.id].x + this.widthHalf  + 10 &&

@@ -141,18 +141,16 @@ window.onload = function () {
         state.myWorker = new Worker("worker.js");
 
         state.myWorker.postMessage(["test_worker", 4, 5]);
-        console.log('Message posted to worker');
 
         state.myWorker.onmessage = function (e) {
             console.log("Message received from state.myWorker:", e.data);
         }
 
         state.myWorker.onerror = function (e) {
-            console.log("Error from state.myWorker:");
-            console.log({ "message": e.message, "filename": e.filename, "lineno": e.lineno });
+            console.error("Error from state.myWorker:", { "message": e.message, "filename": e.filename, "lineno": e.lineno });
         }
     } else {
-        console.log('Your browser doesn\'t support web workers.');
+        console.error('Your browser doesn\'t support web workers.');
         state.myWorker = null;
     }
 
@@ -276,7 +274,6 @@ window.onload = function () {
                 state.config.buttons.height = 30;
                 break;
             case "Large":
-                console.log("Large");
                 state.config.landmarkButtons.width = 50;
                 state.config.landmarkButtons.height = 50;
                 state.config.buttons.width = 50;
@@ -376,23 +373,27 @@ window.onload = function () {
         // fpsControl.tick();
 
         // Draw the overlays.
-        canvasCtx.save();
+
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.drawImage(
-            results.image, 0, 0, canvasElement.width, canvasElement.height
-        );
-
-
+        
         if (state.technique.type == TechniqueType.H2S_Relative ||
             state.technique.type == TechniqueType.H2S_Absolute ||
             state.technique.type == TechniqueType.H2S_Relative_Finger
-        ) {
-            state.imageCV = state.technique.images.background.image.clone();
-            state.outputCV = state.technique.images.background.image.clone();
-        } else {
-            state.imageCV = cv.imread('output_canvas');
-            state.outputCV = state.imageCV.clone();
-        }
+            ) {
+                // state.imageCV = state.technique.images.background.image.clone();
+                // state.outputCV = state.technique.images.background.image.clone();
+                canvasCtx.fillStyle = "#fec";
+                canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+            } else {
+                canvasCtx.drawImage(
+                    results.image, 0, 0, canvasElement.width, canvasElement.height
+                );
+            }
+
+        canvasCtx.save();
+        
+        state.imageCV = cv.imread('output_canvas');
+        state.outputCV = state.imageCV.clone();
 
         state.initiator.initiate(state, results);
 
@@ -435,14 +436,11 @@ window.onload = function () {
 
             switch (state.trigger.status) {
                 case TRIGGER.ONHOLD:
-                    console.log("rendered triggger onhold");
                     break;
                 case TRIGGER.OPEN:
-                    console.log("rendered triggger open");
 
                     break;
                 case TRIGGER.PRESSED:
-                    console.log("rendered triggger preseed");
 
                     if (state.technique.isCursorInside(state)) {
                         state.technique.anchor.adjustSelection(state);
@@ -451,11 +449,7 @@ window.onload = function () {
                     state.updateCursorPath();
                     break;
                 case TRIGGER.RELEASED:
-                    console.log("rendered triggger released");
                     state.resetCursorPath();
-                    if (state.experiment.trial.status == TrialState.STARTED) {
-                        console.log("status STARTED");
-                    }
 
                     if (state.experiment.trial.isCursorOverStartBtn(state)) {
                         state.experiment.trial.clickStartBtn(state);
@@ -465,8 +459,6 @@ window.onload = function () {
                     } else if (state.experiment.trial.isCursorOverBackBtn(state)) {
                         goBackToMenu();
                     } else if (state.experiment.trial.status == TrialState.STARTED) {
-
-                        console.log("STARTED");
 
                         state.technique.anchor.markSelected(state);
                         state.experiment.trial.incrementAttempts();
@@ -495,7 +487,7 @@ window.onload = function () {
                 state.selection.reset();
                 state.technique.resetLastTimeVisited();
             }
-
+            
             state.overlay = state.imageCV.clone();
 
             state.technique.draw(state);
@@ -604,7 +596,6 @@ window.onload = function () {
 
         if (state.menu.debug) {
 
-            // console.log("results.multiHandLandmarks:", results.multiHandLandmarks);
             if (results.multiHandLandmarks) {
                 for (let index = 0; index < results.multiHandLandmarks.length; index++) {
                     const classification = results.multiHandedness[index];

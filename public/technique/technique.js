@@ -172,6 +172,9 @@ class Technique {
     _setupPalmImage(width, height) {
         this.images.palm.width = width;
         this.images.palm.height = height;
+        if (this.images.palm.image) {
+            this.images.palm.image.delete();
+        }
         this.images.palm.image = cv.imread('imgpalm', cv.CV_LOAD_UNCHANGED);
         cv.flip(this.images.palm.image, this.images.palm.image, 1);
 
