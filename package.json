@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node-sass public/styles.scss public/styles.css && tsc --noImplicitThis --watch & sleep 3 && firefox localhost:3000 &>/dev/null & sleep 1 && nodemon --trace-warnings dist/app.js",
-    "kill": "sudo kill $(ps -s $$ -o pid=); sudo kill -9 $(lsof -t -i:3000)",
-    "prod": "node-sass public/styles.scss public/styles.css && tsc && node dist/app.js",
+    "kill": "DEBUG=app:startup,app:db,app:* && sudo kill $(ps -s $$ -o pid=); sudo kill -9 $(lsof -t -i:3000)",
+    "prod": "DEBUG=app:startup,app:db && node-sass public/styles.scss public/styles.css && tsc && node dist/app.js",
     "clean_docker": "docker system prune -a",
     "up": "docker-compose up"
   },
@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/prantoran/PalmSpaceJS#readme",
   "devDependencies": {
+    "@types/debug": "^4.1.6",
     "@types/express": "^4.17.11",
+    "@types/morgan": "^1.9.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",
@@ -33,9 +35,12 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "debug": "^4.3.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "mariadb": "^2.5.3",
+    "morgan": "^1.10.0",
     "node-sass": "^5.0.0"
   }
 }

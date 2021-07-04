@@ -1,12 +1,17 @@
 #!/usr/bin/node
-
+import path from 'path';
 import express from 'express';
+import helmet from "helmet";
+import morgan from "morgan";
 import dotenv from 'dotenv';
 import https from 'https';
 import fs from 'fs';
-import createDBPool from './db';
+import createDBPool from './db/db';
 import logger from './middleware/logger';
 import authenticator from './middleware/authenticator';
+
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 
 dotenv.config();
 
@@ -14,6 +19,7 @@ const app = express();
 const HOST = process.env.HOST || `localhost`;
 const PORT = parseInt(process.env.PORT || "3000");
 const NODE_ENV = process.env.NODE_ENV || "development";
+const DEBUG = process.env.DEBUG || "undefined";
 
 const dbConfig = {
     host: process.env.DB_host || "localhost",
@@ -25,7 +31,7 @@ const dbConfig = {
 
 console.group("environment");
 //console.table(process.env);
-console.table({ HOST, PORT, NODE_ENV });
+console.table({ HOST, PORT, NODE_ENV, DEBUG });
 console.groupEnd();
 
 console.group("db");
@@ -44,9 +50,20 @@ const pool = createDBPool(
 // console.table(pool);
 // console.groupEnd();
 
+console.table({ "current directory:": __dirname });
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
+
+
+app.use(morgan('combined', { stream: accessLogStream }));;
+startupDebugger('Morgan enabled, logging to dist/access.log');
+
+
 app.use(logger);
 app.use(authenticator);
 
@@ -103,11 +120,11 @@ app.post('/admin/create/table/:name', async (req, res) => {
         const sql = `
         CREATE TABLE ${req.params.name} (
             id INT AUTO_INCREMENT PRIMARY KEY, 
-            user_id VARCHAR(255), 
-            technique VARCHAR(255),
-            selection VARCHAR(255),
-            cells_row INT,
-            cells_col INT,
+            user_id VARCHAR(255) NOT NULL, 
+            technique VARCHAR(255) NOT NULL,
+            selection VARCHAR(255) NOT NULL,
+            cells_row INT NOT NULL,
+            cells_col INT NOT NULL,
             button_sz VARCHAR(255),
             btn_width INT,
             btn_height INT,
@@ -119,7 +136,8 @@ app.post('/admin/create/table/:name', async (req, res) => {
             cursor_dist_px FLOAT,
             attempts INT,
             visited_cells INT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            valid BOOL DEFAULT TRUE
         );`;
 
         console.log(sql);
@@ -195,15 +213,15 @@ app.post('/save/study1/record', async (req, res) => {
                 ${body.attempts}, 
                 ${body.visited_cells}
             );`;
-        
+
         const result = await conn.query(sql);
         console.log(result);
 
         res.send(result);
-        
+
     } catch (error) {
         console.error(error);
-        res.send({"error": error});
+        res.send({ "error": error });
     } finally {
         if (conn) conn.release();
     }
@@ -231,9 +249,9 @@ app.get('/stats/study1', async (req, res) => {
         const result = await conn.query(sql);
         console.log(result);
         res.send(result);
-    } catch(error) {
+    } catch (error) {
         console.error(error);
-        res.send({"error": error});
+        res.send({ "error": error });
     } finally {
         if (conn) conn.release();
     }
@@ -265,8 +283,9 @@ app.post('/admin/sql', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        
-        const sql = req.body.query;
+
+        const sql = req.body.sql;
+        console.log("req.body:", req.body);
         console.log("sql:", sql);
 
         const result = await conn.query(sql);
