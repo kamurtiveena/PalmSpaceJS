@@ -42,7 +42,8 @@ async function postData(url, data) {
         postMessage(response.json());
     })
     .catch(err => {
-        postMessage({"error": err});
+        // console.log(err); // todo fix DataCloneError
+        postMessage({"error": "err msg"});
     });
 }
 

@@ -2,7 +2,6 @@ import { TechniqueType } from "./constant.js";
 
 export class FishEye {
     constructor(parent, state) {
-        this.name = "FishEye";
         this.parent = parent;
         this.parent.type = TechniqueType.FishEye;
 

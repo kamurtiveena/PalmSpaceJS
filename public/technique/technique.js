@@ -56,13 +56,13 @@ class Technique {
         this.isBtnSzDynamic = state.config.buttons.isDynamic;
 
         switch (this.name) {
-            case "S2H_Relative":
+            case "S2H_Palm":
                 this.anchor = new S2HRelative(this, state);
                 break;
             case "S2H_Absolute":
                 this.anchor = new S2HAbsolute(this, state);
                 break;
-            case "H2S_Relative":
+            case "H2S_Palm":
                 this.anchor = new H2SRelative(this, state);
                 break;
             case "H2S_Absolute":
@@ -74,10 +74,10 @@ class Technique {
             case "FishEye":
                 this.anchor = new FishEye(this, state);
                 break;
-            case "S2H_Relative_Finger":
+            case "S2H_Finger":
                 this.anchor = new S2HRelativeFinger(this, state);
                 break;
-            case "H2S_Relative_Finger":
+            case "H2S_Finger":
                 this.anchor = new H2SRelativeFinger(this, state);
                 break;
             case "Landmark_Btn":

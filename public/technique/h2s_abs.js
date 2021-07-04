@@ -2,7 +2,6 @@ import {TechniqueType} from "./constant.js";
 
 export class H2SAbsolute {
     constructor(parent, state) {
-        this.name = "H2S_Absolute";
         this.parent = parent;
         this.parent.type = TechniqueType.H2S_Absolute;
         this.parent._setupPalmImage(250, 250);

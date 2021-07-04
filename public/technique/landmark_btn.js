@@ -3,7 +3,6 @@ import {LandmarkButton} from "../ds/button.js";
 
 export class LandmarkBtn {
     constructor(parent, state) {
-        this.name = "Landmark_Btn";
         this.parent = parent;
         this.parent.type = TechniqueType.Landmark_Btn;
 

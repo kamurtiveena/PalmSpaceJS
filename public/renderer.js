@@ -552,8 +552,16 @@ window.onload = function () {
             canvasCVOutCtx.fillText(
                 state.technique.name + "_" + state.menu.cellscnt.row + "x" + state.menu.cellscnt.col,
                 state.width - 220, 
-                20
+                30
             );
+
+            if (state.menu.practice) {
+                canvasCVOutCtx.fillText(
+                    "Practice Mode",
+                    state.width - 220, 
+                    60
+                );  
+            }
         }    
 
         if (state.initiator.left.show &&
@@ -569,8 +577,6 @@ window.onload = function () {
             canvasCVOutCtx.strokeStyle = "blue";
             canvasCVOutCtx.lineWidth = 3;
             canvasCVOutCtx.globalAlpha = 0.4;
-
-            console.table(state.selection.currentBtn);
 
             if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
                 canvasCVOutCtx.strokeRect(
