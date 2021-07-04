@@ -10,12 +10,9 @@ import { TrialState } from './userstudies/constant.js';
 import { TechniqueType } from "./technique/constant.js";
 import { Study } from './userstudies/study.js';
 
-// previous code is here
-
 
 
 window.onload = function () {
-
 
     const userIDElement = document.getElementById('selectUserID');
 
@@ -64,29 +61,12 @@ window.onload = function () {
         }
     }
 
-    {
-        const practiceElem = document.getElementById('practiceCheck');
-        const repetionsElem = document.getElementById('repetitions');
-        
-        practiceElem.onchange = function(ev) {
-            const opts = repetionsElem.options;
-            if (practiceElem.checked) {
-                for (let opt, j = 0; opt = opts[j]; j++) {
-                    if (opt.value == '2') {
-                        repetionsElem.selectedIndex = j;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        practiceElem.onchange();
-    }
-
+    const cellsPerCol = document.getElementById('selectCellsCol');
+    const cellsPerRow = document.getElementById('selectCellsRow');
+    
     {
         document.getElementById('selectCellsRow').onchange = function () {
             if (document.getElementById('cellsPerRowColSameCheck').checked) {
-                const cellsPerCol = document.getElementById('selectCellsCol');
                 const v = document.getElementById('selectCellsRow').value;
                 const opts = cellsPerCol.options;
                 for (let opt, j = 0; opt = opts[j]; j++) {
@@ -100,7 +80,6 @@ window.onload = function () {
 
         document.getElementById('selectCellsCol').onchange = function () {
             if (document.getElementById('cellsPerRowColSameCheck').checked) {
-                const cellsPerRow = document.getElementById('selectCellsRow');
                 const v = document.getElementById('selectCellsCol').value;
                 const opts = cellsPerRow.options;
                 for (let opt, j = 0; opt = opts[j]; j++) {
@@ -112,6 +91,42 @@ window.onload = function () {
             }
         }
     }
+
+    {
+        const practiceElem = document.getElementById('practiceCheck');
+        const repetitionsElem = document.getElementById('repetitions');
+        
+        practiceElem.onchange = function(ev) {
+            if (practiceElem.checked) {
+                const opts = repetitionsElem.options;
+                for (let opt, j = 0; opt = opts[j]; j++) {
+                    if (opt.value == '2') {
+                        repetitionsElem.selectedIndex = j;
+                        break;
+                    }
+                }
+
+                const colopts = cellsPerCol.options;
+                for (let opt, j = 0; opt = colopts[j]; j++) {
+                    if (opt.value == '3') {
+                        cellsPerCol.selectedIndex = j;
+                        break;
+                    }
+                }
+
+                const rowopts = cellsPerRow.options;
+                for (let opt, j = 0; opt = rowopts[j]; j++) {
+                    if (opt.value == '3') {
+                        cellsPerRow.selectedIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        practiceElem.onchange();
+    }
+
     // navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
     // if (navigator.mediaDevices.getUserMedia) {
     //     navigator.mediaDevices.getUserMedia({  audio: true, video: true })
@@ -493,7 +508,7 @@ window.onload = function () {
             state.technique.draw(state);
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
-            state.experiment.trial.drawCompletedTargetsText(state);
+            // state.experiment.trial.drawCompletedTargetsText(state);
             state.experiment.trial.drawTarget(state);
 
 
@@ -511,8 +526,6 @@ window.onload = function () {
 
         }
 
-
-
         if (state.cursor) {
 
             const colsz = state.initiator.right.scale;
@@ -525,6 +538,23 @@ window.onload = function () {
         }
 
         cv.imshow('cv_output_canvas', state.outputCV);
+
+        {
+            canvasCVOutCtx.font = "24px Georgia";
+            canvasCVOutCtx.fillStyle = "fuchsia";
+
+            canvasCVOutCtx.fillText(
+                state.experiment.trial.completedTargetsStr(),
+                state.width - 100, 
+                state.height - 20
+            );
+
+            canvasCVOutCtx.fillText(
+                state.technique.name + "_" + state.menu.cellscnt.row + "x" + state.menu.cellscnt.col,
+                state.width - 220, 
+                20
+            );
+        }    
 
         if (state.initiator.left.show &&
             (

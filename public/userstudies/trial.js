@@ -493,11 +493,15 @@ export class Trial {
         return { tl, br };
     }
 
+    completedTargetsStr() {
+        return this.targetID + "/" + this.targetSeqSize;
+    }
+
     drawCompletedTargetsText(state) {
         if (this.status == TrialState.STARTED) {
             cv.putText(
                 state.overlay,
-                this.targetID + "/" + this.targetSeqSize,
+                this.completedTargetsStr(),
                 new cv.Point(state.width - 110, state.height - 20),
                 cv.FONT_HERSHEY_SIMPLEX,
                 1.0,
