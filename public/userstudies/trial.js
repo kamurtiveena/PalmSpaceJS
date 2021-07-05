@@ -69,15 +69,16 @@ export class Trial {
                 }
             },
             visitedCells: (new Array(this.targetSeqSize)).fill(0),
-            targetsLastVisitedTime: (new Array(this.targetSeqSize)).fill(0)
+            targetsLastVisitedTime: (new Array(this.targetSeqSize)).fill(0),
+            valid: true
         }
     }
 
 
 
     elapsedTime() {
-        if (this.targetsStartTime[this.targetID]) {
-            return (performance.now() - this.targetsStartTime[this.targetID]).toFixed(1);
+        if (this.targetsDuration[this.targetID]) {
+            return this.targetsDuration[this.targetID].toFixed(1);
         }
 
         return 0.0;

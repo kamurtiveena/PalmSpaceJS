@@ -193,7 +193,8 @@ app.post('/save/study1/record', async (req, res) => {
                 elapsed_time_ms, 
                 cursor_dist_px, 
                 attempts, 
-                visited_cells
+                visited_cells,
+                valid
             ) 
             VALUES (
                 ${body.user_id}, 
@@ -211,7 +212,8 @@ app.post('/save/study1/record', async (req, res) => {
                 ${body.elapsed_time_ms}, 
                 ${body.cursor_dist_px}, 
                 ${body.attempts}, 
-                ${body.visited_cells}
+                ${body.visited_cells},
+                ${body.valid}
             );`;
 
         const result = await conn.query(sql);

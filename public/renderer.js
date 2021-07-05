@@ -430,6 +430,25 @@ window.onload = function () {
             state.experiment.trial.updateTargetLastVisitTime(state);
         }
 
+        if (state.experiment.trial.targetsDuration[state.experiment.trial.targetID] > 30000) {
+            state.resetCursorPath();
+
+            console.error("target taking long time", "elapsed time:", state.experiment.trial.elapsedTime());
+            state.experiment.trial.stats.valid = false;
+            state.experiment.trial.clickTarget(state);
+            state.selection.resetMarkedButton();
+            if (!state.menu.practice) {
+                state.experiment.study1.save(state); // should use worker to send save request
+            }
+
+            state.experiment.trial.generateTarget(state);
+            state.selection.reset();
+            state.technique.resetLastTimeVisited();
+
+            state.selection.resetSelectedButton();
+            state.trigger.reset(state);
+        }
+
         if (state.initiator.show || state.technique.alwaysShow) {
 
             state.technique.calculate(state);
@@ -446,8 +465,6 @@ window.onload = function () {
             }
 
             let resetAnchor = false;
-
-
 
             switch (state.trigger.status) {
                 case TRIGGER.ONHOLD:
