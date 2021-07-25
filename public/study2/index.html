@@ -70,11 +70,27 @@
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3" selected>3</option>
-                <!-- <option value="4" selected>4</option> -->
               </select>
             </div>
 
-            <div class = "row" id = "no_of_cells_per_rowcol">
+            <div class="row" id = "number_of_rows_opts">
+              <h2>Number of Rows</h2>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuNumberOfRows" id="menuNumberOfRows_Palm" value="Palm" disabled checked> 
+                <label class="form-check-label" for="menuNumberOfRows_Palm">
+                  Palm
+                </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <button type="button" class="btn btn-success full-width" id="start_btn">Start</button>
+            </div>
+            <div class="row">
+              <button type="button" class="btn btn-success full-width" id="download_study1_btn" style="display: none;">Download Study 1 data</button>
+            </div>
+
+            <div class = "row" id = "no_of_cells_per_rowcol" style="display: none;">
               <h2>Number of Cells</h2>
 
               <div class="form-group">
@@ -89,10 +105,9 @@
               <div class="form-group"> 
                 <label class="mr-sm-2" for="selectCellsRow">Number of cells per row</label>
                 <select class="custom-select mr-sm-2" id="selectCellsRow">
-                  <option value="2" selected>2</option>
-                  <option value="3">3</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
                   <option value="4">4</option>
-                  <!-- <option value="6">6</option> -->
                 </select>
               </div>
               <div class="form-group">
@@ -101,12 +116,11 @@
                   <option value="2" selected>2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
-                  <!-- <option value="6">6</option> -->
                 </select>
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="display: none;">
               <h2>Button Size</h2>
 
               <div class="form-check">
@@ -115,20 +129,6 @@
                   Dynamic
                 </label>
               </div>
-
-              <!-- <div class="form-check">
-                <input class="form-check-input" type="radio" name="buttonSize" id="buttonSize_small" value="Small">
-                <label class="form-check-label" for="buttonSize_small">
-                  Small
-                </label>
-              </div>
-              
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="buttonSize" id="buttonSize_large" value="Large">
-                <label class="form-check-label" for="buttonSize_large">
-                  Large
-                </label>
-              </div> -->
 
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="buttonSize" id="buttonSize_custom" value="Custom" onchange="showBtnSizeInput();">
@@ -155,20 +155,63 @@
                 </div>
               </div>
             </div>
-
-<!-- 
-            <div class="form-group">
-              <label class="mr-sm-2" for="selectButtonSize">Button Size</label>
-              <select class="custom-select mr-sm-2" id="selectButtonSize">
-                <option value="small" selected>Small</option>
-                <option value="large">Large</option>
-              </select>
-            </div> -->
           </div>
 
           
           <div class="col-md-3">
-            <div class="row" id = "technique_list">
+            
+            <div class="row" id = "layout_opts">
+              <h2>Layout</h2>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuLayout" id="menuLayout_grid" value="Grid">
+                <label class="form-check-label" for="menuLayout_grid">
+                  Grid
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuLayout" id="menuLayout_flow" value="Flow" checked>
+                <label class="form-check-label" for="menuLayout_flow">
+                  Flow
+                </label>
+              </div>
+            </div>
+            
+            <div class="row" id = "reading_direction_opts">
+              <h2>Reading Direction</h2>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuReadingDirection" id="menuReadingDirection_LtoR" value="LtoR">
+                <label class="form-check-label" for="menuReadingDirection_LtoR">
+                  LtoR
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuReadingDirection" id="menuReadingDirection_RtoL" value="RtoL" checked>
+                <label class="form-check-label" for="menuReadingDirection_RtoL">
+                  RtoL
+                </label>
+              </div>
+            </div>
+
+            <div class="row" id = "number_of_buttons_per_row_opts">
+              <h2>Number of buttons per row</h2>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuNumberOfButtonsPerRow" id="menuNumberOfButtonsPerRow_4" value="4">
+                <label class="form-check-label" for="menuNumberOfButtonsPerRow_4">
+                  4
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="menuNumberOfButtonsPerRow" id="menuNumberOfButtonsPerRow_5" value="5" checked>
+                <label class="form-check-label" for="menuNumberOfButtonsPerRow_5">
+                  5
+                </label>
+              </div>
+            </div>
+
+            <div class="row" id = "technique_list" style="display: none;">
               <h2>Technique</h2>
 
               <div class="form-check">
@@ -246,7 +289,7 @@
             
           </div>
           <div class="col-md-3">
-            <div class="row">
+            <div class="row" id = "trigger_list" style="display: none;">
               <h2>Trigger</h2>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="menutrigger" id="menutrigger_tap" value="Tap" disabled>
@@ -264,15 +307,7 @@
 
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-3 no-padding">
-            <button type="button" class="btn btn-success full-width" id="start_btn">Start</button>
-          </div>
-          <div class="col-md-3">
-            <button type="button" class="btn btn-success full-width" id="download_study1_btn" style="display: none;">Download Study 1 data</button>
-          </div>
-        </div>
+        
       </form>
 
       <div class="fixed-size" id="video_container">

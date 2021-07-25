@@ -29,14 +29,6 @@ window.onload = function () {
         document.getElementById('size_input').style.display = 'none';
     }
 
-    // document.getElementById('buttonSize_small').onchange = function () {
-    //     document.getElementById('size_input').style.display = 'none';
-    // }
-
-    // document.getElementById('buttonSize_large').onchange = function () {
-    //     document.getElementById('size_input').style.display = 'none';
-    // }
-
     document.getElementById('buttonSize_custom').onchange = function () {
         document.getElementById('size_input').style.display = 'block';
     }
@@ -127,30 +119,12 @@ window.onload = function () {
         practiceElem.onchange();
     }
 
-    // navigator.getWebcam = (navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-    // if (navigator.mediaDevices.getUserMedia) {
-    //     navigator.mediaDevices.getUserMedia({  audio: true, video: true })
-    //     .then(function (stream) {
-    //                 //Display the video stream in the video object
-    //     })
-    //     .catch(function (e) { logError(e.name + ": " + e.message); });
-    // }
-    // else {
-    //     navigator.getWebcam({ audio: true, video: true }, 
-    //         function (stream) {
-    //                 //Display the video stream in the video object
-    //         }, 
-    //         function () { logError("Web cam is not accessible."); });
-    // }
-
     let state = new State();
-
 
     state.experiment = {
         study1: {},
         study2: {},
     };
-
 
     if (window.Worker) {
         state.myWorker = new Worker("worker.js");
@@ -368,25 +342,11 @@ window.onload = function () {
         camera.start();
     }
 
-    // startBtn.click(); // remove before prod
-
-    // call tick() each time the graph runs.
-    // const fpsControl = new FPS();
-
     function goBackToMenu() {
         location.reload();
-        // menu.style.display = "block";
-        // videoContainer.style.display = "none";
-        // const mediaStream = videoElement.srcObject;
-        // const tracks = mediaStream.getTracks();
-        // tracks.forEach(track => track.stop())
     }
 
     function onResults(results) {
-
-        // document.body.classList.add('loaded');
-        // Update the frame rate.
-        // fpsControl.tick();
 
         // Draw the overlays.
 
@@ -396,8 +356,6 @@ window.onload = function () {
             state.technique.type == TechniqueType.H2S_Absolute ||
             state.technique.type == TechniqueType.H2S_Relative_Finger
             ) {
-                // state.imageCV = state.technique.images.background.image.clone();
-                // state.outputCV = state.technique.images.background.image.clone();
                 canvasCtx.fillStyle = "#fec";
                 canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
             } else {
@@ -431,7 +389,7 @@ window.onload = function () {
             state.experiment.trial.updateTargetLastVisitTime(state);
         }
 
-        if (state.experiment.trial.targetsDuration[state.experiment.trial.targetID] > 30000) {
+        if (state.experiment.trial.targetsDuration[state.experiment.trial.targetID] > state.config.experiment.trialMaxDurationMilliSec) {
             state.resetCursorPath();
 
             console.error("target taking long time", "elapsed time:", state.experiment.trial.elapsedTime());
