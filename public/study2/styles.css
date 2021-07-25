@@ -1,0 +1,27 @@
+body {
+  bottom: 0;
+  font-family: 'Titillium Web', sans-serif;
+  color: black;
+  transform-origin: 0px 0px;
+  overflow: hidden; }
+
+.input_video.selfie {
+  transform: scale(-1, 1); }
+
+.menu {
+  background-color: #444141;
+  height: 480px;
+  width: 640px; }
+
+div .no-padding {
+  padding: 0; }
+
+.full-width {
+  width: 80%; }
+
+div .fixed-size {
+  width: 2280px;
+  /* or whatever width you want. */
+  max-width: 2280px;
+  /* or whatever width you want. */
+  display: inline-block; }
