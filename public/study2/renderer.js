@@ -239,6 +239,15 @@ window.onload = function () {
         state.menu.practice = document.getElementById("practiceCheck").checked;
         state.menu.debug = document.getElementById("debugCheck").checked;
 
+        // study2 choices
+        state.menu.study2 = {
+            "layout": checkRadio("menuLayout"),
+            "readingDirection": checkRadio("menuReadingDirection"),
+            "numberOfButtonsPerRow": checkRadio("menuNumberOfButtonsPerRow")
+        };
+
+        console.table(state.menu.study2);
+
         state.menu.cellscnt = {
             row: parseInt(checkSelectList("selectCellsRow")),
             col: parseInt(checkSelectList("selectCellsCol"))
