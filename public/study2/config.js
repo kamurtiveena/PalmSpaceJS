@@ -60,43 +60,50 @@ class Config {
         this.experiment.startButton.widthHalf = this.experiment.startButton.width / 2;
         this.experiment.startButton.heightHalf = this.experiment.startButton.height / 2;
         
-        this.images = {
-            fruits: [
+        this.icons = {
+            all: [
                 {
+                    type: "fruit",
                     src: "res/f_banana.png",
                     image: null
                 },
                 {
+                    type: "fruit",
                     src: "res/f_grape.png",
                     image: null
                 },
                 {
+                    type: "fruit",
                     src: "res/f_mango.png",
                     image: null
                 },
                 {
+                    type: "fruit",
                     src: "res/f_orange.png",
                     image: null
                 },
                 {
+                    type: "fruit",
                     src: "res/f_strawberry.png",
                     image: null
-                }
-            ],
-            vegetables: [
+                },
                 {
+                    type: "vegetable",
                     src: "res/v_cabbage.png",
                     image: null
                 },
                 {
+                    type: "vegetable",
                     src: "res/v_carrot.png",
                     image: null
                 },
                 {
+                    type: "vegetable",
                     src: "res/v_lemon.png",
                     image: null
                 },
                 {
+                    type: "vegetable",
                     src: "res/v_lettuce.png",
                     image: null
                 }
@@ -105,27 +112,15 @@ class Config {
         }
 
 
+        for (let i = 0; i < this.icons.all.length; i ++) {
 
-        for (let i = 0; i < this.images.fruits.length; i ++) {
-
-            this.images.fruits[i].image = new Image();
-            this.images.fruits[i].image.onload = () => {
-                this.images.loadcnt ++;
-                console.log("loaded", this.images.fruits[i].src, "loadcnt:", this.images.loadcnt);
+            this.icons.all[i].image = new Image();
+            this.icons.all[i].image.onload = () => {
+                this.icons.loadcnt ++;
+                console.log("loaded", this.icons.all[i].src, "loadcnt:", this.icons.loadcnt);
             }
 
-            this.images.fruits[i].image.src = this.images.fruits[i].src; 
-        }
-
-        for (let i = 0; i < this.images.vegetables.length; i ++) {
-
-            this.images.vegetables[i].image = new Image();
-            this.images.vegetables[i].image.onload = () => {
-                this.images.loadcnt ++;
-                console.log("loaded", this.images.vegetables[i].src, "loadcnt:", this.images.loadcnt);
-            }
-
-            this.images.vegetables[i].image.src = this.images.vegetables[i].src; 
+            this.icons.all[i].image.src = this.icons.all[i].src; 
         }
     };
 
