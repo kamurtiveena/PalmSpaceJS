@@ -11,11 +11,12 @@ import { S2HRelativeFinger } from './s2h_rel_finger.js';
 import { H2SRelativeFinger } from './h2s_rel_finger.js';
 import { LandmarkBtn } from './landmark_btn.js';
 import { LandmarkBtnFishEye } from './landmark_btn_fisheye.js';
+import { LayoutGrid } from './layout_grid.js';
+import { LayoutFlow } from './layout_flow.js';
 
 
 class Technique {
     constructor(state) {
-        this.type = TechniqueType.Unassigned;
 
         this.name = state.menu.technique;
 
@@ -86,7 +87,15 @@ class Technique {
             case "Landmark_Btn_FishEye":
                 this.anchor = new LandmarkBtnFishEye(this, state);
                 break;
+            case "Grid":
+                this.anchor = new LayoutGrid(this, state);
+                break;
+            case "Flow":
+                this.anchor = new LayoutFlow(this, state);
+                break;
             default:
+                console.error("technique choice undefinend:", this.name);
+                this.type = TechniqueType.Unassigned;
                 break;
         }
     }

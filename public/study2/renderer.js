@@ -11,7 +11,6 @@ import { TechniqueType } from "./technique/constant.js";
 import { Study } from './userstudies/study.js';
 
 
-
 window.onload = function () {
 
     const userIDElement = document.getElementById('selectUserID');
@@ -241,7 +240,7 @@ window.onload = function () {
 
         // study2 choices
         state.menu.study2 = {
-            "layout": checkRadio("menuLayout"),
+            "layout": state.menu.technique,
             "readingDirection": checkRadio("menuReadingDirection"),
             "numberOfButtonsPerRow": checkRadio("menuNumberOfButtonsPerRow")
         };
@@ -249,8 +248,8 @@ window.onload = function () {
         console.table(state.menu.study2);
 
         state.menu.cellscnt = {
-            row: parseInt(checkSelectList("selectCellsRow")),
-            col: parseInt(checkSelectList("selectCellsCol"))
+            row: 3, // parseInt(checkSelectList("selectCellsRow")),
+            col: 3 //parseInt(checkSelectList("selectCellsCol"))
         };
 
         state.menu.buttonSize = checkRadio("buttonSize");

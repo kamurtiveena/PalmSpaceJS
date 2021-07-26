@@ -10,7 +10,9 @@ const TechniqueType = {
     S2H_Relative_Finger: 7,
     H2S_Relative_Finger: 8,
     Landmark_Btn: 9,
-    Landmark_Btn_FishEye: 10
+    Landmark_Btn_FishEye: 10,
+    LayoutGrid: 11,
+    LayoutFlow: 12
 }
 
 
