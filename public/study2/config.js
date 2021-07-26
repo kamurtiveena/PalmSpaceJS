@@ -59,7 +59,76 @@ class Config {
 
         this.experiment.startButton.widthHalf = this.experiment.startButton.width / 2;
         this.experiment.startButton.heightHalf = this.experiment.startButton.height / 2;
+        
+        this.images = {
+            fruits: [
+                {
+                    src: "res/f_banana.png",
+                    image: null
+                },
+                {
+                    src: "res/f_grape.png",
+                    image: null
+                },
+                {
+                    src: "res/f_mango.png",
+                    image: null
+                },
+                {
+                    src: "res/f_orange.png",
+                    image: null
+                },
+                {
+                    src: "res/f_strawberry.png",
+                    image: null
+                }
+            ],
+            vegetables: [
+                {
+                    src: "res/v_cabbage.png",
+                    image: null
+                },
+                {
+                    src: "res/v_carrot.png",
+                    image: null
+                },
+                {
+                    src: "res/v_lemon.png",
+                    image: null
+                },
+                {
+                    src: "res/v_lettuce.png",
+                    image: null
+                }
+            ],
+            loadcnt: 0
+        }
+
+
+
+        for (let i = 0; i < this.images.fruits.length; i ++) {
+
+            this.images.fruits[i].image = new Image();
+            this.images.fruits[i].image.onload = () => {
+                this.images.loadcnt ++;
+                console.log("loaded", this.images.fruits[i].src, "loadcnt:", this.images.loadcnt);
+            }
+
+            this.images.fruits[i].image.src = this.images.fruits[i].src; 
+        }
+
+        for (let i = 0; i < this.images.vegetables.length; i ++) {
+
+            this.images.vegetables[i].image = new Image();
+            this.images.vegetables[i].image.onload = () => {
+                this.images.loadcnt ++;
+                console.log("loaded", this.images.vegetables[i].src, "loadcnt:", this.images.loadcnt);
+            }
+
+            this.images.vegetables[i].image.src = this.images.vegetables[i].src; 
+        }
     };
+
 }
 
 export { Config };
