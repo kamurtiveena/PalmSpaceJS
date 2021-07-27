@@ -14,6 +14,8 @@ import { LandmarkBtnFishEye } from './landmark_btn_fisheye.js';
 import { LayoutGrid } from './layout_grid.js';
 import { LayoutFlow } from './layout_flow.js';
 
+import {drawFillCircle, drawFillRect, drawFillShape} from '../util/draw.js';
+
 
 class Technique {
     constructor(state) {
@@ -98,6 +100,115 @@ class Technique {
                 this.type = TechniqueType.Unassigned;
                 break;
         }
+    }
+
+    
+
+    drawIconsOnGridCanvas(state) {
+
+        for (let j = 1; j <= 3; j ++) {
+            for (let i = 1; i <= 3; i ++) {
+                const p = this.grid.output.getButton(i, j);
+                // state.config.icons.all[(i-1)*3 + (j-1)].dim = {
+                //     x: p.x,
+                //     y: p.y,
+                //     width: p.width,
+                //     height: p.height
+                // };
+
+                const name = state.config.icons.all[(i-1)*3 + (j-1)].name;
+                
+
+                switch (name) {
+                    case "rect":
+                        drawFillRect(state.canvasCVOutCtx, p.x, p.y, p.width, p.height, 'blue', 0.4);
+                        break;
+                    case "circle":
+                        const r = Math.min(p.width, p.height)/2;
+                        drawFillCircle(state.canvasCVOutCtx, p.x + r, p.y + r, r, 'green', 0.4);
+                        break;
+                    case "triangle":
+                        const pointsT1 = [
+                            {
+                                x: p.x,
+                                y: p.y + p.height
+                            },{
+                                x: p.x + p.width,
+                                y: p.y + p.height
+                            },
+                            {
+                                x: p.x + p.width/2,
+                                y: p.y
+                            }
+                        ];
+
+                        drawFillShape(state.canvasCVOutCtx, pointsT1, 'purple', 0.4);
+                        break;
+                    case "triangle_down":
+                        const pointsT2 = [
+                            {
+                                x: p.x,
+                                y: p.y
+                            },{
+                                x: p.x + p.width,
+                                y: p.y
+                            },
+                            {
+                                x: p.x + p.width/2,
+                                y: p.y + p.height
+                            }
+                        ];
+
+                        drawFillShape(state.canvasCVOutCtx, pointsT2, 'orange', 0.4);
+                        break;
+                    case "pentagon":
+                        const pointsT5 = [
+                            {
+                                x: p.x + p.width/2,
+                                y: p.y
+                            },
+                            {
+                                x: p.x + p.width,
+                                y: p.y + p.height/2
+                            },
+                            {
+                                x: p.x + 3*p.width/4,
+                                y: p.y + p.height
+                            },
+                            {
+                                x: p.x + p.width/4,
+                                y: p.y + p.height
+                            },
+                            {
+                                x: p.x,
+                                y: p.y + p.height/2
+                            }
+                        ];
+
+                        drawFillShape(state.canvasCVOutCtx, pointsT5, 'cyan', 0.4);
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+        }
+
+        // for (let i = 0; i < state.config.icons.all.length; i ++) {
+
+            // console.log(`state.config.icons.all[${i}].image:`, state.config.icons.all[i].image);
+            // state.canvasCVOutCtx.drawImage(
+            //     state.config.icons.all[i].image,
+            //     state.config.icons.all[i].dim.x,
+            //     state.config.icons.all[i].dim.y,
+            //     state.config.icons.all[i].dim.width,
+            //     state.config.icons.all[i].dim.height
+            // );
+
+
+
+        // }
     }
 
     calculate(state) {
@@ -405,6 +516,8 @@ class Technique {
             );
         }
     }
+
+
 }
 
 

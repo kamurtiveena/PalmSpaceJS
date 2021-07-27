@@ -489,7 +489,7 @@ window.onload = function () {
             
             state.overlay = state.imageCV.clone();
 
-            state.technique.draw(state);
+            // state.technique.draw(state);
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
             // state.experiment.trial.drawCompletedTargetsText(state);
@@ -522,6 +522,12 @@ window.onload = function () {
         }
 
         cv.imshow('cv_output_canvas', state.outputCV);
+        
+
+        if (state.initiator.show || state.technique.alwaysShow) {
+            state.technique.drawIconsOnGridCanvas(state);
+        }
+
 
         {
             canvasCVOutCtx.font = "24px Georgia";

@@ -65,27 +65,32 @@ class Config {
                 {
                     type: "fruit",
                     src: "res/f_banana.png",
-                    image: null
+                    image: null,
+                    name: "circle"
                 },
                 {
                     type: "fruit",
                     src: "res/f_grape.png",
-                    image: null
+                    image: null,
+                    name: "rect"
                 },
                 {
                     type: "fruit",
                     src: "res/f_mango.png",
-                    image: null
+                    image: null,
+                    name: "triangle"
                 },
                 {
                     type: "fruit",
                     src: "res/f_orange.png",
-                    image: null
+                    image: null,
+                    name: "triangle_down"
                 },
                 {
                     type: "fruit",
                     src: "res/f_strawberry.png",
-                    image: null
+                    image: null,
+                    name: "pentagon"
                 },
                 {
                     type: "vegetable",

@@ -17,6 +17,25 @@ export class Grid {
         this.y_rows = Array(11);
     }
 
+    getButton(row_y, col_x) {
+        if (row_y < 1 || row_y > this.divisions.row || col_x < 1 || col_x > this.divisions.col) {
+            console.error("getButton() out of bound:", {row_y, col_x});
+            return {x: 0, y: 0, width: 0, height: 0};
+        }
+
+        return {x: this.x_cols[col_x], y: this.y_rows[row_y], width: this._buttonWidth(), height: this._buttonHeight()};
+    }
+
+    _buttonWidth() {
+        if (this.dx_col) return this.dx_col;
+        return 0;
+    }
+
+    _buttonHeight() {
+        if (this.dy_row) return this.dy_row;
+        return 0;
+    }
+
     reset() {
         // todo figure out
     }
