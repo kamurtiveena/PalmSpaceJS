@@ -97,6 +97,10 @@ export class LayoutGrid {
         }
     }
 
+    isCursorInside(state) {
+        return this.isCursorInsideBtn;
+    }
+
     btnIDPointedBy(state) {
         this.isCursorInsideBtn = false;
 
@@ -124,8 +128,8 @@ export class LayoutGrid {
     draw(state) {
         if (!state.initiator.left.show) return;
 
-        this.parent._drawTextHighlighted(state);
-        this.parent._drawTextMarked(state);
+        this.parent._drawTextHighlightedBtnID(state);
+        this.parent._drawTextMarkedMarkedBtnID(state);
         this.parent._drawProgressBar(state);
     }
 

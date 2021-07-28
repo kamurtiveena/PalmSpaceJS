@@ -320,7 +320,8 @@ class Technique {
     }
 
     isCursorInside(state) {
-        if (this.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
+        if (this.type == TechniqueType.Landmark_Btn || this.type == TechniqueType.Landmark_Btn_FishEye ||
+            this.type == TechniqueType.LayoutFlow || this.type == TechniqueType.LayoutGrid) {
             return this._isCursorInsideBtnID(state);
         }
 
@@ -531,6 +532,21 @@ class Technique {
         return this.stats.lastVisitTime[p.row_i][p.col_j];
     }
 
+    _drawTextHighlightedBtnID(state) {
+        if (state.selection.currentBtn.btn_id != -1) {
+
+            cv.putText(
+                state.overlay,
+                state.selection.messages.selected,
+                new cv.Point(5, 40),
+                cv.FONT_HERSHEY_DUPLEX,
+                1.0,
+                new cv.Scalar(240, 240, 240),
+                2
+            );
+        }
+    }
+
     _drawTextHighlighted(state) {
         if (state.selection.currentBtn.row_i != -1 &&
             state.selection.currentBtn.col_j != -1) {
@@ -542,6 +558,20 @@ class Technique {
                 cv.FONT_HERSHEY_DUPLEX,
                 1.0,
                 new cv.Scalar(240, 240, 240),
+                2
+            );
+        }
+    }
+
+    _drawTextMarkedMarkedBtnID(state) {
+        if (state.selection.markedBtn.btn_id != -1) {
+            cv.putText(
+                state.overlay,
+                state.selection.messages.marked,
+                new cv.Point(5, 80),
+                cv.FONT_HERSHEY_DUPLEX,
+                1.0,
+                new cv.Scalar(0, 100, 0),
                 2
             );
         }

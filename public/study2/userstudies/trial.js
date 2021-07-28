@@ -186,13 +186,7 @@ export class Trial {
                 if (this.status != TrialState.STARTED &&
                     r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 5 &&
                     r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 5) {
-                    return true;
-                    // if (!this.cursorOverBtn) {
-                    //     this.cursorOverBtn = true;
-                    //     this.visitTimeBtn = performance.now();
-                    // }
-
-                    // return (performance.now() - this.visitTimeBtn) > 5;
+                        return true;
                 }
             }
         }
@@ -210,12 +204,6 @@ export class Trial {
                     b.x <= state.cursor.x && state.cursor.x <= b.x + b.width &&
                     b.y <= state.cursor.y && state.cursor.y <= b.y + b.height) {
                     return true;
-                    // if (!this.cursorOverBackBtn) {
-                    //     this.cursorOverBackBtn = true;
-                    //     this.visitTimeBackBtn = performance.now();
-                    // }
-
-                    // return (performance.now() - this.visitTimeBackBtn) > 5;
                 }
             }
         }
@@ -224,7 +212,8 @@ export class Trial {
         return false;
     }
     updateBackBtnInputLoc(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             this._updateBackBtnInputLocBtnID(state);
         } else {
             this._updateBackBtnInputLoc(state);
@@ -275,8 +264,9 @@ export class Trial {
     }
 
     updateStartBtnInputLoc(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-            this._updateStartBtnInputLocBtnID(state);
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+                this._updateStartBtnInputLocBtnID(state);
         } else {
             this._updateStartBtnInputLoc(state);
         }
@@ -410,7 +400,8 @@ export class Trial {
         }
 
         let tl = null, br = null;
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             const p = this._drawStartBtnBtnID(state);
             tl = p.tl;
             br = p.br;
