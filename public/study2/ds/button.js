@@ -1,5 +1,5 @@
 export class LandmarkButton {
-    constructor(parent, id, state) {
+    constructor(parent, id, state, icon) {
         this.id = id;
         this.parent = parent;
         this.widthMin = state.config.landmarkButtons.width;
@@ -10,6 +10,20 @@ export class LandmarkButton {
 
         this.widthHalf = this.width / 2;
         this.heightHalf = this.height / 2;
+
+        // center
+        this.x = 0;
+        this.y = 0;
+        this.icon = icon;
+    }
+
+    box() {
+        return {
+            x: this.x - this.width/2,
+            y: this.y - this.height/2,
+            width: this.width,
+            height: this.height
+        };
     }
 
     reset() {}
@@ -20,14 +34,15 @@ export class LandmarkButton {
 
         const {x, y} = state.cursor;
         return (
-            state.initiator.left.landmarks[this.id].x - this.widthHalf <= x + 10 &&
-            x <= state.initiator.left.landmarks[this.id].x + this.widthHalf  + 10 &&
-            state.initiator.left.landmarks[this.id].y - this.heightHalf <= y + 10 &&
-            y <= state.initiator.left.landmarks[this.id].y + this.heightHalf + 10
+            this.x - this.widthHalf <= x + 10 &&
+            x <= this.x + this.widthHalf  + 10 &&
+            this.y - this.heightHalf <= y + 10 &&
+            y <= this.y + this.heightHalf + 10
         );
     }
 
     draw(state) {
+        // outdated
         let c = new cv.Scalar(255, 25, 25);
         
         if(this.id == state.selection.markedBtn.btn_id) {
@@ -37,11 +52,11 @@ export class LandmarkButton {
         cv.rectangle(
             state.overlay,
             new cv.Point(
-                state.initiator.left.landmarks[this.id].x - this.widthHalf, 
-                state.initiator.left.landmarks[this.id].y - this.heightHalf),
+                this.x - this.widthHalf, 
+                this.y - this.heightHalf),
             new cv.Point(
-                state.initiator.left.landmarks[this.id].x + this.widthHalf, 
-                state.initiator.left.landmarks[this.id].y + this.heightHalf),
+                this.x + this.widthHalf, 
+                this.y + this.heightHalf),
             c,
             -1
         );

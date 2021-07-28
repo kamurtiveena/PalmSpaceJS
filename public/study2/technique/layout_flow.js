@@ -3,7 +3,7 @@ import { TechniqueType } from "./constant.js";
 export class LayoutFlow {
     constructor(parent, state) {
         this.parent = parent;
-        this.parent.type = TechniqueType.S2H_Relative;
+        this.parent.type = TechniqueType.LayoutFlow;
 
         this.parent.grid.input.width = state.config.grid.width;
         this.parent.grid.input.height = state.config.grid.height;

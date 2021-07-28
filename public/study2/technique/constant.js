@@ -16,4 +16,10 @@ const TechniqueType = {
 }
 
 
-export {TechniqueType};
+const ReadingDirectionType = {
+    Unassigned: 0,
+    LtoR: "LtoR",
+    RtoL: "RtoL"
+};
+
+export {TechniqueType, ReadingDirectionType};

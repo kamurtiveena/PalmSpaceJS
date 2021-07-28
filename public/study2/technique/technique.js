@@ -102,7 +102,85 @@ class Technique {
         }
     }
 
-    
+    _drawIconsOnCanvas(state, landmarkBtn) {        
+
+        const name = landmarkBtn.icon.name;
+        
+        const p = landmarkBtn.box();
+
+        switch (name) {
+            case "rect":
+                drawFillRect(state.canvasCVOutCtx, p.x, p.y, p.width, p.height, 'blue', 0.4);
+                break;
+            case "circle":
+                const r = Math.min(p.width, p.height)/2;
+                drawFillCircle(state.canvasCVOutCtx, p.x + r, p.y + r, r, 'green', 0.4);
+                break;
+            case "triangle":
+                const pointsT1 = [
+                    {
+                        x: p.x,
+                        y: p.y + p.height
+                    },{
+                        x: p.x + p.width,
+                        y: p.y + p.height
+                    },
+                    {
+                        x: p.x + p.width/2,
+                        y: p.y
+                    }
+                ];
+
+                drawFillShape(state.canvasCVOutCtx, pointsT1, 'purple', 0.4);
+                break;
+            case "triangle_down":
+                const pointsT2 = [
+                    {
+                        x: p.x,
+                        y: p.y
+                    },{
+                        x: p.x + p.width,
+                        y: p.y
+                    },
+                    {
+                        x: p.x + p.width/2,
+                        y: p.y + p.height
+                    }
+                ];
+
+                drawFillShape(state.canvasCVOutCtx, pointsT2, 'orange', 0.4);
+                break;
+            case "pentagon":
+                const pointsT5 = [
+                    {
+                        x: p.x + p.width/2,
+                        y: p.y
+                    },
+                    {
+                        x: p.x + p.width,
+                        y: p.y + p.height/2
+                    },
+                    {
+                        x: p.x + 3*p.width/4,
+                        y: p.y + p.height
+                    },
+                    {
+                        x: p.x + p.width/4,
+                        y: p.y + p.height
+                    },
+                    {
+                        x: p.x,
+                        y: p.y + p.height/2
+                    }
+                ];
+
+                drawFillShape(state.canvasCVOutCtx, pointsT5, 'cyan', 0.4);
+                break;
+
+            default:
+                break;
+        }
+    }
 
     drawIconsOnGridCanvas(state) {
 
@@ -217,6 +295,10 @@ class Technique {
 
     draw(state) {
         this.anchor.draw(state);
+    }
+
+    drawCustom(state) {
+        this.anchor.drawCustom(state);
     }
 
     reset() {

@@ -21,7 +21,7 @@ export class LandmarkBtn {
             );
         }
 
-        this.isCursorInsideBtn = false;
+        this.isCursorInsideBtn = false; // todo what is it doing
 
         
     }
@@ -54,7 +54,7 @@ export class LandmarkBtn {
 
         for (let i = 0; i < this.parent.buttons.input.length; i ++)
             if (this.parent.buttons.input[i].isCursorInside(state)) {
-                this.isCursorInsideBtn = false;
+                this.isCursorInsideBtn = true;
                 return i;
             }
 

@@ -21,7 +21,8 @@ class Dwell {
     }
 
     update(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutGrid) {
             this._updateBtnID(state);
         } else {
             this._update(state);

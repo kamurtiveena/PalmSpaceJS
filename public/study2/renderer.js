@@ -142,8 +142,6 @@ window.onload = function () {
         state.myWorker = null;
     }
 
-    let menuElement = document.getElementById("menu");
-
     // Our input frames will come from here.
 
     const videoContainer = document.getElementById("video_container");
@@ -240,10 +238,13 @@ window.onload = function () {
 
         // study2 choices
         state.menu.study2 = {
-            "layout": state.menu.technique,
-            "readingDirection": checkRadio("menuReadingDirection"),
-            "numberOfButtonsPerRow": checkRadio("menuNumberOfButtonsPerRow")
+            layout: state.menu.technique,
+            readingDirection: checkRadio("menuReadingDirection"),
+            numberOfButtonsPerRow: parseInt(checkRadio("menuNumberOfButtonsPerRow"))
         };
+
+        state.config.landmarkButtons.total = state.menu.study2.numberOfButtonsPerRow;
+
 
         console.table(state.menu.study2);
 
@@ -488,14 +489,14 @@ window.onload = function () {
             }
             
             state.overlay = state.imageCV.clone();
-
-            // state.technique.draw(state);
+            
+            state.technique.draw(state);
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
             // state.experiment.trial.drawCompletedTargetsText(state);
             state.experiment.trial.drawTarget(state);
-
-
+            
+            
             cv.addWeighted(
                 state.overlay,
                 state.config.TRANSPARENCY_ALPHA,
@@ -504,12 +505,12 @@ window.onload = function () {
                 0.0,
                 state.outputCV,
                 -1);
-
-
+                
+                
             state.overlay.delete();
 
         }
-
+        
         if (state.cursor) {
 
             const colsz = state.initiator.right.scale;
@@ -520,13 +521,14 @@ window.onload = function () {
                 new cv.Scalar(colsz.color, colsz.color, colsz.color),
                 -1);
         }
-
+        
         cv.imshow('cv_output_canvas', state.outputCV);
         
+        state.technique.drawCustom(state);
 
-        if (state.initiator.show || state.technique.alwaysShow) {
-            state.technique.drawIconsOnGridCanvas(state);
-        }
+        // if (state.initiator.show || state.technique.alwaysShow) {
+        //     state.technique.drawIconsOnGridCanvas(state);
+        // }
 
 
         {
@@ -563,7 +565,7 @@ window.onload = function () {
                 || state.selection.currentBtn.btn_id != -1
             )
         ) {
-
+            
             canvasCVOutCtx.strokeStyle = "blue";
             canvasCVOutCtx.lineWidth = 3;
             canvasCVOutCtx.globalAlpha = 0.4;
