@@ -66,7 +66,6 @@ export class LayoutGrid {
     }
 
     calculate(state) {
-
         if (!state.initiator.left.show) return;
         
         if (state.initiator.left.landmarks) {
@@ -120,7 +119,6 @@ export class LayoutGrid {
             this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_row;
             this.parent.buttons.output[this.iconsSeq[1]].topleft.x = this.parent.buttons.output[this.iconsSeq[1]].x - this.dx_col/2; 
             this.parent.buttons.output[this.iconsSeq[1]].topleft.y = this.parent.buttons.output[this.iconsSeq[1]].y - this.dy_row/2; 
-
         }
 
         // 2
