@@ -102,8 +102,67 @@ class Technique {
         }
     }
 
-    _drawIconsOnCanvas(state, landmarkBtn) {        
+    drawTargetsLegend(state) {
+        const width = 7*(state.technique.buttons.output.length - 1) + (state.technique.buttons.output.length * 100);
+        let px = (state.width/2) - width/2;
+         
+        for (let i = 0; i < state.technique.buttons.output.length; i ++) {
+            state.canvasCVOutCtx.drawImage(
+                state.technique.buttons.output[i].icon.image,
+                px,
+                10,
+                100,
+                100
+            );
 
+            if (state.experiment.trial.currentTarget().btn_id == i && state.experiment.trial.started()) {
+                state.canvasCVOutCtx.strokeStyle = "purple";
+                state.canvasCVOutCtx.lineWidth = 3;
+                state.canvasCVOutCtx.globalAlpha = 0.4;
+                state.canvasCVOutCtx.strokeRect(
+                    px,
+                    10,
+                    100,
+                    100 
+                );
+            }
+
+            px += 107;
+        }
+    }
+
+    _drawIconsOnCanvas(state, landmarkBtn) {        
+        // this._drawShapes(state, landmarkBtn);
+        const p = landmarkBtn.box();
+        state.canvasCVOutCtx.drawImage(
+            landmarkBtn.icon.image,
+            p.x,
+            p.y,
+            p.width,
+            p.height
+        );
+    }
+
+    drawInputBoundary(state) {
+        if (!state.initiator.left.show) return;
+
+        state.canvasCVOutCtx.strokeStyle = "purple";
+        state.canvasCVOutCtx.lineWidth = 3;
+        state.canvasCVOutCtx.globalAlpha = 0.4;
+
+        for (let i = 0; i < this.buttons.input.length; i ++) {
+            const p = this.buttons.input[i].box();
+            state.canvasCVOutCtx.strokeRect(
+                p.x,
+                p.y,
+                p.width,
+                p.height
+            );
+        }
+
+    }
+
+    _drawShapes(state, landmarkBtn) {
         const name = landmarkBtn.icon.name;
         
         const p = landmarkBtn.box();
@@ -272,21 +331,6 @@ class Technique {
 
             }
         }
-
-        // for (let i = 0; i < state.config.icons.all.length; i ++) {
-
-            // console.log(`state.config.icons.all[${i}].image:`, state.config.icons.all[i].image);
-            // state.canvasCVOutCtx.drawImage(
-            //     state.config.icons.all[i].image,
-            //     state.config.icons.all[i].dim.x,
-            //     state.config.icons.all[i].dim.y,
-            //     state.config.icons.all[i].dim.width,
-            //     state.config.icons.all[i].dim.height
-            // );
-
-
-
-        // }
     }
 
     calculate(state) {

@@ -493,7 +493,7 @@ window.onload = function () {
             state.technique.draw(state);
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
-            // state.experiment.trial.drawCompletedTargetsText(state);
+            state.experiment.trial.drawCompletedTargetsText(state);
             state.experiment.trial.drawTarget(state);
             
             
@@ -530,6 +530,10 @@ window.onload = function () {
         //     state.technique.drawIconsOnGridCanvas(state);
         // }
 
+        if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+            state.technique.drawInputBoundary(state);
+            state.technique.drawTargetsLegend(state);
+        }
 
         {
             canvasCVOutCtx.font = "24px Georgia";

@@ -63,55 +63,79 @@ class Config {
         this.icons = {
             all: [
                 {
-                    type: "fruit",
-                    src: "res/f_banana.png",
+                    type: "veg",
+                    src: "res/v_broccoli.png",
                     image: null,
-                    name: "circle"
+                    name: "v_broccoli.png"
                 },
                 {
-                    type: "fruit",
-                    src: "res/f_grape.png",
-                    image: null,
-                    name: "rect"
-                },
-                {
-                    type: "fruit",
-                    src: "res/f_mango.png",
-                    image: null,
-                    name: "triangle"
-                },
-                {
-                    type: "fruit",
-                    src: "res/f_orange.png",
-                    image: null,
-                    name: "triangle_down"
-                },
-                {
-                    type: "fruit",
-                    src: "res/f_strawberry.png",
-                    image: null,
-                    name: "pentagon"
-                },
-                {
-                    type: "vegetable",
-                    src: "res/v_cabbage.png",
-                    image: null
-                },
-                {
-                    type: "vegetable",
+                    type: "veg",
                     src: "res/v_carrot.png",
-                    image: null
+                    image: null,
+                    name: "v_carrot.png"
                 },
                 {
-                    type: "vegetable",
-                    src: "res/v_lemon.png",
-                    image: null
+                    type: "veg",
+                    src: "res/v_cabbage.png",
+                    image: null,
+                    name: "v_cabbage.png"
                 },
                 {
-                    type: "vegetable",
-                    src: "res/v_lettuce.png",
-                    image: null
-                }
+                    type: "veg",
+                    src: "res/v_spinach.png",
+                    image: null,
+                    name: "v_spinach.png"
+                },
+                {
+                    type: "veg",
+                    src: "res/v_potato.png",
+                    image: null,
+                    name: "v_potato.png"
+                },
+                // {
+                //     type: "fruit",
+                //     src: "res/f_grape.png",
+                //     image: null,
+                //     name: "rect"
+                // },
+                // {
+                //     type: "fruit",
+                //     src: "res/f_mango.png",
+                //     image: null,
+                //     name: "triangle"
+                // },
+                // {
+                //     type: "fruit",
+                //     src: "res/f_orange.png",
+                //     image: null,
+                //     name: "triangle_down"
+                // },
+                // {
+                //     type: "fruit",
+                //     src: "res/f_strawberry.png",
+                //     image: null,
+                //     name: "pentagon"
+                // },
+                // {
+                //     type: "vegetable",
+                //     src: "res/v_cabbage.png",
+                //     image: null
+                // },
+                // {
+                //     type: "vegetable",
+                //     src: "res/v_carrot.png",
+                //     image: null
+                // },
+                // {
+                //     type: "vegetable",
+                //     src: "res/v_lemon.png",
+                //     image: null
+                // },
+                // {
+                //     type: "vegetable",
+                //     src: "res/v_lettuce.png",
+                //     image: null
+                // }
             ],
             loadcnt: 0
         }

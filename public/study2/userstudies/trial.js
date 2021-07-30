@@ -23,8 +23,10 @@ export class Trial {
         }
 
         this.permutation = [];
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-            for (let btn_id = 1; btn_id <= state.config.landmarkButtons.total; btn_id++) this.permutation.push({ "btn_id": btn_id });
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid) {
+                for (let btn_id = 0; btn_id < state.config.landmarkButtons.total; btn_id++) 
+                    this.permutation.push({ "btn_id": btn_id });
         } else {
             for (let row_i = 1; row_i <= state.menu.cellscnt.row; row_i ++)
                 for (let col_j = 1; col_j <= state.menu.cellscnt.col; col_j ++) {
@@ -41,7 +43,8 @@ export class Trial {
                 this.permutation[k] = tmp;
             }
 
-            for (let j = 0; j < this.permutation.length; j ++) this.targetList.push(this.permutation[j]);
+            for (let j = 0; j < this.permutation.length; j ++) 
+                this.targetList.push(this.permutation[j]);
         }
 
         this.targetID = -1;
@@ -321,10 +324,11 @@ export class Trial {
 
             let tl = null, br = null;
 
-            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-                const p = this._drawBackBtnBtnID(state);
-                tl = p.tl;
-                br = p.br;
+            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+                state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+                    const p = this._drawBackBtnBtnID(state);
+                    tl = p.tl;
+                    br = p.br;
             } else {
                 const p = this._drawBackBtn(state);
                 tl = p.tl;
@@ -519,9 +523,9 @@ export class Trial {
         if (this.targetID == this.targetSeqSize) {
             this.status = TrialState.DONE;
         }
-
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-            this.targetSeq[this.targetID] = this._generateTargetBtnID(state);
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid) {
+                this.targetSeq[this.targetID] = this._generateTargetBtnID(state);
         } else {
             this.targetSeq[this.targetID] = this._generateTarget(state);
         }
@@ -539,8 +543,9 @@ export class Trial {
     }
 
     matched(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-            return this._matchedBtnID(state);
+        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+                return this._matchedBtnID(state);
         } else {
             return this._matched(state);
         }
@@ -575,8 +580,9 @@ export class Trial {
         }
 
         if (this.status == TrialState.STARTED) {
-            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-                this._drawTargetBtnID(state);
+            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+                state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+                    this._drawTargetBtnID(state);
             } else {
                 this._drawTarget(state);
             }
@@ -584,17 +590,18 @@ export class Trial {
     }
 
     _drawTargetBtnID(state) {
-        const p = state.initiator.left.landmarks[this.targetSeq[this.targetID].btn_id];
+        // const p = state.initiator.left.landmarks[this.targetSeq[this.targetID].btn_id];
+        const p = state.technique.buttons.input[this.targetSeq[this.targetID].btn_id].box();
 
         cv.rectangle(
             state.overlay,
             new cv.Point(
-                p.x - state.config.landmarkButtons.widthHalf,
-                p.y - state.config.landmarkButtons.heightHalf
+                p.x,
+                p.y
             ),
             new cv.Point(
-                p.x + state.config.landmarkButtons.widthHalf,
-                p.y + state.config.landmarkButtons.heightHalf
+                p.x + p.width,
+                p.y + p.height
             ),
             new cv.Scalar(128, 0, 128),
             -1

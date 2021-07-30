@@ -14,13 +14,20 @@ export class LandmarkButton {
         // center
         this.x = 0;
         this.y = 0;
+
+        
+        this.topleft = {
+            x: 0,
+            y: 0
+        };
+        
         this.icon = icon;
     }
 
     box() {
         return {
-            x: this.x - this.width/2,
-            y: this.y - this.height/2,
+            x: this.topleft.x,
+            y: this.topleft.y,
             width: this.width,
             height: this.height
         };
@@ -34,10 +41,10 @@ export class LandmarkButton {
 
         const {x, y} = state.cursor;
         return (
-            this.x - this.widthHalf <= x + 10 &&
-            x <= this.x + this.widthHalf  + 10 &&
-            this.y - this.heightHalf <= y + 10 &&
-            y <= this.y + this.heightHalf + 10
+            this.topleft.x - this.width <= x + 10 &&
+            x <= this.topleft.x + this.width  + 10 &&
+            this.topleft.y - this.height <= y + 10 &&
+            y <= this.topleft.y + this.height + 10
         );
     }
 
