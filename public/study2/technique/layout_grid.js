@@ -179,8 +179,6 @@ export class LayoutGrid {
 
     _alignRtoL4(state) {
         let palm = state.palmRect();
-
-        // const w = Math.max(64, Math.min(400, palm.maxDim));
         
         this.width = palm.width;
         this.height = palm.height;
@@ -213,8 +211,6 @@ export class LayoutGrid {
     _alignLtoR4(state) {
 
         let palm = state.palmRect();
-
-        // const w = Math.max(64, Math.min(400, palm.maxDim));
         
         this.width = palm.width;
         this.height = palm.height;
@@ -249,17 +245,6 @@ export class LayoutGrid {
         return this.isCursorInsideBtn;
     }
 
-    btnIDPointedBy(state) {
-        this.isCursorInsideBtn = false;
-
-        for (let i = 0; i < this.parent.buttons.input.length; i ++)
-            if (this.parent.buttons.input[i].isCursorInside(state)) {
-                this.isCursorInsideBtn = true;
-                return i;
-            }
-
-        return -1;
-    }
 
     drawCustom(state) {
         if (!state.initiator.left.show) return;

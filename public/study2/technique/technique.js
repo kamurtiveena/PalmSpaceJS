@@ -102,6 +102,18 @@ class Technique {
         }
     }
 
+    btnIDPointedBy(state) {
+        this.isCursorInsideBtn = false;
+
+        for (let i = 0; i < this.buttons.input.length; i ++)
+            if (this.buttons.input[i].isCursorInside(state)) {
+                this.isCursorInsideBtn = true;
+                return this.buttons.input[i].id;
+            }
+
+        return -1;
+    }
+
     drawTargetsLegend(state) {
         const width = 7*(state.technique.buttons.output.length - 1) + (state.technique.buttons.output.length * 100);
         let px = (state.width/2) - width/2;
@@ -453,7 +465,7 @@ class Technique {
 
         if (state.selection.locked) return;
 
-        const btnID = this.anchor.btnIDPointedBy(state);
+        const btnID = this.btnIDPointedBy(state);
 
         if (btnID != -1) {
             if (btnID != state.selection.previousBtn.btn_id) {

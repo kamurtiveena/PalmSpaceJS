@@ -29,7 +29,7 @@ class Study {
             valid: state.experiment.trial.stats.valid
         }
 
-        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study1/record`, body]);
+        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study2/record`, body]);
 
         console.log("study1.save() body:", JSON.stringify(body));
     }

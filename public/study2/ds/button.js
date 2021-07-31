@@ -41,9 +41,9 @@ export class LandmarkButton {
 
         const {x, y} = state.cursor;
         return (
-            this.topleft.x - this.width <= x + 10 &&
+            this.topleft.x <= x + 10 &&
             x <= this.topleft.x + this.width  + 10 &&
-            this.topleft.y - this.height <= y + 10 &&
+            this.topleft.y <= y + 10 &&
             y <= this.topleft.y + this.height + 10
         );
     }

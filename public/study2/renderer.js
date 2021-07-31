@@ -334,8 +334,8 @@ window.onload = function () {
         hands.setOptions({
             selfieMode: true,
             maxNumHands: 2,
-            minDetectionConfidence: 0.5,
-            minTrackingConfidence: 0.5
+            minDetectionConfidence: 0.7,
+            minTrackingConfidence: 0.7
         });
         
         hands.onResults(onResults);
