@@ -122,9 +122,9 @@ class State {
                 
                 const l = this.initiator.left.landmarks[this.palmLandmarkIDs[i]];
                 
-                ret.x = Math.min(ret.x, l.x);
+                ret.x = Math.min(ret.x, l.x) - 5;
                 ret.y = Math.min(ret.y, l.y);
-                ret.mxx = Math.max(ret.mxx, l.x);
+                ret.mxx = Math.max(ret.mxx, l.x) + 5;
                 ret.mxy = Math.max(ret.mxy, l.y);
             }
 

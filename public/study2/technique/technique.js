@@ -122,7 +122,7 @@ class Technique {
             state.canvasCVOutCtx.drawImage(
                 state.technique.buttons.output[i].icon.image,
                 px,
-                10,
+                70,
                 100,
                 100
             );
@@ -133,10 +133,14 @@ class Technique {
                 state.canvasCVOutCtx.globalAlpha = 0.4;
                 state.canvasCVOutCtx.strokeRect(
                     px,
-                    10,
+                    70,
                     100,
                     100 
                 );
+                
+                state.canvasCVOutCtx.font = "28px Georgia";
+                state.canvasCVOutCtx.fillStyle = "black";
+                state.canvasCVOutCtx.fillText(`Please select ${state.technique.buttons.output[i].icon.name}`, (state.width/2) - 130, 50);
             }
 
             px += 107;

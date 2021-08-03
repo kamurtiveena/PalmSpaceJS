@@ -66,31 +66,31 @@ class Config {
                     type: "veg",
                     src: "res/v_broccoli.png",
                     image: null,
-                    name: "v_broccoli.png"
+                    name: "Broccoli"
                 },
                 {
                     type: "veg",
                     src: "res/v_carrot.png",
                     image: null,
-                    name: "v_carrot.png"
+                    name: "Carrot"
                 },
                 {
                     type: "veg",
                     src: "res/v_cabbage.png",
                     image: null,
-                    name: "v_cabbage.png"
+                    name: "Cabbage"
                 },
                 {
                     type: "veg",
                     src: "res/v_spinach.png",
                     image: null,
-                    name: "v_spinach.png"
+                    name: "Spinach"
                 },
                 {
                     type: "veg",
                     src: "res/v_potato.png",
                     image: null,
-                    name: "v_potato.png"
+                    name: "Potato"
                 },
                 // {
                 //     type: "fruit",

@@ -160,7 +160,7 @@ app.post('/admin/create/table/:name', async (req, res) => {
     }
 })
 
-app.post('/save/study1/record', async (req, res) => {
+app.post('/save/:tablename/record', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -177,7 +177,7 @@ app.post('/save/study1/record', async (req, res) => {
 
         const sql = `
             INSERT INTO 
-            study1 (
+            ${req.params.tablename} (
                 user_id, 
                 technique,
                 selection,
@@ -230,7 +230,7 @@ app.post('/save/study1/record', async (req, res) => {
 });
 
 
-app.get('/stats/study1', async (req, res) => {
+app.get('/stats/:tablename', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -246,7 +246,7 @@ app.get('/stats/study1', async (req, res) => {
                 technique, 
                 cells_row, 
                 cells_col
-            From study1
+            From ${req.params.tablename}
             GROUP BY technique, cells_row, cells_col;`;
         const result = await conn.query(sql);
         console.log(result);

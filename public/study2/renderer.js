@@ -494,7 +494,7 @@ window.onload = function () {
             state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
-            state.experiment.trial.drawTarget(state);
+            // state.experiment.trial.drawTarget(state);
             
             
             cv.addWeighted(
