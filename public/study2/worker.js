@@ -38,12 +38,17 @@ async function postData(url, data) {
         body: content
     })
     .then(response => {
-        if (!response || !response.ok) throw new TypeError(`response not ok`);
+        if (!response || !response.ok) throw new TypeError(`response not ok, body:${response.json()}`);
         postMessage(response.json());
     })
     .catch(err => {
-        // console.log(err); // todo fix DataCloneError
-        postMessage({"error": "err msg"});
+        console.log(err); // todo fix DataCloneError
+        postMessage({"error": {
+            message: err.message,
+            fileName: err.fileName,
+            lineNumber: err.lineNumber,
+            cause: err.cause
+        }});
     });
 }
 

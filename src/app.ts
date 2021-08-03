@@ -160,7 +160,10 @@ app.post('/admin/create/table/:name', async (req, res) => {
     }
 })
 
-app.post('/save/:tablename/record', async (req, res) => {
+app.post('/save/:tablename', async (req, res) => {
+    
+    console.log(`entered /save/${req.params.tablename}`);
+    
     let conn;
     try {
         conn = await pool.getConnection();
