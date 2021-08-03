@@ -9,8 +9,8 @@ export class Trigger {
         this.status = TRIGGER.OPEN;
         this.name = state.menu.trigger;
 
-        if (this.name == 'Dwell') this.trigger = new Dwell(this);
-        else if (this.name == 'Tap') this.trigger = new Tap(this);
+        if (this.name == 'Dwell') this.trigger = new Dwell(this, state);
+        else if (this.name == 'Tap') this.trigger = new Tap(this, state);
     }
 
     update(state) {

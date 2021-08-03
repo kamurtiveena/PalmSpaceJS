@@ -3,7 +3,7 @@ import { TechniqueType } from "../technique/constant.js";
 import {TRIGGER} from './triggerstate.js';
 
 class Dwell {
-    constructor(parent) {
+    constructor(parent, state) {
         this.parent = parent;
         
         this.visitTime = Array(11);
@@ -14,19 +14,18 @@ class Dwell {
 
         this.curTime = performance.now();
 
-        this._initGridVisitTime(this.curTime);
-
         this.selection = new ButtonSelection();
 
-    }
-
-    update(state) {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
             state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-            this._updateBtnID(state);
+            this._initVisitTime = this._initVisitTimeBtnID; 
+            this.update = this._updateBtnID;
         } else {
-            this._update(state);
+            this._initVisitTime = this._initVisitTimeGrid;
+            this.update = this._update;
         }
+
+        this._initVisitTime(this.curTime);
     }
 
     _updateBtnID(state) {
@@ -162,16 +161,21 @@ class Dwell {
         }
     }
 
-    _initGridVisitTime(ctime) {
+    _initVisitTimeGrid(ctime) {
         for (let i = 0; i < 11; i ++) {
             for (let j = 0; j < 11; j ++) {
                 this.visitTime[i][j] = ctime;
             }
         }
     }
-
+    
+    _initVisitTimeBtnID(ctime) {
+        for (let i = 0; i < 7; i ++) {
+            this.visitTimeBtnID[i] = ctime;
+        }
+    }
     reset() {
-        this._initGridVisitTime(performance.now());  
+        this._initVisitTime(performance.now());  
         this.parent.status = TRIGGER.OPEN;
     }
 }
