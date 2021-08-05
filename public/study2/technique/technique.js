@@ -4,7 +4,7 @@ import { H2SRelative } from './h2s_rel.js';
 import { MidAir } from './midair.js';
 import { FishEye } from './fisheye.js';
 import { Grid } from '../ds/grid.js';
-import { TechniqueType } from './constant.js';
+import { PresentationType, TechniqueType } from './constant.js';
 import { H2SAbsolute } from './h2s_abs.js';
 import { GridFishEye } from '../ds/gridfisheye.js';
 import { S2HRelativeFinger } from './s2h_rel_finger.js';
@@ -100,6 +100,34 @@ class Technique {
                 this.type = TechniqueType.Unassigned;
                 break;
         }
+
+        this.width = state.width;
+        this.height = state.height;
+
+        switch(state.menu.study2.presentation) {
+            case PresentationType.Reordered:
+                this.palmOutRect = state.palmRect;
+                break;
+            case PresentationType.Existing:
+                this.palmOutRect = this._palmOutRect;
+                break;
+            default:
+                console.error("invalid presentation option");
+                return;
+        }
+    }
+
+    _palmOutRect() {
+        return {
+            x: this.width - 150,
+            y: 100,
+            width: 70,
+            height: 70,
+            topleft: {
+                x: this.width - 300,
+                y: 5,
+            }
+        };
     }
 
     btnIDPointedBy(state) {
@@ -154,20 +182,20 @@ class Technique {
             landmarkBtn.icon.image,
             p.x,
             p.y,
-            p.width,
-            p.height
+            Math.min(p.width, p.height),
+            Math.min(p.width, p.height)
         );
     }
 
-    drawInputBoundary(state) {
+    _drawBtnsBoundary(state, btns) {
         if (!state.initiator.left.show) return;
-
+    
         state.canvasCVOutCtx.strokeStyle = "purple";
         state.canvasCVOutCtx.lineWidth = 3;
         state.canvasCVOutCtx.globalAlpha = 0.4;
-
-        for (let i = 0; i < this.buttons.input.length; i ++) {
-            const p = this.buttons.input[i].box();
+    
+        for (let i = 0; i < btns.length; i ++) {
+            const p = btns[i].box();
             state.canvasCVOutCtx.strokeRect(
                 p.x,
                 p.y,
@@ -175,7 +203,14 @@ class Technique {
                 p.height
             );
         }
+    }
 
+    drawOutputBoundary(state) {
+        this._drawBtnsBoundary(state, this.buttons.output);
+    }
+
+    drawInputBoundary(state) {
+        this._drawBtnsBoundary(state, this.buttons.input);
     }
 
     _drawShapes(state, landmarkBtn) {
@@ -358,6 +393,16 @@ class Technique {
     }
 
     drawCustom(state) {
+        if (state.menu.study2.presentation == PresentationType.Existing) {
+            state.canvasCVOutCtx.drawImage(
+                state.config.icons.hand.image,
+                state.width-200,
+                27,
+                150,
+                170
+            );
+        }
+
         this.anchor.drawCustom(state);
     }
 

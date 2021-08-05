@@ -7,7 +7,7 @@ import { Trigger } from './trigger/trigger.js';
 import { TRIGGER } from './trigger/triggerstate.js';
 import { Trial } from './userstudies/trial.js';
 import { TrialState } from './userstudies/constant.js';
-import { TechniqueType } from "./technique/constant.js";
+import { PresentationType, TechniqueType } from "./technique/constant.js";
 import { Study } from './userstudies/study.js';
 
 
@@ -240,17 +240,17 @@ window.onload = function () {
         state.menu.study2 = {
             layout: state.menu.technique,
             readingDirection: checkRadio("menuReadingDirection"),
-            numberOfButtonsPerRow: parseInt(checkRadio("menuNumberOfButtonsPerRow"))
+            numberOfButtonsPerRow: parseInt(checkRadio("menuNumberOfButtonsPerRow")),
+            presentation: checkRadio("menupresentation"),
         };
 
         state.config.landmarkButtons.total = state.menu.study2.numberOfButtonsPerRow;
-
 
         console.table(state.menu.study2);
 
         state.menu.cellscnt = {
             row: 3, // parseInt(checkSelectList("selectCellsRow")),
-            col: 3 //parseInt(checkSelectList("selectCellsCol"))
+            col: 3 // parseInt(checkSelectList("selectCellsCol"))
         };
 
         state.menu.buttonSize = checkRadio("buttonSize");
@@ -531,8 +531,20 @@ window.onload = function () {
         // }
 
         if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-            state.technique.drawInputBoundary(state);
-            state.technique.drawTargetsLegend(state);
+            switch (state.menu.study2.presentation) {
+                case PresentationType.Existing:
+                    state.technique.drawOutputBoundary(state);
+                    state.technique.drawTargetsLegend(state);
+
+                    break;
+                    case PresentationType.Reordered:
+                    state.technique.drawInputBoundary(state);
+                    state.technique.drawTargetsLegend(state);
+                    break;
+                default:
+                    console.error("presentation type invalid");
+                    return;
+            }   
         }
 
         {
