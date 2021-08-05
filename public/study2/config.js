@@ -61,6 +61,11 @@ class Config {
         this.experiment.startButton.heightHalf = this.experiment.startButton.height / 2;
         
         this.icons = {
+            hand: {
+                src: "res/hand_full.png",
+                image: null,
+                name: "Hand"
+            },
             all: [
                 {
                     type: "veg",
@@ -139,6 +144,14 @@ class Config {
             ],
             loadcnt: 0
         }
+
+
+        this.icons.hand.image = new Image();
+        this.icons.hand.image.onload = () => {
+            console.log("hand image loaded");
+        }
+        this.icons.hand.image.src = this.icons.hand.src;
+
 
 
         for (let i = 0; i < this.icons.all.length; i ++) {
