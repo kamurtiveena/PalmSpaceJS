@@ -24,6 +24,11 @@ export class LandmarkButton {
         this.icon = icon;
     }
 
+    calcTopLeft() {
+        this.topleft.x = this.x - Math.min(this.width, this.height)/2;
+        this.topleft.y = this.y - Math.min(this.width, this.height)/2;
+    }
+
     box() {
         return {
             x: this.topleft.x,
