@@ -61,16 +61,24 @@ export class LayoutFlow {
             );
         }
 
-        this.isCursorInsideBtn = false; // todo what is it doing        
+        this.isCursorInsideBtn = false; // todo what is it doing     
+        
+        
     }
 
     _alignRtoL5(state) {
-        let palm = state.palmRect();
-
+        const palm = state.palmRect();
         this.width = palm.width;
         this.height = palm.height;
         this.dx_col = (this.width - 4*this.gap) / 3;
         this.dy_row = (this.height -3*this.gap) / 3;
+
+
+        const palmOut = this.parent.parent.palmOutRect();
+        this.widthOut = palmOut.width;
+        this.heightOut = palmOut.height;
+        this.dx_colOut = (this.widthOut - 4*this.gap) / 3;
+        this.dy_rowOut = (this.heightOut -3*this.gap) / 3;
 
         // 0
         {       
@@ -78,15 +86,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[0]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[0]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.x = this.parent.buttons.input[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.y = this.parent.buttons.input[this.iconsSeq[0]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[0]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[0]].x = palm.x + this.gap + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[0]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.x = this.parent.buttons.output[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.y = this.parent.buttons.output[this.iconsSeq[0]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[0]].x = palmOut.x + this.gap + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[0]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[0]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[0]].calcTopLeft(); 
         }
 
         // 1
@@ -95,16 +101,14 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[1]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.x = this.parent.buttons.input[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.y = this.parent.buttons.input[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[1]].calcTopLeft();
 
+            this.parent.buttons.output[this.iconsSeq[1]].x = palmOut.x + 2*this.gap + this.dx_colOut + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[1]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[1]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[1]].x = palm.x + 2*this.gap + this.dx_col + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.x = this.parent.buttons.output[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.y = this.parent.buttons.output[this.iconsSeq[1]].y - this.dy_row/2; 
         }
 
         // 2
@@ -113,16 +117,14 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[2]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[2]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.x = this.parent.buttons.input[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.y = this.parent.buttons.input[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[2]].calcTopLeft();
 
+            this.parent.buttons.output[this.iconsSeq[2]].x = palmOut.x + 3*this.gap + 2*this.dx_colOut + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[2]].y = palmOut.y + this.gap + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[2]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[2]].x = palm.x + 3*this.gap + 2*this.dx_col + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[2]].y = palm.y + this.gap + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.x = this.parent.buttons.output[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.y = this.parent.buttons.output[this.iconsSeq[2]].y - this.dy_row/2; 
         }
 
         // 3
@@ -131,16 +133,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[3]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[3]].width = 3*this.dx_col + 2*this.gap;
             this.parent.buttons.input[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.x = this.parent.buttons.input[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.y = this.parent.buttons.input[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[3]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[3]].x = palm.x + this.gap + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[3]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[3]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.x = this.parent.buttons.output[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.y = this.parent.buttons.output[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[3]].x = palmOut.x + this.gap + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[3]].y = palmOut.y + 2*this.gap + this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[3]].width = 3*this.dx_colOut + 2*this.gap;
+            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[3]].calcTopLeft();
         }
 
         // 4
@@ -149,27 +148,31 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[4]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[4]].width = 3*this.dx_col + 2*this.gap;
             this.parent.buttons.input[this.iconsSeq[4]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[4]].topleft.x = this.parent.buttons.input[this.iconsSeq[4]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[4]].topleft.y = this.parent.buttons.input[this.iconsSeq[4]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[4]].calcTopLeft();
 
+            this.parent.buttons.output[this.iconsSeq[4]].x = palmOut.x + this.gap + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[4]].y = palmOut.y + 3*this.gap + 2*this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[4]].width = 3*this.dx_colOut + 2*this.gap;
+            this.parent.buttons.output[this.iconsSeq[4]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[4]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[4]].x = palm.x + this.gap + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[4]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[4]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[4]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[4]].topleft.x = this.parent.buttons.output[this.iconsSeq[4]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[4]].topleft.y = this.parent.buttons.output[this.iconsSeq[4]].y - this.dy_row/2; 
         }
     }
 
 
     _alignLtoR5(state) {
-        let palm = state.palmRect();
-
+        const palm = state.palmRect();
         this.width = palm.width;
         this.height = palm.height;
         this.dx_col = (this.width - 4*this.gap) / 3;
         this.dy_row = (this.height -3*this.gap) / 3;
+
+        const palmOut = this.parent.palmOutRect();
+        this.widthOut = palmOut.width;
+        this.heightOut = palmOut.height;
+        this.dx_colOut = (this.widthOut - 4*this.gap) / 3;
+        this.dy_rowOut = (this.heightOut -3*this.gap) / 3;
+
 
         // 0
         {       
@@ -177,15 +180,14 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[0]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[0]].height = 3*this.dy_row + 2*this.gap;
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.x = this.parent.buttons.input[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.y = this.parent.buttons.input[this.iconsSeq[0]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[0]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[0]].x = palm.x + this.gap + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[0]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.x = this.parent.buttons.output[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.y = this.parent.buttons.output[this.iconsSeq[0]].y - this.dy_row/2; 
+
+            this.parent.buttons.output[this.iconsSeq[0]].x = palmOut.x + this.gap + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[0]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[0]].height = 3*this.dy_rowOut + 2*this.gap;
+            this.parent.buttons.output[this.iconsSeq[0]].calcTopLeft();
         }
 
         // 1
@@ -194,16 +196,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[1]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[1]].height = 3*this.dy_row + 2*this.gap;
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.x = this.parent.buttons.input[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.y = this.parent.buttons.input[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[1]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[1]].x = palm.x + 2*this.gap + this.dx_col + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.x = this.parent.buttons.output[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.y = this.parent.buttons.output[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[1]].x = palmOut.x + 2*this.gap + this.dx_colOut + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[1]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[1]].height = 3*this.dy_rowOut + 2*this.gap;
+            this.parent.buttons.output[this.iconsSeq[1]].calcTopLeft();
         }
 
         // 2
@@ -212,16 +211,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[2]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[2]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.x = this.parent.buttons.input[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.y = this.parent.buttons.input[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[2]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[2]].x = palm.x + 3*this.gap + 2*this.dx_col + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[2]].y = palm.y + this.gap + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.x = this.parent.buttons.output[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.y = this.parent.buttons.output[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[2]].x = palmOut.x + 3*this.gap + 2*this.dx_colOut + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[2]].y = palmOut.y + this.gap + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[2]].calcTopLeft();
         }
 
         // 3
@@ -230,16 +226,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[3]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[3]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.x = this.parent.buttons.input[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.y = this.parent.buttons.input[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[3]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[3]].x = palm.x + 3*this.gap + 2*this.dx_col + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[3]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[3]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.x = this.parent.buttons.output[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.y = this.parent.buttons.output[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[3]].x = palmOut.x + 3*this.gap + 2*this.dx_colOut + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[3]].y = palmOut.y + 2*this.gap + this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[3]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[3]].calcTopLeft();
         }
 
         // 4
@@ -248,26 +241,29 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[4]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[4]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[4]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[4]].topleft.x = this.parent.buttons.input[this.iconsSeq[4]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[4]].topleft.y = this.parent.buttons.input[this.iconsSeq[4]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[4]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[4]].x = palm.x + 3*this.gap + 2*this.dx_col + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[4]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[4]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[4]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[4]].topleft.x = this.parent.buttons.output[this.iconsSeq[4]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[4]].topleft.y = this.parent.buttons.output[this.iconsSeq[4]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[4]].x = palmOut.x + 3*this.gap + 2*this.dx_colOut + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[4]].y = palmOut.y + 3*this.gap + 2*this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[4]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[4]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[4]].calcTopLeft();
         }
     }
 
     _alignRtoL4(state) {
-        let palm = state.palmRect();
-
+        const palm = state.palmRect();
         this.width = palm.width;
         this.height = palm.height;
         this.dx_col = (this.width - 4*this.gap) / 2;
         this.dy_row = (this.height -3*this.gap) / 3;
+
+        const palmOut = this.parent.palmOutRect();
+        this.widthOut = palmOut.width;
+        this.heightOut = palmOut.height;
+        this.dx_colOut = (this.widthOut - 4*this.gap) / 2;
+        this.dy_rowOut = (this.heightOut -3*this.gap) / 3;
+
 
         // 0
         {       
@@ -275,15 +271,14 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[0]].y = palm.y - this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[0]].width = this.dx_col + 2*this.gap;
             this.parent.buttons.input[this.iconsSeq[0]].height = this.dy_row + 2*this.gap;
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.x = this.parent.buttons.input[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.y = this.parent.buttons.input[this.iconsSeq[0]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[0]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[0]].x = palm.x + this.gap + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[0]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.x = this.parent.buttons.output[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.y = this.parent.buttons.output[this.iconsSeq[0]].y - this.dy_row/2; 
+
+            this.parent.buttons.output[this.iconsSeq[0]].x = palmOut.x + this.gap + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[0]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_colOut + 2*this.gap;
+            this.parent.buttons.output[this.iconsSeq[0]].height = this.dy_rowOut + 2*this.gap;
+            this.parent.buttons.output[this.iconsSeq[0]].calcTopLeft();
         } 
 
         // 1
@@ -292,16 +287,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[1]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.x = this.parent.buttons.input[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.y = this.parent.buttons.input[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[1]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[1]].x = palm.x + 2*this.gap + this.dx_col + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.x = this.parent.buttons.output[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.y = this.parent.buttons.output[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[1]].x = palmOut.x + 2*this.gap + this.dx_colOut + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[1]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[1]].calcTopLeft();
         }
 
         // 2
@@ -310,16 +302,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[2]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[2]].width = this.gap + 2*this.dx_col;
             this.parent.buttons.input[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.x = this.parent.buttons.input[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.y = this.parent.buttons.input[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[2]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[2]].x = palm.x + this.width/2;
-            this.parent.buttons.output[this.iconsSeq[2]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.x = this.parent.buttons.output[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.y = this.parent.buttons.output[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[2]].x = palmOut.x + this.widthOut/2;
+            this.parent.buttons.output[this.iconsSeq[2]].y = palmOut.y + 2*this.gap + this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[2]].width = this.gap + 2*this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[2]].calcTopLeft();
         }
 
         // 3
@@ -328,27 +317,30 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[3]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[3]].width = this.gap + 2*this.dx_col;
             this.parent.buttons.input[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.x = this.parent.buttons.input[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.y = this.parent.buttons.input[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[3]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[3]].x = palm.x + this.width/2;
-            this.parent.buttons.output[this.iconsSeq[3]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[3]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.x = this.parent.buttons.output[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.y = this.parent.buttons.output[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[3]].x = palmOut.x + this.widthOut/2;
+            this.parent.buttons.output[this.iconsSeq[3]].y = palmOut.y + 3*this.gap + 2*this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[3]].width = this.gap + 2*this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[3]].calcTopLeft();
         }
 
     }
 
     _alignLtoR4(state) {
-        let palm = state.palmRect();
-        
+        const palm = state.palmRect();
         this.width = palm.width;
         this.height = palm.height;
         this.dx_col = (this.width - 4*this.gap) / 2;
         this.dy_row = (this.height -3*this.gap) / 3;
+
+        const palmOut = this.parent.palmOutRect();
+        this.widthOut = palmOut.width;
+        this.heightOut = palmOut.height;
+        this.dx_colOut = (this.widthOut - 4*this.gap) / 2;
+        this.dy_rowOut = (this.heightOut -3*this.gap) / 3;
+
 
         // 0
         {       
@@ -356,15 +348,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[0]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[0]].height = 3*this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.x = this.parent.buttons.input[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[0]].topleft.y = this.parent.buttons.input[this.iconsSeq[0]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[0]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[0]].x = palm.x + this.gap + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[0]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[0]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.x = this.parent.buttons.output[this.iconsSeq[0]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[0]].topleft.y = this.parent.buttons.output[this.iconsSeq[0]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[0]].x = palmOut.x + this.gap + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[0]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[0]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[0]].height = 3*this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[0]].calcTopLeft();
         } 
 
         // 1
@@ -373,16 +363,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[1]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.x = this.parent.buttons.input[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[1]].topleft.y = this.parent.buttons.input[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[1]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[1]].x = palm.x + 2*this.gap + this.dx_col + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[1]].y = palm.y + this.gap + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.x = this.parent.buttons.output[this.iconsSeq[1]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[1]].topleft.y = this.parent.buttons.output[this.iconsSeq[1]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[1]].x = palmOut.x + 2*this.gap + this.dx_colOut + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[1]].y = palmOut.y + this.gap + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[1]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[1]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[1]].calcTopLeft();
         }
 
         // 2
@@ -391,16 +378,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[2]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[2]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.x = this.parent.buttons.input[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[2]].topleft.y = this.parent.buttons.input[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[2]].calcTopLeft();
 
-
-            this.parent.buttons.output[this.iconsSeq[2]].x = palm.x + 2*this.gap + this.dx_col + (this.dx_col/2);
-            this.parent.buttons.output[this.iconsSeq[2]].y = palm.y + 2*this.gap + this.dy_row + (this.dy_row/2); 
-            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.x = this.parent.buttons.output[this.iconsSeq[2]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[2]].topleft.y = this.parent.buttons.output[this.iconsSeq[2]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[2]].x = palmOut.x + 2*this.gap + this.dx_colOut + (this.dx_colOut/2);
+            this.parent.buttons.output[this.iconsSeq[2]].y = palmOut.y + 2*this.gap + this.dy_rowOut + (this.dy_rowOut/2); 
+            this.parent.buttons.output[this.iconsSeq[2]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[2]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[2]].calcTopLeft();
         }
 
         // 3
@@ -409,15 +393,13 @@ export class LayoutFlow {
             this.parent.buttons.input[this.iconsSeq[3]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2);
             this.parent.buttons.input[this.iconsSeq[3]].width = this.dx_col;
             this.parent.buttons.input[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.x = this.parent.buttons.input[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.input[this.iconsSeq[3]].topleft.y = this.parent.buttons.input[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.input[this.iconsSeq[3]].calcTopLeft();
 
-            this.parent.buttons.output[this.iconsSeq[3]].x = palm.x + 2*this.gap + this.dx_col + (this.dx_col/2); 
-            this.parent.buttons.output[this.iconsSeq[3]].y = palm.y + 3*this.gap + 2*this.dy_row + (this.dy_row/2);
-            this.parent.buttons.output[this.iconsSeq[3]].width = this.dx_col;
-            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_row;
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.x = this.parent.buttons.output[this.iconsSeq[3]].x - this.dx_col/2; 
-            this.parent.buttons.output[this.iconsSeq[3]].topleft.y = this.parent.buttons.output[this.iconsSeq[3]].y - this.dy_row/2; 
+            this.parent.buttons.output[this.iconsSeq[3]].x = palmOut.x + 2*this.gap + this.dx_colOut + (this.dx_colOut/2); 
+            this.parent.buttons.output[this.iconsSeq[3]].y = palmOut.y + 3*this.gap + 2*this.dy_rowOut + (this.dy_rowOut/2);
+            this.parent.buttons.output[this.iconsSeq[3]].width = this.dx_colOut;
+            this.parent.buttons.output[this.iconsSeq[3]].height = this.dy_rowOut;
+            this.parent.buttons.output[this.iconsSeq[3]].calcTopLeft();
         }
     }
 
