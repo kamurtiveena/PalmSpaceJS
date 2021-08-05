@@ -74,7 +74,7 @@ export class LayoutFlow {
         this.dy_row = (this.height -3*this.gap) / 3;
 
 
-        const palmOut = this.parent.parent.palmOutRect();
+        const palmOut = this.parent.parent.palmOutRect(state);
         this.widthOut = palmOut.width;
         this.heightOut = palmOut.height;
         this.dx_colOut = (this.widthOut - 4*this.gap) / 3;
@@ -167,7 +167,7 @@ export class LayoutFlow {
         this.dx_col = (this.width - 4*this.gap) / 3;
         this.dy_row = (this.height -3*this.gap) / 3;
 
-        const palmOut = this.parent.palmOutRect();
+        const palmOut = this.parent.palmOutRect(state);
         this.widthOut = palmOut.width;
         this.heightOut = palmOut.height;
         this.dx_colOut = (this.widthOut - 4*this.gap) / 3;
@@ -258,7 +258,7 @@ export class LayoutFlow {
         this.dx_col = (this.width - 4*this.gap) / 2;
         this.dy_row = (this.height -3*this.gap) / 3;
 
-        const palmOut = this.parent.palmOutRect();
+        const palmOut = this.parent.palmOutRect(state);
         this.widthOut = palmOut.width;
         this.heightOut = palmOut.height;
         this.dx_colOut = (this.widthOut - 4*this.gap) / 2;
@@ -335,7 +335,7 @@ export class LayoutFlow {
         this.dx_col = (this.width - 4*this.gap) / 2;
         this.dy_row = (this.height -3*this.gap) / 3;
 
-        const palmOut = this.parent.palmOutRect();
+        const palmOut = this.parent.palmOutRect(state);
         this.widthOut = palmOut.width;
         this.heightOut = palmOut.height;
         this.dx_colOut = (this.widthOut - 4*this.gap) / 2;

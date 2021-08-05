@@ -29,9 +29,11 @@ class ButtonSelection {
     resetSelectedButton() {
         this.currentBtn.row_i = -1;
         this.currentBtn.col_j = -1;
+        this.currentBtn.btn_id = -1;
         
         this.previousBtn.row_i = -1;
         this.previousBtn.col_j = -1;
+        this.previousBtn.btn_id = -1;
 
         this.messages.selected = "";
 
@@ -43,6 +45,7 @@ class ButtonSelection {
     resetMarkedButton() {
         this.markedBtn.row_i = -1;
         this.markedBtn.col_j = -1;
+        this.markedBtn.btn_id = -1;
         this.messages.marked = "";
     }
 

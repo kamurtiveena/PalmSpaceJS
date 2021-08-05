@@ -106,10 +106,10 @@ class Technique {
 
         switch(state.menu.study2.presentation) {
             case PresentationType.Reordered:
-                this.palmOutRect = state.palmRect;
+                this.palmOutRect = this._palmOutRect;
                 break;
             case PresentationType.Existing:
-                this.palmOutRect = this._palmOutRect;
+                this.palmOutRect = this._palmOutRectStatic;
                 break;
             default:
                 console.error("invalid presentation option");
@@ -117,14 +117,18 @@ class Technique {
         }
     }
 
-    _palmOutRect() {
+    _palmOutRect(state) {
+        return state.palmRect();
+    }
+
+    _palmOutRectStatic(state) {
         return {
-            x: this.width - 150,
+            x: state.width - 150,
             y: 100,
             width: 70,
             height: 70,
             topleft: {
-                x: this.width - 300,
+                x: state.width - 300,
                 y: 5,
             }
         };
@@ -140,6 +144,55 @@ class Technique {
             }
 
         return -1;
+    }
+
+    drawTargetsLegendCenter(state) {
+        const width = 7*(state.technique.buttons.output.length - 1) + (state.technique.buttons.output.length * 100);
+        let px = (state.width/2) - width/2;
+        const py = (state.height/2) ;
+
+        for (let i = 0; i < state.technique.buttons.output.length; i ++) {
+            state.canvasCVOutCtx.drawImage(
+                state.technique.buttons.output[i].icon.image,
+                px,
+                py,
+                100,
+                100
+            );
+            
+            if (state.experiment.trial.started()) {
+                if (state.experiment.trial.currentTarget().btn_id == i) {
+                    state.canvasCVOutCtx.strokeStyle = "purple";
+                    state.canvasCVOutCtx.lineWidth = 3;
+                    state.canvasCVOutCtx.globalAlpha = 0.4;
+                    state.canvasCVOutCtx.strokeRect(
+                        px,
+                        py,
+                        100,
+                        100 
+                    );
+                    
+                    state.canvasCVOutCtx.font = "28px Georgia";
+                    state.canvasCVOutCtx.fillStyle = "black";
+                    state.canvasCVOutCtx.fillText(`Please select ${state.technique.buttons.output[i].icon.name}`, (state.width/2) - 130, 50);
+                
+                }
+                if (state.selection.currentBtn.btn_id == i) {
+                    state.canvasCVOutCtx.strokeStyle = "blue";
+                    state.canvasCVOutCtx.lineWidth = 3;
+                    state.canvasCVOutCtx.globalAlpha = 0.4;
+                    state.canvasCVOutCtx.strokeRect(
+                        px+5,
+                        py+5,
+                        90,
+                        90 
+                    );
+                }
+
+            }
+
+            px += 107;
+        }
     }
 
     drawTargetsLegend(state) {
@@ -396,7 +449,7 @@ class Technique {
         if (state.menu.study2.presentation == PresentationType.Existing) {
             state.canvasCVOutCtx.drawImage(
                 state.config.icons.hand.image,
-                state.width-200,
+                state.width-180,
                 27,
                 150,
                 170

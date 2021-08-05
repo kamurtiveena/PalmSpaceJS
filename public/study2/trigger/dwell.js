@@ -31,50 +31,52 @@ class Dwell {
     _updateBtnID(state) {
         this.curTime = performance.now();
         
-        // btn_id 0 based
-        this.selection.previousBtn.btn_id = this.selection.currentBtn.btn_id;
-        
-        const btn = state.selection.currentBtn;
-        
-        this.selection.currentBtn.btn_id = btn.btn_id;
-                
-        if (btn.btn_id != -1) {
-            if (this.selection.previousBtn.btn_id != -1) {
-                
-                if (this.selection.previousBtn.btn_id == btn.btn_id) {
-
-                    if (state.trigger.status == TRIGGER.ONHOLD) {
-                        console.error("dwell update status onhold");
-                    } else {
-                        const ptime = this.visitTimeBtnID[btn.btn_id];
-                        let d = this.curTime - ptime;
-                        if (d > state.config.DWELLWAIT_MS) {
-                            state.trigger.status = TRIGGER.RELEASED;
-                            d = state.config.DWELLWAIT_MS;
-                        } else if (2*d > state.config.DWELLWAIT_MS) {
-                            state.trigger.status = TRIGGER.PRESSED;
+        if (state.experiment.trial.started()) {
+            // btn_id 0 based
+            this.selection.previousBtn.btn_id = this.selection.currentBtn.btn_id;
+            
+            const btn = state.selection.currentBtn;
+            
+            this.selection.currentBtn.btn_id = btn.btn_id;
+                    
+            if (btn.btn_id != -1) {
+                if (this.selection.previousBtn.btn_id != -1) {
+                    
+                    if (this.selection.previousBtn.btn_id == btn.btn_id) {
+    
+                        if (state.trigger.status == TRIGGER.ONHOLD) {
+                            console.error("dwell update status onhold");
+                        } else {
+                            const ptime = this.visitTimeBtnID[btn.btn_id];
+                            let d = this.curTime - ptime;
+                            if (d > state.config.DWELLWAIT_MS) {
+                                state.trigger.status = TRIGGER.RELEASED;
+                                d = state.config.DWELLWAIT_MS;
+                            } else if (2*d > state.config.DWELLWAIT_MS) {
+                                state.trigger.status = TRIGGER.PRESSED;
+                            }
+                            
+                            state.progressBar.size = d/state.config.DWELLWAIT_MS;
                         }
-                        
-                        state.progressBar.size = d/state.config.DWELLWAIT_MS;
+                    } else {
+                        state.trigger.status = TRIGGER.OPEN;
+                        state.progressBar.size = 0;
+                        this.visitTimeBtnID[this.selection.previousBtn.btn_id] = this.curTime;
+                        this.visitTimeBtnID[btn.btn_id] = this.curTime;
                     }
+                            
                 } else {
                     state.trigger.status = TRIGGER.OPEN;
                     state.progressBar.size = 0;
-                    this.visitTimeBtnID[this.selection.previousBtn.btn_id] = this.curTime;
                     this.visitTimeBtnID[btn.btn_id] = this.curTime;
                 }
-                        
             } else {
                 state.trigger.status = TRIGGER.OPEN;
                 state.progressBar.size = 0;
-                this.visitTimeBtnID[btn.btn_id] = this.curTime;
+                if (this.selection.previousBtn.btn_id != -1) {
+                    this.visitTimeBtnID[this.selection.previousBtn.btn_id] = this.curTime;
+                }    
             }
-        } else {
-            state.trigger.status = TRIGGER.OPEN;
-            state.progressBar.size = 0;
-            if (this.selection.previousBtn.btn_id != -1) {
-                this.visitTimeBtnID[this.selection.previousBtn.btn_id] = this.curTime;
-            }    
         }
 
         this._updateOnTrialBtns(state);

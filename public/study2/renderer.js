@@ -534,7 +534,7 @@ window.onload = function () {
             switch (state.menu.study2.presentation) {
                 case PresentationType.Existing:
                     state.technique.drawOutputBoundary(state);
-                    state.technique.drawTargetsLegend(state);
+                    state.technique.drawTargetsLegendCenter(state);
 
                     break;
                     case PresentationType.Reordered:
