@@ -17,9 +17,16 @@ const TechniqueType = {
 
 
 const ReadingDirectionType = {
-    Unassigned: 0,
+    Unassigned: null,
     LtoR: "LtoR",
     RtoL: "RtoL"
 };
 
-export {TechniqueType, ReadingDirectionType};
+
+const PresentationType = {
+    Unassigned: null,
+    Existing: "Existing",
+    Reordered: "Reordered",    
+};
+
+export {TechniqueType, ReadingDirectionType, PresentationType};
