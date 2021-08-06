@@ -123,10 +123,10 @@ class Technique {
 
     _palmOutRectStatic(state) {
         return {
-            x: state.width - 150,
-            y: 100,
-            width: 70,
-            height: 70,
+            x: state.width - 160,
+            y: 125,
+            width: 90,
+            height: 90,
             topleft: {
                 x: state.width - 300,
                 y: 5,
@@ -146,12 +146,14 @@ class Technique {
         return -1;
     }
 
-    drawTargetsLegendCenter(state) {
+    drawTargetsLegend(state, y = 70) {
         const width = 7*(state.technique.buttons.output.length - 1) + (state.technique.buttons.output.length * 100);
         let px = (state.width/2) - width/2;
-        const py = (state.height/2) ;
+        const py = y;
+
 
         for (let i = 0; i < state.technique.buttons.output.length; i ++) {
+            state.canvasCVOutCtx.globalAlpha = 0.8;
             state.canvasCVOutCtx.drawImage(
                 state.technique.buttons.output[i].icon.image,
                 px,
@@ -162,21 +164,22 @@ class Technique {
             
             if (state.experiment.trial.started()) {
                 if (state.experiment.trial.currentTarget().btn_id == i) {
+                    state.canvasCVOutCtx.globalAlpha = 0.4;
                     state.canvasCVOutCtx.strokeStyle = "purple";
                     state.canvasCVOutCtx.lineWidth = 3;
-                    state.canvasCVOutCtx.globalAlpha = 0.4;
                     state.canvasCVOutCtx.strokeRect(
                         px,
                         py,
                         100,
                         100 
                     );
-                    
+
+                    state.canvasCVOutCtx.globalAlpha = 0.8;
                     state.canvasCVOutCtx.font = "28px Georgia";
                     state.canvasCVOutCtx.fillStyle = "black";
                     state.canvasCVOutCtx.fillText(`Please select ${state.technique.buttons.output[i].icon.name}`, (state.width/2) - 130, 50);
-                
                 }
+
                 if (state.selection.currentBtn.btn_id == i) {
                     state.canvasCVOutCtx.strokeStyle = "blue";
                     state.canvasCVOutCtx.lineWidth = 3;
@@ -188,43 +191,16 @@ class Technique {
                         90 
                     );
                 }
-
             }
 
             px += 107;
         }
-    }
 
-    drawTargetsLegend(state) {
-        const width = 7*(state.technique.buttons.output.length - 1) + (state.technique.buttons.output.length * 100);
-        let px = (state.width/2) - width/2;
-         
-        for (let i = 0; i < state.technique.buttons.output.length; i ++) {
-            state.canvasCVOutCtx.drawImage(
-                state.technique.buttons.output[i].icon.image,
-                px,
-                70,
-                100,
-                100
-            );
-
-            if (state.experiment.trial.currentTarget().btn_id == i && state.experiment.trial.started()) {
-                state.canvasCVOutCtx.strokeStyle = "purple";
-                state.canvasCVOutCtx.lineWidth = 3;
-                state.canvasCVOutCtx.globalAlpha = 0.4;
-                state.canvasCVOutCtx.strokeRect(
-                    px,
-                    70,
-                    100,
-                    100 
-                );
-                
-                state.canvasCVOutCtx.font = "28px Georgia";
-                state.canvasCVOutCtx.fillStyle = "black";
-                state.canvasCVOutCtx.fillText(`Please select ${state.technique.buttons.output[i].icon.name}`, (state.width/2) - 130, 50);
-            }
-
-            px += 107;
+        if (!state.experiment.trial.started()) {
+            state.canvasCVOutCtx.globalAlpha = 0.8;
+            state.canvasCVOutCtx.font = "28px Georgia";
+            state.canvasCVOutCtx.fillStyle = "black";
+            state.canvasCVOutCtx.fillText(`Please select`, (state.width/2) - 130, 50);
         }
     }
 
@@ -449,10 +425,10 @@ class Technique {
         if (state.menu.study2.presentation == PresentationType.Existing) {
             state.canvasCVOutCtx.drawImage(
                 state.config.icons.hand.image,
-                state.width-180,
+                state.width-200,
                 27,
-                150,
-                170
+                200,
+                220
             );
         }
 

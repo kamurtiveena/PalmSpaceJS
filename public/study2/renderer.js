@@ -458,7 +458,7 @@ window.onload = function () {
                         state.technique.reset();
                     } else if (state.experiment.trial.isCursorOverBackBtn(state)) {
                         goBackToMenu();
-                    } else if (state.experiment.trial.status == TrialState.STARTED) {
+                    } else if (state.experiment.trial.started()) {
 
                         state.technique.anchor.markSelected(state);
                         state.experiment.trial.incrementAttempts();
@@ -531,15 +531,15 @@ window.onload = function () {
         // }
 
         if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+            
+            state.technique.drawTargetsLegend(state);
+
             switch (state.menu.study2.presentation) {
                 case PresentationType.Existing:
                     state.technique.drawOutputBoundary(state);
-                    state.technique.drawTargetsLegendCenter(state);
-
                     break;
                     case PresentationType.Reordered:
                     state.technique.drawInputBoundary(state);
-                    state.technique.drawTargetsLegend(state);
                     break;
                 default:
                     console.error("presentation type invalid");
