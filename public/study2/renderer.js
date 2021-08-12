@@ -361,7 +361,8 @@ window.onload = function () {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         
-        if (state.technique.type == TechniqueType.H2S_Relative ||
+        if (state.menu.study2.presentation == PresentationType.Existing ||
+            state.technique.type == TechniqueType.H2S_Relative ||
             state.technique.type == TechniqueType.H2S_Absolute ||
             state.technique.type == TechniqueType.H2S_Relative_Finger
             ) {
@@ -491,7 +492,6 @@ window.onload = function () {
             state.overlay = state.imageCV.clone();
             
             state.technique.draw(state);
-            state.experiment.trial.drawStartBtn(state);
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
             // state.experiment.trial.drawTarget(state);
@@ -524,11 +524,13 @@ window.onload = function () {
         
         cv.imshow('cv_output_canvas', state.outputCV);
         
-        state.technique.drawCustom(state);
 
         // if (state.initiator.show || state.technique.alwaysShow) {
         //     state.technique.drawIconsOnGridCanvas(state);
         // }
+
+        state.technique.drawCustom(state);
+        state.experiment.trial.drawStartBtn(state);
 
         if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             
@@ -538,7 +540,7 @@ window.onload = function () {
                 case PresentationType.Existing:
                     state.technique.drawOutputBoundary(state);
                     break;
-                    case PresentationType.Reordered:
+                case PresentationType.Reordered:
                     state.technique.drawInputBoundary(state);
                     break;
                 default:

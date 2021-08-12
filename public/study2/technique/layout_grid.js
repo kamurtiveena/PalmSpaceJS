@@ -62,6 +62,10 @@ export class LayoutGrid {
             );
         }
 
+        if (state.isExistingPresentation()) {
+            this._align(state);
+        }
+
         this.isCursorInsideBtn = false; // todo what is it doing
     }
 
@@ -239,17 +243,6 @@ export class LayoutGrid {
     }
 
 
-    drawCustom(state) {
-        if (!state.initiator.left.show) return;
-
-        for (let i = 0; i < this.parent.buttons.output.length; i ++) {
-            // this.parent.buttons.output[i].draw(state);
-            this.parent._drawIconsOnCanvas(
-                state, 
-                this.parent.buttons.output[i]
-            );
-        }
-    }
 
     draw(state) {
         if (!state.initiator.left.show) return;

@@ -404,7 +404,11 @@ export class Trial {
         }
 
         let tl = null, br = null;
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+        if (state.isExistingPresentation()) {
+            const p = this._drawStartBtnTopRight(state);
+            tl = p.tl;
+            br = p.br;
+        } else if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
             state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             const p = this._drawStartBtnBtnID(state);
             tl = p.tl;
@@ -419,28 +423,44 @@ export class Trial {
         //     this.startBtn.color = new cv.Scalar(220, 248, 255);
         // }
 
-        if (this.status == TrialState.OPEN ||
-            this.status == TrialState.PAUSED) {
-
-            cv.rectangle(
-                state.overlay,
-                tl,
-                br,
-                this.startBtn.color,
-                -1
-            );
-
-            cv.putText(
-                state.overlay,
-                this.startBtn.label,
-                new cv.Point(-22 + (tl.x + br.x) / 2, (tl.y + br.y + 10) / 2),
-                cv.FONT_HERSHEY_SIMPLEX,
-                0.6,
-                new cv.Scalar(225, 225, 225),
-                2
-            );
-
+        // if (this.status == TrialState.OPEN ||
+        //     this.status == TrialState.PAUSED) {
+            
+        if (state.experiment.trial.started()) {
+            state.canvasCVOutCtx.fillStyle = "green";
+        } else {
+            state.canvasCVOutCtx.fillStyle = "black";
         }
+        state.canvasCVOutCtx.lineWidth = 3;
+        state.canvasCVOutCtx.globalAlpha = 0.7;
+        state.canvasCVOutCtx.fillRect(
+            tl.x,
+            tl.y,
+            br.x - tl.x,
+            br.y - tl.y 
+        );
+
+        state.canvasCVOutCtx.globalAlpha = 0.8;
+        state.canvasCVOutCtx.font = "18px Georgia";
+        state.canvasCVOutCtx.fillStyle = "white";
+        state.canvasCVOutCtx.fillText(this.startBtn.label, -20 + (tl.x + br.x) / 2, (tl.y + br.y + 10) / 2);
+        // }
+    }
+
+    _drawStartBtnTopRight(state) {
+        const p = state.initiator.left.landmarks[4];
+
+        const tl = new cv.Point(
+            state.width - 50,
+            100,
+        );
+
+        const br = new cv.Point(
+            state.width - 5,
+            130
+        );
+
+        return { tl, br };
     }
 
     _drawStartBtnBtnID(state) {

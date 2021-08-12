@@ -1,6 +1,7 @@
 import {Config} from './config.js';
 import {ButtonSelection} from './ds/btnselection.js';
 import {Point} from './ds/point.js';
+import {PresentationType} from './technique/constant.js';
 
 
 class State {
@@ -14,6 +15,13 @@ class State {
         this.menu.practice = false;
         this.menu.debug = false;
         this.menu.cellscnt = null;
+
+        this.menu.study2 = {
+            layout: null,
+            readingDirection: null,
+            numberOfButtonsPerRow: null,
+            presentation: null
+        };
 
         this.initiator = null;
         this.cursor = null;
@@ -35,6 +43,10 @@ class State {
             tail: null,
             cnt: 0
         }
+    }
+
+    isExistingPresentation() {
+        return this.menu.study2.presentation == PresentationType.Existing;
     }
 
     updateCursorPath() {

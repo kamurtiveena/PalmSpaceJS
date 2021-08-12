@@ -61,6 +61,10 @@ export class LayoutFlow {
             );
         }
 
+        if (state.isExistingPresentation()) {
+            this._align(state);
+        }
+
         this.isCursorInsideBtn = false; // todo what is it doing     
         
         
@@ -414,19 +418,6 @@ export class LayoutFlow {
 
     isCursorInside(state) {
         return this.isCursorInsideBtn;
-    }
-    
-
-    drawCustom(state) {
-        if (!state.initiator.left.show) return;
-
-        for (let i = 0; i < this.parent.buttons.output.length; i ++) {
-            // this.parent.buttons.output[i].draw(state);
-            this.parent._drawIconsOnCanvas(
-                state, 
-                this.parent.buttons.output[i]
-            );
-        }
     }
 
     draw(state) {

@@ -58,6 +58,18 @@ class Technique {
 
         this.isBtnSzDynamic = state.config.buttons.isDynamic;
 
+        switch(state.menu.study2.presentation) {
+            case PresentationType.Reordered:
+                this.palmOutRect = this._palmOutRect;
+                break;
+            case PresentationType.Existing:
+                this.palmOutRect = this._palmOutRectStatic;
+                break;
+            default:
+                console.error("invalid presentation option");
+                return;
+        }
+
         switch (this.name) {
             case "S2H_Palm":
                 this.anchor = new S2HRelative(this, state);
@@ -104,17 +116,7 @@ class Technique {
         this.width = state.width;
         this.height = state.height;
 
-        switch(state.menu.study2.presentation) {
-            case PresentationType.Reordered:
-                this.palmOutRect = this._palmOutRect;
-                break;
-            case PresentationType.Existing:
-                this.palmOutRect = this._palmOutRectStatic;
-                break;
-            default:
-                console.error("invalid presentation option");
-                return;
-        }
+        
     }
 
     _palmOutRect(state) {
@@ -162,24 +164,31 @@ class Technique {
                 100
             );
             
-            if (state.experiment.trial.started()) {
-                if (state.experiment.trial.currentTarget().btn_id == i) {
-                    state.canvasCVOutCtx.globalAlpha = 0.4;
+            if (state.experiment.trial.currentTarget().btn_id == i) {
+                if (state.experiment.trial.started()) {
+                    state.canvasCVOutCtx.globalAlpha = 0.7;
                     state.canvasCVOutCtx.strokeStyle = "purple";
+                    state.canvasCVOutCtx.lineWidth = 5;
+
+                } else {
+                    state.canvasCVOutCtx.globalAlpha = 0.4;
+                    state.canvasCVOutCtx.strokeStyle = "grey";
                     state.canvasCVOutCtx.lineWidth = 3;
-                    state.canvasCVOutCtx.strokeRect(
-                        px,
-                        py,
-                        100,
-                        100 
-                    );
-
-                    state.canvasCVOutCtx.globalAlpha = 0.8;
-                    state.canvasCVOutCtx.font = "28px Georgia";
-                    state.canvasCVOutCtx.fillStyle = "black";
-                    state.canvasCVOutCtx.fillText(`Please select ${state.technique.buttons.output[i].icon.name}`, (state.width/2) - 130, 50);
                 }
-
+                state.canvasCVOutCtx.strokeRect(
+                    px,
+                    py,
+                    100,
+                    100 
+                );
+                
+                state.canvasCVOutCtx.globalAlpha = 0.8;
+                state.canvasCVOutCtx.font = "28px Georgia";
+                state.canvasCVOutCtx.fillStyle = "black";
+                state.canvasCVOutCtx.fillText(`Please select ${state.technique.buttons.output[i].icon.name}`, (state.width/2) - 130, 50);
+            }
+                
+            if (state.experiment.trial.started()) {
                 if (state.selection.currentBtn.btn_id == i) {
                     state.canvasCVOutCtx.strokeStyle = "blue";
                     state.canvasCVOutCtx.lineWidth = 3;
@@ -196,15 +205,9 @@ class Technique {
             px += 107;
         }
 
-        if (!state.experiment.trial.started()) {
-            state.canvasCVOutCtx.globalAlpha = 0.8;
-            state.canvasCVOutCtx.font = "28px Georgia";
-            state.canvasCVOutCtx.fillStyle = "black";
-            state.canvasCVOutCtx.fillText(`Please select`, (state.width/2) - 130, 50);
-        }
     }
 
-    _drawIconsOnCanvas(state, landmarkBtn) {        
+    _drawIconsOnCanvas(state, landmarkBtn) {    
         // this._drawShapes(state, landmarkBtn);
         const p = landmarkBtn.box();
         state.canvasCVOutCtx.drawImage(
@@ -217,11 +220,15 @@ class Technique {
     }
 
     _drawBtnsBoundary(state, btns) {
-        if (!state.initiator.left.show) return;
-    
-        state.canvasCVOutCtx.strokeStyle = "purple";
+        // if (!state.initiator.left.show) return;
+        console.log("_drawBtnsBoundary()");
+        if (!state.initiator.left.show)
+            state.canvasCVOutCtx.strokeStyle = "red";
+        else 
+            state.canvasCVOutCtx.strokeStyle = "green";
+
         state.canvasCVOutCtx.lineWidth = 3;
-        state.canvasCVOutCtx.globalAlpha = 0.4;
+        state.canvasCVOutCtx.globalAlpha = 0.7;
     
         for (let i = 0; i < btns.length; i ++) {
             const p = btns[i].box();
@@ -422,6 +429,7 @@ class Technique {
     }
 
     drawCustom(state) {
+        state.canvasCVOutCtx.globalAlpha = 0.8;
         if (state.menu.study2.presentation == PresentationType.Existing) {
             state.canvasCVOutCtx.drawImage(
                 state.config.icons.hand.image,
@@ -432,7 +440,15 @@ class Technique {
             );
         }
 
-        this.anchor.drawCustom(state);
+        if (!state.isExistingPresentation() && !state.initiator.left.show) return;
+
+        for (let i = 0; i < this.buttons.output.length; i ++) {
+            // this.buttons.output[i].draw(state);
+            this._drawIconsOnCanvas(
+                state, 
+                this.buttons.output[i]
+            );
+        }
     }
 
     reset() {
