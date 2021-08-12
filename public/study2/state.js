@@ -45,6 +45,11 @@ class State {
         }
     }
 
+    trialCombinationStr() {
+        // return technique.name + "_" + menu.cellscnt.row + "x" + menu.cellscnt.col;
+        return this.menu.study2.layout + "_" + this.menu.study2.readingDirection + "_" + this.menu.study2.presentation;                
+    }
+
     isExistingPresentation() {
         return this.menu.study2.presentation == PresentationType.Existing;
     }

@@ -550,7 +550,7 @@ window.onload = function () {
         }
 
         {
-            canvasCVOutCtx.font = "24px Georgia";
+            canvasCVOutCtx.font = "22px Georgia";
             canvasCVOutCtx.fillStyle = "fuchsia";
 
             canvasCVOutCtx.fillText(
@@ -560,7 +560,7 @@ window.onload = function () {
             );
 
             canvasCVOutCtx.fillText(
-                state.technique.name + "_" + state.menu.cellscnt.row + "x" + state.menu.cellscnt.col,
+                state.trialCombinationStr(),
                 state.width - 220, 
                 30
             );
@@ -638,6 +638,11 @@ window.onload = function () {
                 state.technique.inputBound.bottomright.x - state.technique.inputBound.topleft.x,
                 state.technique.inputBound.bottomright.y - state.technique.inputBound.topleft.y
             );
+        }
+
+        if (state.isExistingPresentation()) {
+            // drawing small camera preview 
+            canvasCVOutCtx.drawImage(results.image, state.width - 210, state.height/2 - 60, 200, 120);
         }
 
         if (state.menu.debug) {
