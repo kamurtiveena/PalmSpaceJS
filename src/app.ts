@@ -225,10 +225,10 @@ app.post('/save/:tablename', async (req, res) => {
                 ${body.attempts}, 
                 ${body.visited_cells},
                 ${body.valid},
-                ${body.layout},
-                ${body.readingDirection},
-                ${body.numberOfButtonsPerRow},
-                ${body.presentation}
+                "${body.layout}",
+                "${body.readingDirection}",
+                "${body.numberOfButtonsPerRow}",
+                "${body.presentation}"
             );`;
 
         const result = await conn.query(sql);
