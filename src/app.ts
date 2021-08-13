@@ -138,6 +138,10 @@ app.post('/admin/create/table/:name', async (req, res) => {
             visited_cells INT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             valid BOOL DEFAULT TRUE
+            layout VARCHAR(255) NOT NULL,
+            readingDirection VARCHAR(255) NOT NULL,
+            numberOfButtonsPerRow VARCHAR(255) NOT NULL,
+            presentation VARCHAR(255) NOT NULL
         );`;
 
         console.log(sql);
@@ -197,7 +201,11 @@ app.post('/save/:tablename', async (req, res) => {
                 cursor_dist_px, 
                 attempts, 
                 visited_cells,
-                valid
+                valid,
+                layout,
+                readingDirection,
+                numberOfButtonsPerRow,
+                presentation
             ) 
             VALUES (
                 ${body.user_id}, 
@@ -216,7 +224,11 @@ app.post('/save/:tablename', async (req, res) => {
                 ${body.cursor_dist_px}, 
                 ${body.attempts}, 
                 ${body.visited_cells},
-                ${body.valid}
+                ${body.valid},
+                ${body.layout},
+                ${body.readingDirection},
+                ${body.numberOfButtonsPerRow},
+                ${body.presentation}
             );`;
 
         const result = await conn.query(sql);
