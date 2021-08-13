@@ -137,7 +137,7 @@ app.post('/admin/create/table/:name', async (req, res) => {
             attempts INT,
             visited_cells INT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            valid BOOL DEFAULT TRUE
+            valid BOOL DEFAULT TRUE,
             layout VARCHAR(255) NOT NULL,
             readingDirection VARCHAR(255) NOT NULL,
             numberOfButtonsPerRow VARCHAR(255) NOT NULL,
