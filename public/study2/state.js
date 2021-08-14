@@ -1,7 +1,7 @@
 import {Config} from './config.js';
 import {ButtonSelection} from './ds/btnselection.js';
 import {Point} from './ds/point.js';
-import {PresentationType} from './technique/constant.js';
+import {PresentationType, ReadingDirectionType, TechniqueType} from './technique/constant.js';
 
 
 class State {
@@ -43,6 +43,47 @@ class State {
             tail: null,
             cnt: 0
         }
+
+        this.imageCombinations = {}
+
+        console.log(PresentationType, TechniqueType, ReadingDirectionType);
+
+        let catID = 0;
+
+        const layouts = [TechniqueType.LayoutFlow, TechniqueType.LayoutGrid];
+        for (const [presentation, _] of Object.entries(PresentationType)) {
+            if (presentation == "Unassigned") continue;
+            this.imageCombinations[presentation] = {}
+            for (const layout of layouts) {
+                this.imageCombinations[presentation][layout] = {}
+                
+                for (const [readingDirection, _] of Object.entries(ReadingDirectionType)) {
+                    if (readingDirection == "Unassigned") continue;
+                    this.imageCombinations[presentation][layout][readingDirection] = this.config.icons.categories[catID];
+                    catID ++;
+                    console.log(layout, presentation, readingDirection);
+                }
+            }
+        }
+
+        console.log(this.imageCombinations);
+    }
+
+    study2ImageIndices() {
+        const ret = [];
+
+
+        console.log("this.menu.study2.presentation", this.menu.study2.presentation, "this.menu.study2.layout", this.menu.study2.layout, "this.menu.study2.readingDirection", this.menu.study2.readingDirection)
+
+        console.log(this.imageCombinations);
+        console.log(`this.imageCombinations[${this.menu.study2.presentation}]`, this.imageCombinations[this.menu.study2.presentation]);
+        const categoryName = this.imageCombinations[this.menu.study2.presentation]["Layout" + this.menu.study2.layout][this.menu.study2.readingDirection];
+
+        for (let i = 0; i < this.config.icons.all.length; i ++) {
+            if (this.config.icons.all[i].type == categoryName) ret.push(i);
+        }
+
+        return ret;
     }
 
     trialCombinationStr() {

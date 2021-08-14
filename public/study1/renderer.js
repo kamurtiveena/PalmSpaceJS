@@ -169,8 +169,6 @@ window.onload = function () {
         state.myWorker = null;
     }
 
-    let menuElement = document.getElementById("menu");
-
     // Our input frames will come from here.
 
     const videoContainer = document.getElementById("video_container");

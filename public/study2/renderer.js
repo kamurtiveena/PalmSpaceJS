@@ -555,7 +555,7 @@ window.onload = function () {
 
             canvasCVOutCtx.fillText(
                 state.experiment.trial.completedTargetsStr(),
-                state.width - 100, 
+                state.width - 110, 
                 state.height - 20
             );
 

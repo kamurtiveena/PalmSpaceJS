@@ -221,7 +221,6 @@ class Technique {
 
     _drawBtnsBoundary(state, btns) {
         // if (!state.initiator.left.show) return;
-        console.log("_drawBtnsBoundary()");
         if (!state.initiator.left.show)
             state.canvasCVOutCtx.strokeStyle = "red";
         else 
