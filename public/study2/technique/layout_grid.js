@@ -52,13 +52,15 @@ export class LayoutGrid {
             output: []
         };
 
+        const imgIndices = state.study2ImageIndices();
+
         for (let i = 0; i < state.config.landmarkButtons.total; i ++) {
             this.parent.buttons.input.push(
                 new LandmarkButton(this, i, state)
             );
 
             this.parent.buttons.output.push(
-                new LandmarkButton(this, i, state, state.config.icons.all[i])
+                new LandmarkButton(this, i, state, state.config.icons.all[imgIndices[i]])
             );
         }
 

@@ -1,18 +1,18 @@
 
 const TechniqueType = {
-    Unassigned: 0,
-    S2H_Relative: 1,
-    S2H_Absolute: 2,
-    H2S_Relative: 3,
-    H2S_Absolute: 4,
-    MidAir: 5,
-    FishEye: 6,
-    S2H_Relative_Finger: 7,
-    H2S_Relative_Finger: 8,
-    Landmark_Btn: 9,
-    Landmark_Btn_FishEye: 10,
-    LayoutGrid: 11,
-    LayoutFlow: 12
+    Unassigned: null,
+    S2H_Relative: "S2H_Relative",
+    S2H_Absolute: "S2H_Absolute",
+    H2S_Relative: "H2S_Relative",
+    H2S_Absolute: "H2S_Absolute",
+    MidAir: "MidAir",
+    FishEye: "FishEye",
+    S2H_Relative_Finger: "S2H_Relative_Finger",
+    H2S_Relative_Finger: "H2S_Relative_Finger",
+    Landmark_Btn: "Landmark_Btn",
+    Landmark_Btn_FishEye: "Landmark_Btn_FishEye",
+    LayoutGrid: "LayoutGrid",
+    LayoutFlow: "LayoutFlow"
 }
 
 
