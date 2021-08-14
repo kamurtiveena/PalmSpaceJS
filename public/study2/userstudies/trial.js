@@ -35,16 +35,20 @@ export class Trial {
         }
 
         this.targetList = [];
-        for (let i = 0; i < state.config.experiment.repetitions; i++) {
-            for (let j = 0; j < this.permutation.length; j++) {
+        for (let i = 0; i < state.config.experiment.repetitions;) {
+            let plist = [];
+            
+            for (let j = 0;i < state.config.experiment.repetitions && j < this.permutation.length; j++) {
                 const k = Math.floor(Math.random() *(this.permutation.length - j)) + j;
                 const tmp = this.permutation[j];
                 this.permutation[j] = this.permutation[k];
                 this.permutation[k] = tmp;
+                plist.push(this.permutation[k]);
+                i++;
             }
 
-            for (let j = 0; j < this.permutation.length; j ++) 
-                this.targetList.push(this.permutation[j]);
+            for (let j = 0; j < plist.length; j ++) 
+                this.targetList.push(plist[j]);
         }
 
         this.targetID = -1;

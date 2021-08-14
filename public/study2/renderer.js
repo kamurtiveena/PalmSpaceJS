@@ -16,10 +16,19 @@ window.onload = function () {
     const userIDElement = document.getElementById('selectUserID');
 
     for (let i = 1; i < 101; i++) {
-        var opt = document.createElement('option');
+        let opt = document.createElement('option');
         opt.appendChild(document.createTextNode(i));
         opt.value = i;
         userIDElement.appendChild(opt);
+    }
+
+    const repetitionsElem = document.getElementById('repetitions');
+    for (let i = 1; i <= 20; i++) {
+        let opt = document.createElement('option');
+        opt.appendChild(document.createTextNode(i));
+        opt.value = i;
+        if (i == 20) opt.selected = true;
+        repetitionsElem.appendChild(opt);
     }
 
     document.getElementById('size_input').style.display = 'none';
@@ -35,21 +44,21 @@ window.onload = function () {
     {
         const techniqueList = document.getElementById('technique_list');
 
-        for (let i = 0; i < techniqueList.children.length; i++) {
-            const c = techniqueList.children[i];
-            if (c.className.includes('form-check')) {
-                const u = c.firstElementChild;
-                if (u.value.includes('Landmark')) {
-                    u.onclick = function () {
-                        document.getElementById('no_of_cells_per_rowcol').style.display = 'none';
-                    }
-                } else {
-                    u.onclick = function () {
-                        document.getElementById('no_of_cells_per_rowcol').style.display = 'block';
-                    }
-                }
-            }
-        }
+        // for (let i = 0; i < techniqueList.children.length; i++) {
+        //     const c = techniqueList.children[i];
+        //     if (c.className.includes('form-check')) {
+        //         const u = c.firstElementChild;
+        //         if (u.value.includes('Landmark')) {
+        //             u.onclick = function () {
+        //                 document.getElementById('no_of_cells_per_rowcol').style.display = 'none';
+        //             }
+        //         } else {
+        //             u.onclick = function () {
+        //                 document.getElementById('no_of_cells_per_rowcol').style.display = 'block';
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     const cellsPerCol = document.getElementById('selectCellsCol');
@@ -85,18 +94,20 @@ window.onload = function () {
 
     {
         const practiceElem = document.getElementById('practiceCheck');
-        const repetitionsElem = document.getElementById('repetitions');
         
         practiceElem.onchange = function(ev) {
-            if (practiceElem.checked) {
-                const opts = repetitionsElem.options;
-                for (let opt, j = 0; opt = opts[j]; j++) {
-                    if (opt.value == '2') {
-                        repetitionsElem.selectedIndex = j;
-                        break;
-                    }
-                }
 
+            let v = '20';
+            if (ev && ev.target.checked) v = '5';
+            const opts = repetitionsElem.options;
+            for (let opt, j = 0; opt = opts[j]; j++) {
+                if (opt.value == v) {
+                    repetitionsElem.selectedIndex = j;
+                    break;
+                }
+            }
+            
+            if (practiceElem.checked) {
                 const colopts = cellsPerCol.options;
                 for (let opt, j = 0; opt = colopts[j]; j++) {
                     if (opt.value == '3') {
@@ -118,12 +129,7 @@ window.onload = function () {
         practiceElem.onchange();
     }
 
-    let state = new State();
-
-    state.experiment = {
-        study1: {},
-        study2: {},
-    };
+    const state = new State();
 
     if (window.Worker) {
         state.myWorker = new Worker("worker.js");
@@ -555,13 +561,13 @@ window.onload = function () {
 
             canvasCVOutCtx.fillText(
                 state.experiment.trial.completedTargetsStr(),
-                state.width - 110, 
+                state.width - 100, 
                 state.height - 20
             );
 
             canvasCVOutCtx.fillText(
                 state.trialCombinationStr(),
-                state.width - 220, 
+                state.width - 240, 
                 30
             );
 

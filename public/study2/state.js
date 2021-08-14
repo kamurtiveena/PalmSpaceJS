@@ -44,6 +44,11 @@ class State {
             cnt: 0
         }
 
+        this.experiment = {
+            study1: {},
+            study2: {},
+        };
+
         this.imageCombinations = {}
 
         console.log(PresentationType, TechniqueType, ReadingDirectionType);
