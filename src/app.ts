@@ -69,7 +69,8 @@ app.use(authenticator);
 
 
 app.get('/', (req, res) => {
-    res.send(`${PORT} working`);
+    res.redirect("/study2");
+    // res.send(`${PORT} working`);
 });
 
 // Route to test database connection
