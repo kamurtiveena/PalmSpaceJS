@@ -1,7 +1,7 @@
 class Config {
     constructor() {
         this.TRANSPARENCY_ALPHA = 0.5;
-        this.DWELLWAIT_MS = 600;
+        this.DWELLWAIT_MS = 1000;
         this.CAMWIDTH = 1280;
         this.CAMHEIGHT = 720;
         this.IMGPALM_DIMMAX = Math.min(this.CAMHEIGHT, this.CAMWIDTH) / 3;
@@ -274,8 +274,8 @@ class Config {
                 },
                 {
                     "image": "",
-                    "name": "desktop",
-                    "src": "res/images/desktop.png",
+                    "name": "monitor",
+                    "src": "res/images/monitor.png",
                     "type": "electronics"
                 },
                 {

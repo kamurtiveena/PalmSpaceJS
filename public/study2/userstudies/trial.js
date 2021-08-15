@@ -26,11 +26,19 @@ export class Trial {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
             state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid) {
                 for (let btn_id = 0; btn_id < state.config.landmarkButtons.total; btn_id++) 
-                    this.permutation.push({ "btn_id": btn_id });
+                    this.permutation.push({ 
+                        "btn_id": btn_id, 
+                        "row_i": null, 
+                        "col_j": null 
+                    });
         } else {
             for (let row_i = 1; row_i <= state.menu.cellscnt.row; row_i ++)
                 for (let col_j = 1; col_j <= state.menu.cellscnt.col; col_j ++) {
-                    this.permutation.push({ "row_i": row_i, "col_j": col_j });
+                    this.permutation.push({ 
+                        "btn_id": null, 
+                        "row_i": row_i, 
+                        "col_j": col_j 
+                    });
                 }
         }
 
@@ -41,15 +49,29 @@ export class Trial {
             for (let j = 0;i < state.config.experiment.repetitions && j < this.permutation.length; j++) {
                 const k = Math.floor(Math.random() *(this.permutation.length - j)) + j;
                 const tmp = this.permutation[j];
-                this.permutation[j] = this.permutation[k];
-                this.permutation[k] = tmp;
+                this.permutation[j] = {
+                    "btn_id": this.permutation[k].btn_id,
+                    "row_i": this.permutation[k].row_i,
+                    "col_j": this.permutation[k].col_j
+                };
+
+                this.permutation[k] = {
+                    "btn_id": tmp.btn_id,
+                    "row_i": tmp.row_i,
+                    "col_j": tmp.col_j
+                };
+
                 plist.push(this.permutation[k]);
                 i++;
             }
-
+            
+            console.log("this.permutation:", this.permutation);
+            
             for (let j = 0; j < plist.length; j ++) 
                 this.targetList.push(plist[j]);
         }
+
+        console.log("this.targetList:", this.targetList);
 
         this.targetID = -1;
         this.targetSeqSize = this.targetList.length;

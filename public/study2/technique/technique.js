@@ -160,8 +160,8 @@ class Technique {
                 state.technique.buttons.output[i].icon.image,
                 px,
                 py,
-                100,
-                100
+                90,
+                90
             );
             
             if (state.experiment.trial.currentTarget().btn_id == i) {

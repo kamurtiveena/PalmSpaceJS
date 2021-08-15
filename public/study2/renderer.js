@@ -536,7 +536,9 @@ window.onload = function () {
         // }
 
         state.technique.drawCustom(state);
-        state.experiment.trial.drawStartBtn(state);
+        if (!state.experiment.trial.started()) {
+            state.experiment.trial.drawStartBtn(state);
+        }
 
         if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             
