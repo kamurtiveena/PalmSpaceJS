@@ -248,6 +248,7 @@ window.onload = function () {
             readingDirection: checkRadio("menuReadingDirection"),
             numberOfButtonsPerRow: parseInt(checkRadio("menuNumberOfButtonsPerRow")),
             presentation: checkRadio("menupresentation"),
+            startButtonPauseTime: parseInt(document.getElementById("startbtn_pausetime_sec").value)
         };
 
         state.config.landmarkButtons.total = state.menu.study2.numberOfButtonsPerRow;
@@ -425,7 +426,7 @@ window.onload = function () {
             state.trigger.reset(state);
         }
 
-        const remainingStartButtonPauseTime = state.experiment.trial.remainingStartButtonPauseTime();
+        const remainingStartButtonPauseTime = state.experiment.trial.remainingStartButtonPauseTime(state);
 
         if (state.initiator.show || state.technique.alwaysShow) {
 
@@ -553,7 +554,6 @@ window.onload = function () {
             state.technique.drawTargetsLegend(state);
 
             if (remainingStartButtonPauseTime <= 0) {
-
                 switch (state.menu.study2.presentation) {
                     case PresentationType.Existing:
                         state.technique.drawOutputBoundary(state);

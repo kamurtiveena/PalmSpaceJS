@@ -106,8 +106,8 @@ export class Trial {
         this.startButtonPauseTime = performance.now();
     }
 
-    remainingStartButtonPauseTime() {
-        return Math.max(0, 5 - Math.round((performance.now() - this.startButtonPauseTime)/1000));
+    remainingStartButtonPauseTime(state) {
+        return Math.max(0, state.menu.study2.startButtonPauseTime - Math.round((performance.now() - this.startButtonPauseTime)/1000));
     }
 
 
@@ -219,7 +219,7 @@ export class Trial {
 
     isCursorOverStartBtn(state) {
 
-        if (this.remainingStartButtonPauseTime() > 0) return;
+        if (this.remainingStartButtonPauseTime(state) > 0) return;
 
         if (state.cursor) {
             if (this.status != TrialState.DONE) {
