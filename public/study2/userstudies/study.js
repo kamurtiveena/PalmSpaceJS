@@ -30,7 +30,8 @@ class Study {
             layout: state.menu.study2.layout,
             readingDirection: state.menu.study2.readingDirection,
             numberOfButtonsPerRow: state.menu.study2.numberOfButtonsPerRow,
-            presentation: state.menu.study2.presentation
+            presentation: state.menu.study2.presentation,
+            events: state.experiment.trial.stats.events
         }
 
         state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study2`, body]);

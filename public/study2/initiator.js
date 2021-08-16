@@ -109,9 +109,9 @@ class Initiator {
                     this.left.dataID = i;
 
                     for (let j = 0; j < 21; j++) {
-                        this.left.landmarks[j].x = (0.9 * this.left.landmarks[j].x) + (0.1 * results.multiHandLandmarks[i][j].x * state.width);
-                        this.left.landmarks[j].y = (0.9 * this.left.landmarks[j].y) + (0.1 * results.multiHandLandmarks[i][j].y * state.height);
-                        this.left.landmarks[j].z = (0.9 * this.left.landmarks[j].z) + (0.1 * results.multiHandLandmarks[i][j].z);
+                        this.left.landmarks[j].x = (0.5 * this.left.landmarks[j].x) + (0.5 * results.multiHandLandmarks[i][j].x * state.width);
+                        this.left.landmarks[j].y = (0.5 * this.left.landmarks[j].y) + (0.5 * results.multiHandLandmarks[i][j].y * state.height);
+                        this.left.landmarks[j].z = (0.5 * this.left.landmarks[j].z) + (0.5 * results.multiHandLandmarks[i][j].z);
                     }
 
                     this.left.area = area(this.left.landmarks);

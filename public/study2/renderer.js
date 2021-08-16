@@ -468,7 +468,7 @@ window.onload = function () {
                     } else if (state.experiment.trial.started()) {
 
                         state.technique.anchor.markSelected(state);
-                        state.experiment.trial.incrementAttempts();
+                        state.experiment.trial.incrementAttempts(state);
 
                         if (state.experiment.trial.matched(state)) {
                             state.experiment.trial.clickTarget(state);

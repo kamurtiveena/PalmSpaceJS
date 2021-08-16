@@ -99,7 +99,8 @@ export class Trial {
             },
             visitedCells: (new Array(this.targetSeqSize)).fill(0),
             targetsLastVisitedTime: (new Array(this.targetSeqSize)).fill(0),
-            valid: true
+            valid: true,
+            events: ""
         }
     }
 
@@ -200,7 +201,9 @@ export class Trial {
 
     }
 
-    incrementAttempts() {
+    incrementAttempts(state) {
+        const d = performance.now() - this.targetsStartTime[this.targetID];
+        this.stats.events += `${this.stats.attempts[this.targetID]}:${state.selection.currentBtn.btn_id}:${d};`;
         this.stats.attempts[this.targetID]++;
     }
 
@@ -557,6 +560,8 @@ export class Trial {
         this.status = TrialState.STARTED;
         this.startBtn.label = 'Next';
         this.targetsStartTime[this.targetID] = performance.now();
+        this.stats.valid = true;
+        this.stats.events = "";
     }
 
     generateTarget(state) {
