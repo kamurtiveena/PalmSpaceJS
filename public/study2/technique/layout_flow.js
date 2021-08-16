@@ -80,7 +80,7 @@ export class LayoutFlow {
         this.dy_row = (this.height -3*this.gap) / 3;
 
 
-        const palmOut = this.parent.parent.palmOutRect(state);
+        const palmOut = this.parent.palmOutRect(state);
         this.widthOut = palmOut.width;
         this.heightOut = palmOut.height;
         this.dx_colOut = (this.widthOut - 4*this.gap) / 3;

@@ -158,8 +158,8 @@ class Technique {
             state.canvasCVOutCtx.globalAlpha = 0.8;
             state.canvasCVOutCtx.drawImage(
                 state.technique.buttons.output[i].icon.image,
-                px,
-                py,
+                px+5,
+                py+5,
                 90,
                 90
             );
@@ -176,10 +176,10 @@ class Technique {
                     state.canvasCVOutCtx.lineWidth = 3;
                 }
                 state.canvasCVOutCtx.strokeRect(
-                    px,
-                    py,
-                    100,
-                    100 
+                    px-5,
+                    py-5,
+                    110,
+                    110 
                 );
                 
                 state.canvasCVOutCtx.globalAlpha = 0.8;
@@ -194,10 +194,10 @@ class Technique {
                     state.canvasCVOutCtx.lineWidth = 3;
                     state.canvasCVOutCtx.globalAlpha = 0.4;
                     state.canvasCVOutCtx.strokeRect(
-                        px+5,
-                        py+5,
-                        90,
-                        90 
+                        px,
+                        py,
+                        100,
+                        100 
                     );
                 }
             }
@@ -428,6 +428,7 @@ class Technique {
     }
 
     drawCustom(state) {
+        // draw hand image at the top-right corner
         state.canvasCVOutCtx.globalAlpha = 0.8;
         if (state.menu.study2.presentation == PresentationType.Existing) {
             state.canvasCVOutCtx.drawImage(
@@ -441,6 +442,7 @@ class Technique {
 
         if (!state.isExistingPresentation() && !state.initiator.left.show) return;
 
+        // draw targets
         for (let i = 0; i < this.buttons.output.length; i ++) {
             // this.buttons.output[i].draw(state);
             this._drawIconsOnCanvas(

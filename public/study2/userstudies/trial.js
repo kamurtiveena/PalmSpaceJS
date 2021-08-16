@@ -44,7 +44,7 @@ export class Trial {
 
         this.targetList = [];
         for (let i = 0; i < state.config.experiment.repetitions;) {
-            let plist = [];
+            const plist = [];
             
             for (let j = 0;i < state.config.experiment.repetitions && j < this.permutation.length; j++) {
                 const k = Math.floor(Math.random() *(this.permutation.length - j)) + j;
@@ -61,7 +61,7 @@ export class Trial {
                     "col_j": tmp.col_j
                 };
 
-                plist.push(this.permutation[k]);
+                plist.push(this.permutation[j]);
                 i++;
             }
             
