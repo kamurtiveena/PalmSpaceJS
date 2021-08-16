@@ -333,7 +333,8 @@ window.onload = function () {
         const hands = new Hands({
             locateFile: (file) => {
                 // return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                return `third_party/mediapipe/hands/${file}`;
+                // return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
             }
         });
         
@@ -651,6 +652,20 @@ window.onload = function () {
         if (state.isExistingPresentation()) {
             // drawing small camera preview 
             canvasCVOutCtx.drawImage(results.image, state.width - 210, state.height/2 - 60, 200, 120);
+        }
+
+        {
+            const u = state.experiment.trial.remainingStartButtonPauseTime();
+            if (u > 0) {
+                canvasCVOutCtx.font = "30px Georgia";
+                canvasCVOutCtx.fillStyle = "fuchsia";
+
+                canvasCVOutCtx.fillText(
+                    `Waiting for ${u} seconds.`,
+                    5, 
+                    80
+                );
+            }
         }
 
         if (state.menu.debug) {

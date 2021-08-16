@@ -101,7 +101,13 @@ export class Trial {
             targetsLastVisitedTime: (new Array(this.targetSeqSize)).fill(0),
             valid: true,
             events: ""
-        }
+        };
+
+        this.startButtonPauseTime = performance.now();
+    }
+
+    remainingStartButtonPauseTime() {
+        return Math.max(0, 5 - Math.round((performance.now() - this.startButtonPauseTime)/1000));
     }
 
 
@@ -212,6 +218,9 @@ export class Trial {
     }
 
     isCursorOverStartBtn(state) {
+
+        if (this.remainingStartButtonPauseTime() > 0) return;
+
         if (state.cursor) {
             if (this.status != TrialState.DONE) {
                 const r = this.startBtn.rect;
@@ -623,6 +632,8 @@ export class Trial {
             (this.targetsEndTime[this.targetID] - this.targetsStartTime[this.targetID]);
 
         this.status = TrialState.PAUSED;
+
+        this.startButtonPauseTime = performance.now();
     }
 
     drawTarget(state) {
