@@ -425,6 +425,8 @@ window.onload = function () {
             state.trigger.reset(state);
         }
 
+        const remainingStartButtonPauseTime = state.experiment.trial.remainingStartButtonPauseTime();
+
         if (state.initiator.show || state.technique.alwaysShow) {
 
             state.technique.calculate(state);
@@ -498,7 +500,10 @@ window.onload = function () {
             
             state.overlay = state.imageCV.clone();
             
-            state.technique.draw(state);
+            if (remainingStartButtonPauseTime <= 0) {
+                state.technique.draw(state);
+            }
+
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
             // state.experiment.trial.drawTarget(state);
@@ -536,26 +541,31 @@ window.onload = function () {
         //     state.technique.drawIconsOnGridCanvas(state);
         // }
 
-        state.technique.drawCustom(state);
-        if (!state.experiment.trial.started()) {
-            state.experiment.trial.drawStartBtn(state);
+        if (remainingStartButtonPauseTime <= 0) {
+            state.technique.drawCustom(state);
+            if (!state.experiment.trial.started()) {
+                state.experiment.trial.drawStartBtn(state);
+            }
         }
 
         if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             
             state.technique.drawTargetsLegend(state);
 
-            switch (state.menu.study2.presentation) {
-                case PresentationType.Existing:
-                    state.technique.drawOutputBoundary(state);
-                    break;
-                case PresentationType.Reordered:
-                    state.technique.drawInputBoundary(state);
-                    break;
-                default:
-                    console.error("presentation type invalid");
-                    return;
-            }   
+            if (remainingStartButtonPauseTime <= 0) {
+
+                switch (state.menu.study2.presentation) {
+                    case PresentationType.Existing:
+                        state.technique.drawOutputBoundary(state);
+                        break;
+                    case PresentationType.Reordered:
+                        state.technique.drawInputBoundary(state);
+                        break;
+                    default:
+                        console.error("presentation type invalid");
+                        return;
+                }   
+            }
         }
 
         {
@@ -583,7 +593,8 @@ window.onload = function () {
             }
         }    
 
-        if (state.initiator.left.show &&
+        if ((remainingStartButtonPauseTime <= 0) &&
+            state.initiator.left.show &&
             (
                 (
                     state.selection.currentBtn.row_i != -1 &&
@@ -637,17 +648,17 @@ window.onload = function () {
             canvasCVOutCtx.stroke();
         }
 
-        if (state.technique.type == TechniqueType.H2S_Absolute && state.technique.inputBound && state.technique.inputBound) {
-            canvasCVOutCtx.strokeStyle = "white";
-            canvasCVOutCtx.lineWidth = 3;
-            canvasCVOutCtx.globalAlpha = 0.4;
-            canvasCVOutCtx.strokeRect(
-                state.technique.inputBound.topleft.x,
-                state.technique.inputBound.topleft.y,
-                state.technique.inputBound.bottomright.x - state.technique.inputBound.topleft.x,
-                state.technique.inputBound.bottomright.y - state.technique.inputBound.topleft.y
-            );
-        }
+        // if (state.technique.type == TechniqueType.H2S_Absolute && state.technique.inputBound && state.technique.inputBound) {
+        //     canvasCVOutCtx.strokeStyle = "white";
+        //     canvasCVOutCtx.lineWidth = 3;
+        //     canvasCVOutCtx.globalAlpha = 0.4;
+        //     canvasCVOutCtx.strokeRect(
+        //         state.technique.inputBound.topleft.x,
+        //         state.technique.inputBound.topleft.y,
+        //         state.technique.inputBound.bottomright.x - state.technique.inputBound.topleft.x,
+        //         state.technique.inputBound.bottomright.y - state.technique.inputBound.topleft.y
+        //     );
+        // }
 
         if (state.isExistingPresentation()) {
             // drawing small camera preview 
@@ -655,13 +666,12 @@ window.onload = function () {
         }
 
         {
-            const u = state.experiment.trial.remainingStartButtonPauseTime();
-            if (u > 0) {
+            if (remainingStartButtonPauseTime > 0) {
                 canvasCVOutCtx.font = "30px Georgia";
                 canvasCVOutCtx.fillStyle = "fuchsia";
 
                 canvasCVOutCtx.fillText(
-                    `Waiting for ${u} seconds.`,
+                    `Waiting for ${remainingStartButtonPauseTime} seconds.`,
                     5, 
                     80
                 );
