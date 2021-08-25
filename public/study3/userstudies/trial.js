@@ -1,6 +1,6 @@
 
 import { TrialState, TrialBtnState } from './constant.js';
-import { TechniqueType } from '../technique/constant.js';
+import { TechniqueType, TrainUIState } from '../technique/constant.js';
 
 export class Trial {
     constructor(state) {
@@ -22,56 +22,62 @@ export class Trial {
             color: new cv.Scalar(20, 200, 200)
         }
 
+        this.trainUIStates = [
+            TrainUIState.Welcome,
+            TrainUIState.Choice,
+            TrainUIState.CardTypeQty,
+            TrainUIState.PayAmnt,
+            TrainUIState.PaymentMethod,
+            TrainUIState.Done
+        ];
+
         this.permutation = [];
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid) {
-                for (let btn_id = 0; btn_id < state.config.landmarkButtons.total; btn_id++) 
-                    this.permutation.push({ 
-                        "btn_id": btn_id, 
-                        "row_i": null, 
-                        "col_j": null 
-                    });
-        } else {
-            for (let row_i = 1; row_i <= state.menu.cellscnt.row; row_i ++)
-                for (let col_j = 1; col_j <= state.menu.cellscnt.col; col_j ++) {
-                    this.permutation.push({ 
-                        "btn_id": null, 
-                        "row_i": row_i, 
-                        "col_j": col_j 
-                    });
-                }
+
+        for (let i = 0; i < this.trainUIStates.length; i++) {
+
+            this.permutation.push({
+                type: this.trainUIStates[i],
+                btnIDs: []
+            });
+            const btns = state.technique.anchor.buttonsSelect(this.trainUIStates[i]);
+            for (let j = 0; btns && j < btns.palm.input.length; j++) {
+                this.permutation[i].btnIDs.push({
+                    id: j,
+                    name: btns.palm.input[j].name
+                });
+            }
         }
 
+        console.log("this.permutation:", this.permutation);
         this.targetList = [];
         for (let i = 0; i < state.config.experiment.repetitions;) {
-            const plist = [];
-            
-            for (let j = 0;i < state.config.experiment.repetitions && j < this.permutation.length; j++) {
-                const k = Math.floor(Math.random() *(this.permutation.length - j)) + j;
-                const tmp = this.permutation[j];
-                this.permutation[j] = {
-                    "btn_id": this.permutation[k].btn_id,
-                    "row_i": this.permutation[k].row_i,
-                    "col_j": this.permutation[k].col_j
-                };
+            const p = [];
+            const hash = {};
+            for (let j = 0; j < this.permutation.length; j++) {
+                const id = Math.floor(Math.random() * this.permutation[j].btnIDs.length);
+                let name = "-";
 
-                this.permutation[k] = {
-                    "btn_id": tmp.btn_id,
-                    "row_i": tmp.row_i,
-                    "col_j": tmp.col_j
-                };
-
-                plist.push(this.permutation[j]);
-                i++;
+                console.log("id:", id, "this.permutation[j]:", this.permutation[j]);
+                if (this.permutation[j].btnIDs && this.permutation[j].btnIDs.length > 0) {
+                    name = this.permutation[j].btnIDs[id].name.join(" ");
+                }
+                p.push({
+                    type: this.permutation[j].type,
+                    btn_id: id,
+                    name: name
+                });
+                hash[p[j].type] = p[j];
             }
-            
-            console.log("this.permutation:", this.permutation);
-            
-            for (let j = 0; j < plist.length; j ++) 
-                this.targetList.push(plist[j]);
+
+            this.targetList.push({
+                hash: hash,
+                all: p,
+                currentUI: TrainUIState.Welcome
+            });
+            i++;
         }
 
-        console.log("this.targetList:", this.targetList);
+        console.log("pp this.targetList:", this.targetList);
 
         this.targetID = -1;
         this.targetSeqSize = this.targetList.length;
@@ -107,7 +113,12 @@ export class Trial {
     }
 
     remainingStartButtonPauseTime(state) {
-        return Math.max(0, state.menu.study2.startButtonPauseTime - Math.round((performance.now() - this.startButtonPauseTime)/1000));
+        return Math.max(
+            0,
+            state.menu.study2.startButtonPauseTime - Math.round(
+                (performance.now() - this.startButtonPauseTime) / 1000
+            )
+        );
     }
 
 
@@ -227,7 +238,7 @@ export class Trial {
                 if (this.status != TrialState.STARTED &&
                     r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 5 &&
                     r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 5) {
-                        return true;
+                    return true;
                 }
             }
         }
@@ -307,7 +318,7 @@ export class Trial {
     updateStartBtnInputLoc(state) {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
             state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-                this._updateStartBtnInputLocBtnID(state);
+            this._updateStartBtnInputLocBtnID(state);
         } else {
             this._updateStartBtnInputLoc(state);
         }
@@ -364,9 +375,9 @@ export class Trial {
 
             if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
                 state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-                    const p = this._drawBackBtnBtnID(state);
-                    tl = p.tl;
-                    br = p.br;
+                const p = this._drawBackBtnBtnID(state);
+                tl = p.tl;
+                br = p.br;
             } else {
                 const p = this._drawBackBtn(state);
                 tl = p.tl;
@@ -463,7 +474,7 @@ export class Trial {
 
         // if (this.status == TrialState.OPEN ||
         //     this.status == TrialState.PAUSED) {
-            
+
         if (state.experiment.trial.started()) {
             state.canvasCVOutCtx.fillStyle = "green";
         } else {
@@ -475,7 +486,7 @@ export class Trial {
             tl.x,
             tl.y,
             br.x - tl.x,
-            br.y - tl.y 
+            br.y - tl.y
         );
 
         state.canvasCVOutCtx.globalAlpha = 0.8;
@@ -551,6 +562,16 @@ export class Trial {
         return this.targetID + "/" + this.targetSeqSize;
     }
 
+
+    currentTargetUIStr() {
+        const u = this.currentTarget();
+        const h = u.hash[u.currentUI];
+        console.log("currentTargetUIStr() u:", u, "h:", h);
+        return `current: ${u.currentUI}: btn_id: ${h.btn_id} ${h.name}`;
+
+    }
+
+
     drawCompletedTargetsText(state) {
         if (this.status == TrialState.STARTED) {
             cv.putText(
@@ -585,10 +606,16 @@ export class Trial {
         }
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
             state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid) {
-                this.targetSeq[this.targetID] = this._generateTargetBtnID(state);
+            // this.targetSeq[this.targetID] = this._generateTargetBtnID(state);
+            this.targetSeq[this.targetID] = this._generateTargetUI(state);
+
         } else {
             this.targetSeq[this.targetID] = this._generateTarget(state);
         }
+    }
+
+    _generateTargetUI(state) {
+        return this.targetList[this.targetID];
     }
 
     _generateTargetBtnID(state) {
@@ -602,17 +629,49 @@ export class Trial {
         return { row_i, col_j };
     }
 
-    matched(state) {
-        if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-                return this._matchedBtnID(state);
-        } else {
-            return this._matched(state);
+    currentTarget() {
+        return this.targetSeq[this.targetID];
+    }
+
+    moveToNextUI() {
+        const u = this.currentTarget();
+        switch (u.currentUI) {
+            case TrainUIState.Welcome:
+                u.currentUI = TrainUIState.Choice;
+                break;
+            case TrainUIState.Choice:
+                u.currentUI = TrainUIState.CardTypeQty;
+                break;
+            case TrainUIState.CardTypeQty:
+                u.currentUI = TrainUIState.PayAmnt;
+                break;
+            case TrainUIState.PaymentMethod:
+                u.currentUI = TrainUIState.Done;
+                break;
+            default:
+                console.error(`moveToNextUI() no ${u.currentUI} not allowed`);
+                break;
         }
     }
 
-    currentTarget() {
-        return this.targetSeq[this.targetID];
+    matchedUI(state) {
+        return this.currentTarget().currentUI == state.technique.anchor.trainUIState;
+    }
+
+    matched(state) {
+        return this._matchedUIChild(state);
+        // if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+        //     state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+        //     // return this._matchedBtnID(state);
+
+        // } else {
+        //     return this._matched(state);
+        // }
+    }
+
+    _matchedUIChild(state) {
+        const u = this.targetSeq[this.targetID];
+        return state.selection.currentBtn.btn_id == u.hash[u.currentUI].btn_id;
     }
 
     _matchedBtnID(state) {
@@ -644,7 +703,7 @@ export class Trial {
         if (this.status == TrialState.STARTED) {
             if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
                 state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-                    this._drawTargetBtnID(state);
+                this._drawTargetBtnID(state);
             } else {
                 this._drawTarget(state);
             }
