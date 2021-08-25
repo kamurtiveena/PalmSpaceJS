@@ -329,7 +329,7 @@ class Config {
                 console.log("loaded", this.icons.all[i].src, "loadcnt:", this.icons.loadcnt);
             }
 
-            this.icons.all[i].image.src = this.icons.all[i].src; 
+            // this.icons.all[i].image.src = this.icons.all[i].src; 
         }
 
     };
