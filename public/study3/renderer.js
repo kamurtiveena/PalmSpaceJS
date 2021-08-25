@@ -394,6 +394,7 @@ window.onload = function () {
             }
 
             let resetAnchor = false;
+            let resetSelection = false;
 
             switch (state.trigger.status) {
                 case TRIGGER.ONHOLD:
@@ -416,12 +417,13 @@ window.onload = function () {
                         state.experiment.trial.clickStartBtn(state);
                         state.technique.stats.visitedCells = 0;
                         resetAnchor = true;
+                        resetSelection = true;
                         state.technique.reset();
                     } else if (state.experiment.trial.isCursorOverBackBtn(state)) {
                         goBackToMenu();
                     } else if (state.experiment.trial.started()) {
 
-                        
+
                         if (state.experiment.trial.matchedUI(state)) {
                             state.technique.anchor.markSelected(state);
                             // state.experiment.trial.incrementAttempts(state);
@@ -441,7 +443,7 @@ window.onload = function () {
                                     resetAnchor = true;
                                 }
 
-    
+                                resetSelection = true;
                             }
 
                         } else {
@@ -458,8 +460,11 @@ window.onload = function () {
                     break;
             }
 
-            if (resetAnchor) {
+            if (resetSelection) {
                 state.selection.reset();
+            }
+
+            if (resetAnchor) {
                 state.technique.resetLastTimeVisited();
             }
 
@@ -512,22 +517,22 @@ window.onload = function () {
             if (state.experiment.trial.started()) {
                 state.technique.drawCustom(state);
                 // if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
-        
-                    // state.technique.drawTargetsLegend(state);
-        
-                    // if (remainingStartButtonPauseTime <= 0) {
-                    //     switch (state.menu.study2.presentation) {
-                    //         case PresentationType.Existing:
-                    //             state.technique.drawOutputBoundary(state);
-                    //             break;
-                    //         case PresentationType.Reordered:
-                    //             state.technique.drawInputBoundary(state);
-                    //             break;
-                    //         default:
-                    //             console.error("presentation type invalid");
-                    //             return;
-                    //     }
-                    // }
+
+                // state.technique.drawTargetsLegend(state);
+
+                // if (remainingStartButtonPauseTime <= 0) {
+                //     switch (state.menu.study2.presentation) {
+                //         case PresentationType.Existing:
+                //             state.technique.drawOutputBoundary(state);
+                //             break;
+                //         case PresentationType.Reordered:
+                //             state.technique.drawInputBoundary(state);
+                //             break;
+                //         default:
+                //             console.error("presentation type invalid");
+                //             return;
+                //     }
+                // }
                 // }
             } else {
                 state.experiment.trial.drawStartBtn(state);
@@ -547,7 +552,7 @@ window.onload = function () {
 
             canvasCVOutCtx.fillText(
                 state.technique.anchor.trainUIState,
-                state.width/2,
+                state.width / 2,
                 10
             );
 
@@ -560,7 +565,7 @@ window.onload = function () {
 
             canvasCVOutCtx.fillText(
                 state.experiment.trial.currentTargetUIStr(),
-                state.width/2,
+                state.width / 2,
                 40
             );
 
@@ -635,9 +640,9 @@ window.onload = function () {
         }
 
         {
+            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.fillStyle = "fuchsia";
             if (remainingStartButtonPauseTime > 0) {
-                canvasCVOutCtx.font = "30px Georgia";
-                canvasCVOutCtx.fillStyle = "fuchsia";
 
                 canvasCVOutCtx.fillText(
                     `Waiting for ${remainingStartButtonPauseTime} seconds.`,
@@ -645,6 +650,18 @@ window.onload = function () {
                     80
                 );
             }
+
+            const tt = Math.max(
+                0,
+                state.config.experiment.trialMaxDurationMilliSec -
+                state.experiment.trial.targetsDuration[state.experiment.trial.targetID]
+            );
+
+            canvasCVOutCtx.fillText(
+                `Remaining time: ${(tt/1000).toFixed()} seconds.`,
+                5,
+                120
+            );
         }
 
         if (state.menu.debug) {

@@ -33,10 +33,10 @@ const PresentationType = {
 const TrainUIState = {
     Unassigned: null,
     Welcome: "Welcome",
-    Choice: "Choice",
-    CardTypeQty: "CardTypeQty",
-    PayAmnt: "PayAmnt",
-    PaymentMethod: "PaymentMethod",
+    Choice: "2Choice",
+    CardTypeQty: "3CardTypeQty",
+    PayAmnt: "4PayAmnt",
+    PaymentMethod: "5PaymentMethod",
     Done: "Done"
 };
 

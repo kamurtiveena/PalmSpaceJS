@@ -54,7 +54,7 @@ class Config {
                 width: 60,
                 height: 50,
             },
-            trialMaxDurationMilliSec: 60000
+            trialMaxDurationMilliSec: 120000
         };
 
         this.experiment.startButton.widthHalf = this.experiment.startButton.width / 2;

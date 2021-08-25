@@ -238,6 +238,9 @@ export class LayoutGrid {
                 return this.parent.buttonsUIs.PayAmnt;
             case TrainUIState.PaymentMethod:
                 return this.parent.buttonsUIs.PaymentMethod;
+            case TrainUIState.Done:
+                console.error("Done ui should not render buttons");
+                return null;
             default:
                 console.error("invalid train ui state");
                 return null;

@@ -634,6 +634,7 @@ export class Trial {
     }
 
     moveToNextUI() {
+        this.startButtonPauseTime = performance.now();
         const u = this.currentTarget();
         switch (u.currentUI) {
             case TrainUIState.Welcome:
@@ -644,6 +645,9 @@ export class Trial {
                 break;
             case TrainUIState.CardTypeQty:
                 u.currentUI = TrainUIState.PayAmnt;
+                break;
+            case TrainUIState.PayAmnt:
+                u.currentUI = TrainUIState.PaymentMethod;
                 break;
             case TrainUIState.PaymentMethod:
                 u.currentUI = TrainUIState.Done;
