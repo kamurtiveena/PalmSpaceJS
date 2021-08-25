@@ -29,4 +29,15 @@ const PresentationType = {
     Reordered: "Reordered",    
 };
 
-export {TechniqueType, ReadingDirectionType, PresentationType};
+
+const TrainUIState = {
+    Unassigned: null,
+    Welcome: "Welcome",
+    Choice: "Choice",
+    CardTypeQty: "CardTypeQty",
+    PayAmnt: "PayAmnt",
+    PaymentMethod: "PaymentMethod",
+    Done: "Done"
+};
+
+export {TrainUIState, TechniqueType, ReadingDirectionType, PresentationType};

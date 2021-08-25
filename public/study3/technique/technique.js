@@ -139,19 +139,21 @@ class Technique {
     btnIDPointedByTrain(state) {
         this.isCursorInsideBtn = false;
 
-        if (this.buttons.finger && this.buttons.finger.input) {
-            for (let i = 0; i < this.buttons.finger.input.length; i++)
-                if (this.buttons.finger.input[i].isCursorInside(state)) {
+        const btns = this.anchor.buttons();
+
+        if (btns && btns.finger && btns.finger.input) {
+            for (let i = 0; i < btns.finger.input.length; i++)
+                if (btns.finger.input[i].isCursorInside(state)) {
                     this.isCursorInsideBtn = true;
-                    return this.buttons.finger.input[i];
+                    return btns.finger.input[i];
                 }
         }
 
-        if (this.buttons.palm && this.buttons.palm.input) {
-            for (let i = 0; i < this.buttons.palm.input.length; i++)
-                if (this.buttons.palm.input[i].isCursorInside(state)) {
+        if (btns && btns.palm && btns.palm.input) {
+            for (let i = 0; i < btns.palm.input.length; i++)
+                if (btns.palm.input[i].isCursorInside(state)) {
                     this.isCursorInsideBtn = true;
-                    return this.buttons.palm.input[i];
+                    return btns.palm.input[i];
                 }
         }
 
@@ -160,11 +162,12 @@ class Technique {
 
     btnIDPointedBy(state) {
         this.isCursorInsideBtn = false;
+        const btns = this.anchor.buttons();
 
-        for (let i = 0; i < this.buttons.input.length; i++)
-            if (this.buttons.input[i].isCursorInside(state)) {
+        for (let i = 0; i < btns.input.length; i++)
+            if (btns.input[i].isCursorInside(state)) {
                 this.isCursorInsideBtn = true;
-                return this.buttons.input[i].id;
+                return btns.input[i].id;
             }
 
         return -1;
@@ -264,26 +267,30 @@ class Technique {
 
     drawOutputBoundary(state) {
         // this._drawBtnsBoundary(state, this.buttons.output);
-        if (this.buttons) {
-            if (this.buttons.finger) {
-                this._drawBtnsBoundary(state, this.buttons.finger.output);
+        const btns = this.anchor.buttons();
+
+        if (btns) {
+            if (btns.finger) {
+                this._drawBtnsBoundary(state, btns.finger.output);
             }
 
-            if (this.buttons.palm) {
-                this._drawBtnsBoundary(state, this.buttons.palm.output);
+            if (btns.palm) {
+                this._drawBtnsBoundary(state, btns.palm.output);
             }
         }
     }
 
     drawInputBoundary(state) {
         // this._drawBtnsBoundary(state, this.buttons.input);
-        if (this.buttons) {
-            if (this.buttons.finger) {
-                this._drawBtnsBoundary(state, this.buttons.finger.input);
+        const btns = this.anchor.buttons();
+
+        if (btns) {
+            if (btns.finger) {
+                this._drawBtnsBoundary(state, btns.finger.input);
             }
 
-            if (this.buttons.palm) {
-                this._drawBtnsBoundary(state, this.buttons.palm.input);
+            if (btns.palm) {
+                this._drawBtnsBoundary(state, btns.palm.input);
             }
         }
     }
@@ -467,6 +474,10 @@ class Technique {
         this.anchor.draw(state);
     }
 
+    buttons() {
+        return this.anchor.buttons(); 
+    }
+
     drawCustom(state) {
         // draw hand image at the top-right corner
         state.canvasCVOutCtx.globalAlpha = 0.8;
@@ -486,33 +497,35 @@ class Technique {
 
         if (!state.isExistingPresentation() && !state.initiator.left.show) return;
 
+        const btns = this.anchor.buttons();
+
         // draw targets
-        if (this.buttons.palm.input) {
-            for (let i = 0; i < this.buttons.palm.output.length; i++) {
+        if (btns && btns.palm && btns.palm.output) {
+            for (let i = 0; i < btns.palm.output.length; i++) {
                 // this._drawIconsOnCanvas(
                 //     state, 
-                //     this.buttons.palm.output[i]
+                //     btns.palm.output[i]
                 // );
 
                 drawFillRect(
                     state.canvasCVOutCtx,
-                    this.buttons.palm.output[i].topleft.x,
-                    this.buttons.palm.output[i].topleft.y,
-                    this.buttons.palm.output[i].width,
-                    this.buttons.palm.output[i].height,
+                    btns.palm.output[i].topleft.x,
+                    btns.palm.output[i].topleft.y,
+                    btns.palm.output[i].width,
+                    btns.palm.output[i].height,
                     'black',
                     0.7
                 );
 
 
-                for (let j = 0; j < this.buttons.palm.output[i].name.length; j ++) {
-                    state.canvasCVOutCtx.globalAlpha = (this.buttons.palm.output[i].width/50);
-                    state.canvasCVOutCtx.font = `${(this.buttons.palm.output[i].width/3)}px Georgia`;
+                for (let j = 0; j < btns.palm.output[i].name.length; j ++) {
+                    state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width/50);
+                    state.canvasCVOutCtx.font = `${(btns.palm.output[i].width/3)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     state.canvasCVOutCtx.fillText(
-                        this.buttons.palm.output[i].name[j],
-                        this.buttons.palm.output[i].x,
-                        this.buttons.palm.output[i].y + this.buttons.palm.output[i].height/3 + 20*j,
+                        btns.palm.output[i].name[j],
+                        btns.palm.output[i].x,
+                        btns.palm.output[i].y + btns.palm.output[i].height/3 + 20*j,
                     );
                 }
 
@@ -521,30 +534,30 @@ class Technique {
             }
         }
 
-        if (this.buttons.finger.output) {
-            for (let i = 0; i < this.buttons.finger.output.length; i++) {
+        if (btns && btns.finger && btns.finger.output) {
+            for (let i = 0; i < btns.finger.output.length; i++) {
                 // this._drawIconsOnCanvas(
                 //     state, 
-                //     this.buttons.finger.output[i]
+                //     btns.finger.output[i]
                 // );
                 drawFillRect(
                     state.canvasCVOutCtx,
-                    this.buttons.finger.output[i].topleft.x,
-                    this.buttons.finger.output[i].topleft.y,
-                    this.buttons.finger.output[i].width,
-                    this.buttons.finger.output[i].height,
+                    btns.finger.output[i].topleft.x,
+                    btns.finger.output[i].topleft.y,
+                    btns.finger.output[i].width,
+                    btns.finger.output[i].height,
                     'black',
                     0.7
                 );
 
-                for (let j = 0; j < this.buttons.finger.output[i].name.length; j ++) {
-                    state.canvasCVOutCtx.globalAlpha = (this.buttons.finger.output[i].width/50);
-                    state.canvasCVOutCtx.font = `${(this.buttons.finger.output[i].width/3)}px Georgia`;
+                for (let j = 0; j < btns.finger.output[i].name.length; j ++) {
+                    state.canvasCVOutCtx.globalAlpha = (btns.finger.output[i].width/50);
+                    state.canvasCVOutCtx.font = `${(btns.finger.output[i].width/3)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     state.canvasCVOutCtx.fillText(
-                        this.buttons.finger.output[i].name[j],
-                        this.buttons.finger.output[i].topleft.x,
-                        this.buttons.finger.output[i].topleft.y + this.buttons.finger.output[i].height/3 + 20*j,
+                        btns.finger.output[i].name[j],
+                        btns.finger.output[i].topleft.x,
+                        btns.finger.output[i].topleft.y + btns.finger.output[i].height/3 + 20*j,
                     );
                 }
             }
@@ -555,12 +568,14 @@ class Technique {
     }
 
     reset() {
-        if (this.type == TechniqueType.Landmark_Btn || this.type == TechniqueType.Landmark_Btn_FishEye) {
-            console.log("landmark btn technique reset");
-        } else {
-            this.grid.input.reset();
-            this.grid.output.reset();
-        }
+
+        this.anchor.reset();
+        // if (this.type == TechniqueType.Landmark_Btn || this.type == TechniqueType.Landmark_Btn_FishEye) {
+        //     console.log("landmark btn technique reset");
+        // } else {
+        //     this.grid.input.reset();
+        //     this.grid.output.reset();
+        // }
     }
 
     resetLastTimeVisited() {
@@ -667,7 +682,7 @@ class Technique {
 
                 // this.stats.lastVisitTimeByID[btn.id] = performance.now();
                 state.selection.messages.selected =
-                    `Highlighted: ${btn.id}: ${btn.name}`;
+                    `Highlighted: ${btn.id}: ${btn.name.join(' ')}`;
                 this.stats.visitedCells++;
             }
 

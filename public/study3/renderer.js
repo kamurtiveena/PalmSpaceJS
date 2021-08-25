@@ -7,7 +7,7 @@ import { Trigger } from './trigger/trigger.js';
 import { TRIGGER } from './trigger/triggerstate.js';
 import { Trial } from './userstudies/trial.js';
 import { TrialState } from './userstudies/constant.js';
-import { PresentationType, TechniqueType } from "./technique/constant.js";
+import { PresentationType, TechniqueType, TrainUIState } from "./technique/constant.js";
 import { Study } from './userstudies/study.js';
 
 window.onload = function () {
@@ -421,19 +421,33 @@ window.onload = function () {
                         goBackToMenu();
                     } else if (state.experiment.trial.started()) {
 
-                        state.technique.anchor.markSelected(state);
-                        state.experiment.trial.incrementAttempts(state);
+                        
+                        if (state.experiment.trial.matchedUI(state)) {
+                            state.technique.anchor.markSelected(state);
+                            // state.experiment.trial.incrementAttempts(state);
+                            if (state.experiment.trial.matched(state)) {
 
-                        if (state.experiment.trial.matched(state)) {
-                            state.experiment.trial.clickTarget(state);
-                            state.selection.resetMarkedButton();
-                            if (!state.menu.practice) {
-                                state.experiment.study1.save(state); // should use worker to send save request
+                                state.selection.resetMarkedButton();
+                                state.technique.anchor.transitionUI();
+                                state.experiment.trial.moveToNextUI();
+
+                                if (state.experiment.trial.currentTarget().currentUI == TrainUIState.Done) {
+                                    state.experiment.trial.clickTarget(state);
+                                    if (!state.menu.practice) {
+                                        state.experiment.study1.save(state); // should use worker to send save request
+                                    }
+
+                                    state.experiment.trial.generateTarget(state);
+                                    resetAnchor = true;
+                                }
+
+    
                             }
 
-                            state.experiment.trial.generateTarget(state);
-                            resetAnchor = true;
+                        } else {
+                            console.error("current UI is in invalid state:", state);
                         }
+
                     }
 
                     state.selection.resetSelectedButton();
@@ -457,6 +471,7 @@ window.onload = function () {
 
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
+            // state.experiment.trial.drawCurrentUITarget();
             // state.experiment.trial.drawTarget(state);
 
 
@@ -531,9 +546,22 @@ window.onload = function () {
             );
 
             canvasCVOutCtx.fillText(
-                state.trialCombinationStr(),
-                state.width - 240,
-                30
+                state.technique.anchor.trainUIState,
+                state.width/2,
+                10
+            );
+
+            // canvasCVOutCtx.fillText(
+            //     state.trialCombinationStr(),
+            //     state.width - 240,
+            //     30
+            // );
+
+
+            canvasCVOutCtx.fillText(
+                state.experiment.trial.currentTargetUIStr(),
+                state.width/2,
+                40
             );
 
             if (state.menu.practice) {
