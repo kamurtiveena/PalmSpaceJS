@@ -34,7 +34,7 @@ class Study {
             events: state.experiment.trial.stats.events
         }
 
-        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study2`, body]);
+        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study3`, body]);
 
         console.log("study2.save() body:", JSON.stringify(body));
     }

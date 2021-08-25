@@ -566,8 +566,8 @@ export class Trial {
     currentTargetUIStr() {
         const u = this.currentTarget();
         const h = u.hash[u.currentUI];
-        console.log("currentTargetUIStr() u:", u, "h:", h);
-        return `current: ${u.currentUI}: btn_id: ${h.btn_id} ${h.name}`;
+        // console.log("currentTargetUIStr() u:", u, "h:", h);
+        return `current: ${u.currentUI}: btn_id: ${h.btn_id}, label: ${h.name}`;
 
     }
 

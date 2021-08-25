@@ -460,19 +460,20 @@ window.onload = function () {
                     break;
             }
 
-            if (resetSelection) {
+            if (resetSelection || remainingStartButtonPauseTime > 0) {
+                console.log("reseting selection");
                 state.selection.reset();
             }
 
+
             if (resetAnchor) {
+                state.technique.reset();
                 state.technique.resetLastTimeVisited();
             }
 
             state.overlay = state.imageCV.clone();
 
-            if (remainingStartButtonPauseTime <= 0) {
-                state.technique.draw(state);
-            }
+            state.technique.draw(state);
 
             state.experiment.trial.drawBackBtn(state);
             state.experiment.trial.drawCompletedTargetsText(state);
@@ -513,28 +514,28 @@ window.onload = function () {
         //     state.technique.drawIconsOnGridCanvas(state);
         // }
 
-        if (remainingStartButtonPauseTime <= 0) {
-            if (state.experiment.trial.started()) {
-                state.technique.drawCustom(state);
-                // if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+        if (state.experiment.trial.started()) {
+            state.technique.drawCustom(state);
+            // if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
 
-                // state.technique.drawTargetsLegend(state);
+            // state.technique.drawTargetsLegend(state);
 
-                // if (remainingStartButtonPauseTime <= 0) {
-                //     switch (state.menu.study2.presentation) {
-                //         case PresentationType.Existing:
-                //             state.technique.drawOutputBoundary(state);
-                //             break;
-                //         case PresentationType.Reordered:
-                //             state.technique.drawInputBoundary(state);
-                //             break;
-                //         default:
-                //             console.error("presentation type invalid");
-                //             return;
-                //     }
-                // }
-                // }
-            } else {
+            // if (remainingStartButtonPauseTime <= 0) {
+            //     switch (state.menu.study2.presentation) {
+            //         case PresentationType.Existing:
+            //             state.technique.drawOutputBoundary(state);
+            //             break;
+            //         case PresentationType.Reordered:
+            //             state.technique.drawInputBoundary(state);
+            //             break;
+            //         default:
+            //             console.error("presentation type invalid");
+            //             return;
+            //     }
+            // }
+            // }
+        } else {
+            if (remainingStartButtonPauseTime <= 0) {
                 state.experiment.trial.drawStartBtn(state);
             }
         }
@@ -550,11 +551,11 @@ window.onload = function () {
                 state.height - 20
             );
 
-            canvasCVOutCtx.fillText(
-                state.technique.anchor.trainUIState,
-                state.width / 2,
-                10
-            );
+            // canvasCVOutCtx.fillText(
+            //     "application ui state: " + state.technique.anchor.trainUIState,
+            //     state.width / 3,
+            //     10
+            // );
 
             // canvasCVOutCtx.fillText(
             //     state.trialCombinationStr(),
@@ -562,10 +563,12 @@ window.onload = function () {
             //     30
             // );
 
+            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.fillStyle = "black";
 
             canvasCVOutCtx.fillText(
                 state.experiment.trial.currentTargetUIStr(),
-                state.width / 2,
+                state.width / 4,
                 40
             );
 
@@ -578,7 +581,8 @@ window.onload = function () {
             }
         }
 
-        if ((remainingStartButtonPauseTime <= 0) &&
+        if (
+            // (remainingStartButtonPauseTime <= 0) &&
             state.initiator.left.show &&
             (
                 (
@@ -634,10 +638,10 @@ window.onload = function () {
         // }
 
 
-        if (state.isExistingPresentation()) {
-            // drawing small camera preview 
-            canvasCVOutCtx.drawImage(results.image, state.width - 210, state.height / 2 - 60, 200, 120);
-        }
+        // if (state.isExistingPresentation()) {
+        //     // drawing small camera preview 
+        //     canvasCVOutCtx.drawImage(results.image, state.width - 210, state.height / 2 - 60, 200, 120);
+        // }
 
         {
             canvasCVOutCtx.font = "30px Georgia";
@@ -658,7 +662,7 @@ window.onload = function () {
             );
 
             canvasCVOutCtx.fillText(
-                `Remaining time: ${(tt/1000).toFixed()} seconds.`,
+                `Remaining time: ${((tt | 0) / 1000).toFixed()} seconds.`,
                 5,
                 120
             );

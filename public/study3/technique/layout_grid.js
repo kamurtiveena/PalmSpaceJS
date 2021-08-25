@@ -284,9 +284,11 @@ export class LayoutGrid {
             const n = btns.palm.input.length;
             if(n >= 3) {
                 this.dx_col = (this.width - 4 * this.gap) / 3;
-                this.dy_row = (this.height - (1 + n - 3) * this.gap) / (n-2);
+                // this.dy_row = (this.height - (1 + n - 3) * this.gap) / (n-2);
+                this.dy_row = (this.height - 2 * this.gap);
             } else if (n == 2) {
                 this.dx_col = (this.width - 3 * this.gap) / 2;
+                // this.dy_row = (this.height - 2 * this.gap);
                 this.dy_row = (this.height - 2 * this.gap);
             } else if (n == 1) {
                 this.dx_col = (this.width - 2 * this.gap);
@@ -294,17 +296,18 @@ export class LayoutGrid {
             }
         
             for (let i = 0, j = 0, k = 0; i < n; i++) {
-                btns.palm.input[i].x = this.palm.x + (j * this.dx_col) + (this.dx_col / 2) + (j*this.gap);
-                btns.palm.input[i].y = this.palm.y + (k * this.dy_row) + (this.dy_row / 2) + (k*this.gap);
+                const dy = this.dy_row / ((n > 3 && (j >= 2)) ? 3: 1);
+                btns.palm.input[i].x = this.palm.x + (j * this.dx_col) + (j*this.gap);
+                btns.palm.input[i].y = this.palm.y + (k * dy) + (k*this.gap);
                 btns.palm.input[i].width = this.dx_col;
-                btns.palm.input[i].height = this.dy_row / ((j == 3) ? 3: 1);
+                btns.palm.input[i].height = this.dy_row / ((n > 3 && (j >= 2)) ? 3: 1);
                 btns.palm.input[i].topleft.x = btns.palm.input[i].x; 
                 btns.palm.input[i].topleft.y = btns.palm.input[i].y; 
     
                 btns.palm.output[i].x = this.palm.x + (j * this.dx_col) + (j*this.gap);
-                btns.palm.output[i].y = this.palm.y + (k * this.dy_row) + (k*this.gap);
+                btns.palm.output[i].y = this.palm.y + (k * dy) + (k*this.gap);
                 btns.palm.output[i].width = this.dx_col;
-                btns.palm.output[i].height = this.dy_row / ((j == 3) ? 3: 1);
+                btns.palm.output[i].height = dy;
                 btns.palm.output[i].topleft.x = btns.palm.output[i].x; 
                 btns.palm.output[i].topleft.y = btns.palm.output[i].y; 
         
