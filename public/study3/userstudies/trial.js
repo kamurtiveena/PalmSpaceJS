@@ -265,7 +265,8 @@ export class Trial {
     }
     updateBackBtnInputLoc(state) {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+            state.technique.type == TechniqueType.MidAir) {
             this._updateBackBtnInputLocBtnID(state);
         } else {
             this._updateBackBtnInputLoc(state);
@@ -317,7 +318,8 @@ export class Trial {
 
     updateStartBtnInputLoc(state) {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+            state.technique.type == TechniqueType.MidAir) {
             this._updateStartBtnInputLocBtnID(state);
         } else {
             this._updateStartBtnInputLoc(state);
@@ -374,7 +376,8 @@ export class Trial {
             let tl = null, br = null;
 
             if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-                state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+                state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+                state.technique.type == TechniqueType.MidAir) {
                 const p = this._drawBackBtnBtnID(state);
                 tl = p.tl;
                 br = p.br;
@@ -458,7 +461,8 @@ export class Trial {
             tl = p.tl;
             br = p.br;
         } else if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+            state.technique.type == TechniqueType.MidAir) {
             const p = this._drawStartBtnBtnID(state);
             tl = p.tl;
             br = p.br;
@@ -605,7 +609,8 @@ export class Trial {
             this.status = TrialState.DONE;
         }
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid) {
+            state.technique.type == TechniqueType.LayoutFlow || state.technique.type == TechniqueType.LayoutGrid ||
+            state.technique.type == TechniqueType.MidAir) {
             // this.targetSeq[this.targetID] = this._generateTargetBtnID(state);
             this.targetSeq[this.targetID] = this._generateTargetUI(state);
 
@@ -706,7 +711,8 @@ export class Trial {
 
         if (this.status == TrialState.STARTED) {
             if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-                state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+                state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+                state.technique.type == TechniqueType.MidAir) {
                 this._drawTargetBtnID(state);
             } else {
                 this._drawTarget(state);

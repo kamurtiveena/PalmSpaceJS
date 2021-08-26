@@ -517,15 +517,15 @@ class Technique {
                     0.7
                 );
 
-
-                for (let j = 0; j < btns.palm.output[i].name.length; j ++) {
+                const n = btns.palm.output[i].name.length;
+                for (let j = 0; j < n; j ++) {
                     state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width/50);
-                    state.canvasCVOutCtx.font = `${(btns.palm.output[i].width/3)}px Georgia`;
+                    state.canvasCVOutCtx.font = `${Math.min(18, btns.palm.output[i].width/3)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     state.canvasCVOutCtx.fillText(
                         btns.palm.output[i].name[j],
-                        btns.palm.output[i].x,
-                        btns.palm.output[i].y + btns.palm.output[i].height/3 + 20*j,
+                        btns.palm.output[i].x + Math.max(0, - 12*btns.palm.output[i].name[j].length/2 + btns.palm.output[i].width/2),
+                        btns.palm.output[i].y + btns.palm.output[i].height/2 + 20*j - 10*n,
                     );
                 }
 
@@ -589,7 +589,8 @@ class Technique {
 
     isCursorInside(state) {
         if (this.type == TechniqueType.Landmark_Btn || this.type == TechniqueType.Landmark_Btn_FishEye ||
-            this.type == TechniqueType.LayoutFlow || this.type == TechniqueType.LayoutGrid) {
+            this.type == TechniqueType.LayoutFlow || this.type == TechniqueType.LayoutGrid ||
+            this.type == TechniqueType.MidAir) {
             return this._isCursorInsideBtnID(state);
         }
 

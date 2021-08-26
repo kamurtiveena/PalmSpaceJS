@@ -220,6 +220,9 @@ export class LayoutGrid {
                 return this.parent.buttonsUIs.PayAmnt;
             case TrainUIState.PaymentMethod:
                 return this.parent.buttonsUIs.PaymentMethod;
+            case TrainUIState.Done:
+                console.error("Done ui should not be selected");
+                return null;
             default:
                 console.error("invalid train ui state");
                 return null;
@@ -254,10 +257,8 @@ export class LayoutGrid {
         this.width = this.palm.width;
         this.height = this.palm.height;
 
-
         const btns = this.buttons(); 
 
-        
         if (btns && btns.finger && btns.finger.input) {
             const n = btns.finger.input.length;
             this.dx_col = (this.width  - 4 * this.gap) / 3; 

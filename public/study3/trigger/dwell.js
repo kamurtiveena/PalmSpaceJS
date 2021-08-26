@@ -17,7 +17,8 @@ class Dwell {
         this.selection = new ButtonSelection();
 
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+            state.technique.type == TechniqueType.MidAir) {
             this._initVisitTime = this._initVisitTimeBtnID; 
             this.update = this._updateBtnID;
         } else {

@@ -719,11 +719,4 @@ window.onload = function () {
 
         canvasCtx.restore();
     }
-
-
-    console.log("startBtn:", startBtn);
-    startBtn.click();
-
-
-
 }
