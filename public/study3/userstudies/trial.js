@@ -40,7 +40,7 @@ export class Trial {
                 btnIDs: []
             });
             const btns = state.technique.anchor.buttonsSelect(this.trainUIStates[i]);
-            for (let j = 0; btns && j < btns.palm.input.length; j++) {
+            for (let j = 0; btns && btns.palm && btns.palm.input && j < btns.palm.input.length; j++) {
                 this.permutation[i].btnIDs.push({
                     id: j,
                     name: btns.palm.input[j].name
@@ -54,13 +54,27 @@ export class Trial {
             const p = [];
             const hash = {};
             for (let j = 0; j < this.permutation.length; j++) {
-                const id = Math.floor(Math.random() * this.permutation[j].btnIDs.length);
+                
+                let id = null;
                 let name = "-";
+                const n = this.permutation[j].btnIDs.length;
 
-                console.log("id:", id, "this.permutation[j]:", this.permutation[j]);
-                if (this.permutation[j].btnIDs && this.permutation[j].btnIDs.length > 0) {
-                    name = this.permutation[j].btnIDs[id].name.join(" ");
+                if (n > 0) {
+                    const m = (n*(n+1))/2;
+                    id = Math.floor(Math.random() * m);
+                    for (let r = 0, k = 0, l = 2; k < m && r < n; r ++, k += l, l ++) {
+                        // console.log("r")
+                        if (id <= k) {
+                            id = r;
+                            break;
+                        }
+                    }
+
+                    if (this.permutation[j].btnIDs && this.permutation[j].btnIDs.length > 0) {
+                        name = this.permutation[j].btnIDs[id].name.join(" ");
+                    }
                 }
+
                 p.push({
                     type: this.permutation[j].type,
                     btn_id: id,
