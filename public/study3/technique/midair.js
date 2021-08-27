@@ -246,43 +246,42 @@ export class MidAir {
 
     }
 
-
-    _palmRect(state) {
+    _fingerRect(state) {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 return {
-                    x: state.width/4,
-                    y: state.height/4,
-                    width: state.width/2,
-                    height: state.height/2
+                    x: state.width / 4,
+                    y: 100,
+                    width: state.width / 2,
+                    height: (state.height / 4) - 100
                 };
             case TrainUIState.Choice:
                 return {
-                    x: state.width/4,
-                    y: state.height/4,
-                    width: state.width/2,
-                    height: state.height/2
+                    x: state.width / 4,
+                    y: 100,
+                    width: state.width / 2,
+                    height: (state.height / 4) - 100
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: state.width/4,
-                    y: state.height/4,
-                    width: state.width/2,
-                    height: state.height/2
+                    x: state.width / 4,
+                    y: 100,
+                    width: state.width / 2,
+                    height: (state.height / 4) - 100
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: state.width/4,
-                    y: state.height/4,
-                    width: state.width/2,
-                    height: state.height/2
+                    x: state.width / 4,
+                    y: 100,
+                    width: state.width / 2,
+                    height: (state.height / 4) - 100
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: state.width/4,
-                    y: state.height/4,
-                    width: state.width/2,
-                    height: state.height/2
+                    x: state.width / 4,
+                    y: 100,
+                    width: state.width / 2,
+                    height: (state.height / 4) - 100
                 };
             case TrainUIState.Done:
                 console.error("Done ui should not render buttons");
@@ -292,7 +291,7 @@ export class MidAir {
                     width: -1,
                     height: -1
                 };
-                default:
+            default:
                 console.error("invalid train ui state");
                 return {
                     x: -1,
@@ -300,39 +299,100 @@ export class MidAir {
                     width: -1,
                     height: -1
                 };
-            }
+        }
+    }
+
+    _palmRect(state) {
+        switch (this.trainUIState) {
+            case TrainUIState.Welcome:
+                return {
+                    x: state.width / 4,
+                    y: state.height / 4,
+                    width: state.width / 2,
+                    height: state.height / 2
+                };
+            case TrainUIState.Choice:
+                return {
+                    x: state.width / 4,
+                    y: state.height / 4,
+                    width: state.width / 2,
+                    height: state.height / 2
+                };
+            case TrainUIState.CardTypeQty:
+                return {
+                    x: state.width / 4,
+                    y: state.height / 4,
+                    width: state.width / 2,
+                    height: state.height / 2
+                };
+            case TrainUIState.PayAmnt:
+                return {
+                    x: state.width / 4,
+                    y: state.height / 4,
+                    width: state.width / 2,
+                    height: state.height / 2
+                };
+            case TrainUIState.PaymentMethod:
+                return {
+                    x: state.width / 4,
+                    y: state.height / 4,
+                    width: state.width / 2,
+                    height: state.height / 2
+                };
+            case TrainUIState.Done:
+                console.error("Done ui should not render buttons");
+                return {
+                    x: -1,
+                    y: -1,
+                    width: -1,
+                    height: -1
+                };
+            default:
+                console.error("invalid train ui state");
+                return {
+                    x: -1,
+                    y: -1,
+                    width: -1,
+                    height: -1
+                };
+        }
     }
 
     _align(state) {
+        
+        const btns = this.buttons();
+        // this.finger = state.fingerRect();
+        this.finger = this._fingerRect(state);
+        this.width = this.finger.width;
+        this.height = this.finger.height;
 
-        // this.palm = state.palmRect();
+
+        if (btns && btns.finger && btns.finger.input) {
+            const n = btns.finger.input.length;
+            this.dx_col = (this.width - (n+1) * this.gap) / n;
+            this.dy_row = (this.height - 2 * this.gap) / 1;
+
+            for (let i = 0; i < n; i ++) {
+                btns.finger.input[i].x = this.finger.x + i*this.dx_col + i*this.gap;
+                btns.finger.input[i].y = this.finger.y;
+                btns.finger.input[i].width = this.dx_col;
+                btns.finger.input[i].height = this.dy_row;
+                btns.finger.input[i].topleft.x = btns.finger.input[i].x;
+                btns.finger.input[i].topleft.y = btns.finger.input[i].y;
+    
+                btns.finger.output[i].x = this.finger.x + i*this.dx_col + i*this.gap;
+                btns.finger.output[i].y = this.finger.y;
+                btns.finger.output[i].width = this.dx_col;
+                btns.finger.output[i].height = this.dy_row;
+                btns.finger.output[i].topleft.x = btns.finger.output[i].x;
+                btns.finger.output[i].topleft.y = btns.finger.output[i].y;
+            }
+        }
+
         this.palm = this._palmRect(state);
         this.width = this.palm.width;
         this.height = this.palm.height;
 
-        const btns = this.buttons();
-
-        if (btns && btns.finger && btns.finger.input) {
-            const n = btns.finger.input.length;
-            this.dx_col = (this.width - 4 * this.gap) / 3;
-            this.dy_row = (this.height - 4 * this.gap) / 3;
-
-            for (let i = 0, j = 8; i < n; i++, j += 4) {
-                btns.finger.input[i].x = state.initiator.left.landmarks[j].x;
-                btns.finger.input[i].y = state.initiator.left.landmarks[j].y;
-                btns.finger.input[i].width = this.dx_col;
-                btns.finger.input[i].height = this.dy_row;
-                btns.finger.input[i].topleft.x = btns.finger.input[i].x - this.dx_col / 2;
-                btns.finger.input[i].topleft.y = btns.finger.input[i].y - this.dy_row / 2;
-
-                btns.finger.output[i].x = state.initiator.left.landmarks[j].x;
-                btns.finger.output[i].y = state.initiator.left.landmarks[j].y;
-                btns.finger.output[i].width = this.dx_col;
-                btns.finger.output[i].height = this.dy_row;
-                btns.finger.output[i].topleft.x = btns.finger.output[i].x - this.dx_col / 2;
-                btns.finger.output[i].topleft.y = btns.finger.output[i].y - this.dy_row / 2;
-            }
-        }
 
         if (btns && btns.palm && btns.palm.input) {
             const n = btns.palm.input.length;

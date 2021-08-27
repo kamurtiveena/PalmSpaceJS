@@ -549,15 +549,16 @@ class Technique {
                     'black',
                     0.7
                 );
-
-                for (let j = 0; j < btns.finger.output[i].name.length; j ++) {
+                
+                const n = btns.finger.output[i].name.length;
+                for (let j = 0; j < n; j ++) {
                     state.canvasCVOutCtx.globalAlpha = (btns.finger.output[i].width/50);
-                    state.canvasCVOutCtx.font = `${(btns.finger.output[i].width/3)}px Georgia`;
+                    state.canvasCVOutCtx.font = `${Math.min(18, (btns.finger.output[i].width/3))}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     state.canvasCVOutCtx.fillText(
                         btns.finger.output[i].name[j],
-                        btns.finger.output[i].topleft.x,
-                        btns.finger.output[i].topleft.y + btns.finger.output[i].height/3 + 20*j,
+                        btns.finger.output[i].topleft.x + Math.max(0, - 12*btns.finger.output[i].name[j].length/2 + btns.finger.output[i].width/2),
+                        btns.finger.output[i].topleft.y + btns.finger.output[i].height/2 + 20*j - 10*n,
                     );
                 }
             }
