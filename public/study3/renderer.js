@@ -476,7 +476,7 @@ window.onload = function () {
             state.technique.draw(state);
 
             state.experiment.trial.drawBackBtn(state);
-            state.experiment.trial.drawCompletedTargetsText(state);
+            // state.experiment.trial.drawCompletedTargetsText(state);
             // state.experiment.trial.drawCurrentUITarget();
             // state.experiment.trial.drawTarget(state);
 
@@ -509,6 +509,21 @@ window.onload = function () {
 
         cv.imshow('cv_output_canvas', state.outputCV);
 
+        {
+            // draw marked button text
+            if (state.selection.markedBtn.btn_id != -1) {
+                canvasCVOutCtx.font = "22px Georgia";
+                canvasCVOutCtx.fillStyle = "green";
+
+                canvasCVOutCtx.fillText(
+                    state.selection.messages.marked,
+                    state.width - 250,
+                    state.height - 80
+                );
+                
+            }
+
+        }
 
         // if (state.initiator.show || state.technique.alwaysShow) {
         //     state.technique.drawIconsOnGridCanvas(state);
@@ -542,26 +557,16 @@ window.onload = function () {
 
 
         {
-            canvasCVOutCtx.font = "22px Georgia";
-            canvasCVOutCtx.fillStyle = "fuchsia";
+            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.fillStyle = "white";
 
+            // completedtargets / totaltargets
             canvasCVOutCtx.fillText(
                 state.experiment.trial.completedTargetsStr(),
-                state.width - 100,
-                state.height - 20
+                20,
+                state.height - 50
             );
 
-            // canvasCVOutCtx.fillText(
-            //     "application ui state: " + state.technique.anchor.trainUIState,
-            //     state.width / 3,
-            //     10
-            // );
-
-            // canvasCVOutCtx.fillText(
-            //     state.trialCombinationStr(),
-            //     state.width - 240,
-            //     30
-            // );
 
             canvasCVOutCtx.font = "30px Georgia";
             canvasCVOutCtx.fillStyle = "black";
@@ -644,14 +649,13 @@ window.onload = function () {
         // }
 
         {
-            canvasCVOutCtx.font = "30px Georgia";
-            canvasCVOutCtx.fillStyle = "fuchsia";
             if (remainingStartButtonPauseTime > 0) {
-
+                canvasCVOutCtx.font = "15px Georgia";
+                canvasCVOutCtx.fillStyle = "read";
                 canvasCVOutCtx.fillText(
                     `Waiting for ${remainingStartButtonPauseTime} seconds.`,
-                    5,
-                    80
+                    state.width - 250,
+                    state.height - 40
                 );
             }
 
@@ -661,10 +665,12 @@ window.onload = function () {
                 state.experiment.trial.targetsDuration[state.experiment.trial.targetID]
             );
 
+            canvasCVOutCtx.font = "15px Georgia";
+            canvasCVOutCtx.fillStyle = "white";
             canvasCVOutCtx.fillText(
                 `Remaining time: ${((tt | 0) / 1000).toFixed()} seconds.`,
-                5,
-                120
+                state.width - 250,
+                state.height - 20
             );
         }
 

@@ -633,6 +633,7 @@ export class Trial {
 
 
     drawCompletedTargetsText(state) {
+        // deprecated
         if (this.status == TrialState.STARTED) {
             cv.putText(
                 state.overlay,

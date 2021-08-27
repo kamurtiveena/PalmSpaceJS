@@ -328,8 +328,8 @@ export class LayoutGrid {
     draw(state) {
         if (!state.initiator.left.show) return;
 
-        this.parent._drawTextHighlightedBtnID(state);
-        this.parent._drawTextMarkedMarkedBtnID(state);
+        // this.parent._drawTextHighlightedBtnID(state);
+        // this.parent._drawTextMarkedMarkedBtnID(state);
         this.parent._drawProgressBar(state);
     }
 

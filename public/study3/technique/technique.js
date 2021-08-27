@@ -676,6 +676,8 @@ class Technique {
 
     _setupSelectionTrain(state) {
         state.selection.previousBtn.btn_id = state.selection.currentBtn.btn_id;
+        state.selection.previousBtn.name = state.selection.currentBtn.name;
+
         if (state.selection.locked) return;
         const btn = this.btnIDPointedByTrain(state);
 
@@ -689,6 +691,7 @@ class Technique {
             }
 
             state.selection.currentBtn.btn_id = btn.id;
+            state.selection.currentBtn.name = btn.name;
 
             state.selection.addToPastSelectionsBtnID(btn.id);
         }
@@ -801,7 +804,8 @@ class Technique {
     _markSelectedBtnID(state) {
         state.selection.markedBtn.btn_id = state.selection.currentBtn.btn_id;
         if (state.selection.markedBtn.btn_id == -1) return;
-        state.selection.messages.marked = `Marked: ${state.selection.currentBtn.btn_id + 1}`;
+        // state.selection.messages.marked = `Marked: ${state.selection.currentBtn.btn_id + 1}`;
+        state.selection.messages.marked = `Selected: ${state.selection.currentBtn.name}`;
     }
 
     _markSelected(state) {
@@ -823,6 +827,7 @@ class Technique {
     }
 
     _drawTextHighlightedBtnID(state) {
+        // deprecated
         if (state.selection.currentBtn.btn_id != -1) {
 
             cv.putText(
@@ -838,6 +843,7 @@ class Technique {
     }
 
     _drawTextHighlighted(state) {
+        // deprecated
         if (state.selection.currentBtn.row_i != -1 &&
             state.selection.currentBtn.col_j != -1) {
 
@@ -854,6 +860,7 @@ class Technique {
     }
 
     _drawTextMarkedMarkedBtnID(state) {
+        // deprecated
         if (state.selection.markedBtn.btn_id != -1) {
             cv.putText(
                 state.overlay,
@@ -868,6 +875,7 @@ class Technique {
     }
 
     _drawTextMarked(state) {
+        // deprecated
         if (state.selection.markedBtn.row_i != -1 &&
             state.selection.markedBtn.col_j != -1) {
 

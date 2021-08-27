@@ -17,6 +17,9 @@ export class MidAir {
         this.trainUIState = TrainUIState.Welcome;
         this.parent.alwaysShow = true;
 
+        this.midairWidth = state.width/6;
+        this.midairHeight = state.height/6;
+
         this.parent.buttonsUIs = {
             Unassigned: {
                 finger: {
@@ -252,38 +255,38 @@ export class MidAir {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 return {
-                    x: 3*state.width / 8,
-                    y: 100,
-                    width: state.width / 4,
-                    height: (state.height / 4) - 100
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    width: this.midairWidth,
+                    height: this.midairHeight - 50
                 };
             case TrainUIState.Choice:
                 return {
-                    x: 3*state.width / 8,
-                    y: 100,
-                    width: state.width / 4,
-                    height: (state.height / 4) - 100
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    width: this.midairWidth,
+                    height: this.midairHeight - 50
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: 3*state.width / 8,
-                    y: 100,
-                    width: state.width / 4,
-                    height: (state.height / 4) - 100
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    width: this.midairWidth,
+                    height: this.midairHeight - 50
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: 3*state.width / 8,
-                    y: 100,
-                    width: state.width / 4,
-                    height: (state.height / 4) - 100
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    width: this.midairWidth,
+                    height: this.midairHeight - 50
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: 3*state.width / 8,
-                    y: 100,
-                    width: state.width / 4,
-                    height: (state.height / 4) - 100
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    width: this.midairWidth,
+                    height: this.midairHeight - 50
                 };
             case TrainUIState.Done:
                 console.error("Done ui should not render buttons");
@@ -308,38 +311,38 @@ export class MidAir {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 return {
-                    x: 3*state.width / 8,
-                    y: state.height / 4,
-                    width: state.width / 4,
-                    height: state.height / 4
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - this.midairHeight/2,
+                    width: this.midairWidth,
+                    height: this.midairHeight
                 };
             case TrainUIState.Choice:
                 return {
-                    x: 3*state.width / 8,
-                    y: state.height / 4,
-                    width: state.width / 4,
-                    height: state.height / 4
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - this.midairHeight/2,
+                    width: this.midairWidth,
+                    height: this.midairHeight
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: 3*state.width / 8,
-                    y: state.height / 4,
-                    width: state.width / 4,
-                    height: state.height / 4
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - this.midairHeight/2,
+                    width: this.midairWidth,
+                    height: this.midairHeight
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: 3*state.width / 8,
-                    y: state.height / 4,
-                    width: state.width / 4,
-                    height: state.height / 4
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - this.midairHeight/2,
+                    width: this.midairWidth,
+                    height: this.midairHeight
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: 3*state.width / 8,
-                    y: state.height / 4,
-                    width: state.width / 4,
-                    height: state.height / 4
+                    x: state.width/2 - this.midairWidth/2,
+                    y: state.height/2 - this.midairHeight/2,
+                    width: this.midairWidth,
+                    height: this.midairHeight
                 };
             case TrainUIState.Done:
                 console.error("Done ui should not render buttons");
@@ -443,8 +446,8 @@ export class MidAir {
     draw(state) {
         // if (!state.initiator.left.show) return;
 
-        this.parent._drawTextHighlightedBtnID(state);
-        this.parent._drawTextMarkedMarkedBtnID(state);
+        // this.parent._drawTextHighlightedBtnID(state);
+        // this.parent._drawTextMarkedMarkedBtnID(state);
         this.parent._drawProgressBar(state);
     }
 
