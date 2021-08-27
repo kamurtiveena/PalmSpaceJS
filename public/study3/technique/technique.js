@@ -677,6 +677,7 @@ class Technique {
     _setupSelectionTrain(state) {
         state.selection.previousBtn.btn_id = state.selection.currentBtn.btn_id;
         state.selection.previousBtn.name = state.selection.currentBtn.name;
+        state.selection.previousBtn.ref = state.selection.currentBtn.ref;
 
         if (state.selection.locked) return;
         const btn = this.btnIDPointedByTrain(state);
@@ -692,6 +693,7 @@ class Technique {
 
             state.selection.currentBtn.btn_id = btn.id;
             state.selection.currentBtn.name = btn.name;
+            state.selection.currentBtn.ref = btn;
 
             state.selection.addToPastSelectionsBtnID(btn.id);
         }
@@ -803,6 +805,7 @@ class Technique {
 
     _markSelectedBtnID(state) {
         state.selection.markedBtn.btn_id = state.selection.currentBtn.btn_id;
+        state.selection.markedBtn.name = state.selection.currentBtn.name;
         if (state.selection.markedBtn.btn_id == -1) return;
         // state.selection.messages.marked = `Marked: ${state.selection.currentBtn.btn_id + 1}`;
         state.selection.messages.marked = `Selected: ${state.selection.currentBtn.name}`;

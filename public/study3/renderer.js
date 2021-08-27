@@ -531,30 +531,31 @@ window.onload = function () {
 
         if (state.experiment.trial.started()) {
             state.technique.drawCustom(state);
-            // if (state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
 
-            // state.technique.drawTargetsLegend(state);
 
-            // if (remainingStartButtonPauseTime <= 0) {
-            //     switch (state.menu.study2.presentation) {
-            //         case PresentationType.Existing:
-            //             state.technique.drawOutputBoundary(state);
-            //             break;
-            //         case PresentationType.Reordered:
-            //             state.technique.drawInputBoundary(state);
-            //             break;
-            //         default:
-            //             console.error("presentation type invalid");
-            //             return;
-            //     }
-            // }
-            // }
+            if (state.selection.currentBtn.btn_id != -1) {
+                // draw rectangle around highlighted button
+                console.log("selected btn:", state.selection.currentBtn);
+
+
+                canvasCVOutCtx.strokeStyle = "white";
+                canvasCVOutCtx.lineWidth = 4;
+                canvasCVOutCtx.globalAlpha = 0.4;
+
+                const p = state.selection.currentBtn.ref;
+                canvasCVOutCtx.strokeRect(
+                    p.topleft.x,
+                    p.topleft.y,
+                    p.width,
+                    p.height,
+                );
+            }
+
         } else {
             if (remainingStartButtonPauseTime <= 0) {
                 state.experiment.trial.drawStartBtn(state);
             }
         }
-
 
         {
             canvasCVOutCtx.font = "30px Georgia";
@@ -585,68 +586,6 @@ window.onload = function () {
                 );
             }
         }
-
-        if (
-            // (remainingStartButtonPauseTime <= 0) &&
-            state.initiator.left.show &&
-            (
-                (
-                    state.selection.currentBtn.row_i != -1 &&
-                    state.selection.currentBtn.col_j != -1
-                )
-                || state.selection.currentBtn.btn_id != -1
-            )
-        ) {
-
-            canvasCVOutCtx.strokeStyle = "blue";
-            canvasCVOutCtx.lineWidth = 3;
-            canvasCVOutCtx.globalAlpha = 0.4;
-
-            if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye) {
-                canvasCVOutCtx.strokeRect(
-                    state.initiator.left.landmarks[state.selection.currentBtn.btn_id].x - state.technique.buttons.output[state.selection.currentBtn.btn_id].widthHalf,
-                    state.initiator.left.landmarks[state.selection.currentBtn.btn_id].y - state.technique.buttons.output[state.selection.currentBtn.btn_id].heightHalf,
-                    state.technique.buttons.output[state.selection.currentBtn.btn_id].width,
-                    state.technique.buttons.output[state.selection.currentBtn.btn_id].height,
-                );
-            } else {
-                canvasCVOutCtx.strokeRect(
-                    state.technique.grid.output.x_cols[state.selection.currentBtn.col_j],
-                    state.technique.grid.output.y_rows[state.selection.currentBtn.row_i],
-                    state.technique.grid.output.x_cols[state.selection.currentBtn.col_j + 1] - state.technique.grid.output.x_cols[state.selection.currentBtn.col_j],
-                    state.technique.grid.output.y_rows[state.selection.currentBtn.row_i + 1] - state.technique.grid.output.y_rows[state.selection.currentBtn.row_i]
-                );
-            }
-        }
-
-        // if (state.cursorPath.head != null) {
-
-        //     let p = state.cursorPath.head;
-        //     let q = p.next;
-
-        //     let r = p;
-
-        //     canvasCVOutCtx.beginPath();
-        //     canvasCVOutCtx.lineWidth = 3;
-        //     canvasCVOutCtx.globalAlpha = 0.6;
-        //     canvasCVOutCtx.strokeStyle = "purple";
-        //     while (q != null) {
-        //         canvasCVOutCtx.moveTo(r.x, r.y);
-        //         // canvasCVOutCtx.lineTo(q.x, q.y);                
-        //         canvasCVOutCtx.quadraticCurveTo(p.x, p.y, q.x, q.y);
-        //         r = p;
-        //         p = q;
-        //         q = p.next;
-        //     }
-
-        //     canvasCVOutCtx.stroke();
-        // }
-
-
-        // if (state.isExistingPresentation()) {
-        //     // drawing small camera preview 
-        //     canvasCVOutCtx.drawImage(results.image, state.width - 210, state.height / 2 - 60, 200, 120);
-        // }
 
         {
             if (remainingStartButtonPauseTime > 0) {

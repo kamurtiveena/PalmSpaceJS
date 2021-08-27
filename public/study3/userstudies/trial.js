@@ -619,11 +619,9 @@ export class Trial {
     currentTargetUIStr() {
         const u = this.currentTarget();
         const h = u.hash[u.currentUI];
-        // console.log("currentTargetUIStr() u:", u, "h:", h);
 
         let s = "";
         for (let i = 0; i < this.trainUIStates.length - 1; i ++) {
-            console.log("u.hash[this.trainUIStates[i]].name:", u.hash[this.trainUIStates[i]].name);
             s = s + u.hash[this.trainUIStates[i]].name;
             s += this.uiCurTargetStrJoins[i];
         }
