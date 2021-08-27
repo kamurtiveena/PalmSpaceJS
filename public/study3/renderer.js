@@ -430,7 +430,7 @@ window.onload = function () {
                             if (state.experiment.trial.matched(state)) {
 
                                 state.selection.resetMarkedButton();
-                                state.technique.anchor.transitionUI();
+                                state.technique.anchor.transitionUI(state);
                                 state.experiment.trial.moveToNextUI();
 
                                 if (state.experiment.trial.currentTarget().currentUI == TrainUIState.Done) {
@@ -568,7 +568,7 @@ window.onload = function () {
 
             canvasCVOutCtx.fillText(
                 state.experiment.trial.currentTargetUIStr(),
-                state.width / 4,
+                state.width / 10,
                 40
             );
 

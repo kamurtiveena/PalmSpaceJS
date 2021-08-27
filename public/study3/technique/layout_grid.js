@@ -185,7 +185,7 @@ export class LayoutGrid {
         this.trainUIState = TrainUIState.Welcome;
     }
 
-    transitionUI() {
+    transitionUI(state) {
         switch(this.trainUIState) {
             case TrainUIState.Welcome:
                 this.trainUIState = TrainUIState.Choice;

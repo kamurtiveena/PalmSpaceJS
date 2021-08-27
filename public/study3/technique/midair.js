@@ -15,8 +15,8 @@ export class MidAir {
         this.gap = 3;
 
         this.trainUIState = TrainUIState.Welcome;
-        this.alwaysShow = true;
-        
+        this.parent.alwaysShow = true;
+
         this.parent.buttonsUIs = {
             Unassigned: {
                 finger: {
@@ -166,25 +166,25 @@ export class MidAir {
             },
         };
 
+        this._align(state);
+
 
         this.isCursorInsideBtn = false; // todo what is it doing
     }
 
     calculate(state) {
-        if (!state.initiator.left.show) return;
+        // if (!state.initiator.left.show) return;
 
-        if (state.initiator.left.landmarks) {
-            this._align(state);
-            this.parent._setupSelectionTrain(state);
+        this._align(state);
+        this.parent._setupSelectionTrain(state);
 
-        }
     }
 
     reset() {
         this.trainUIState = TrainUIState.Welcome;
     }
 
-    transitionUI() {
+    transitionUI(state) {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 this.trainUIState = TrainUIState.Choice;
@@ -203,6 +203,7 @@ export class MidAir {
                 break;
         }
 
+        this._align(state);
     }
 
     doneUI() { return this.trainUIState == TrainUIState.Done; }
@@ -251,37 +252,37 @@ export class MidAir {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: 100,
-                    width: state.width / 2,
+                    width: state.width / 4,
                     height: (state.height / 4) - 100
                 };
             case TrainUIState.Choice:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: 100,
-                    width: state.width / 2,
+                    width: state.width / 4,
                     height: (state.height / 4) - 100
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: 100,
-                    width: state.width / 2,
+                    width: state.width / 4,
                     height: (state.height / 4) - 100
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: 100,
-                    width: state.width / 2,
+                    width: state.width / 4,
                     height: (state.height / 4) - 100
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: 100,
-                    width: state.width / 2,
+                    width: state.width / 4,
                     height: (state.height / 4) - 100
                 };
             case TrainUIState.Done:
@@ -307,38 +308,38 @@ export class MidAir {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: state.height / 4,
-                    width: state.width / 2,
-                    height: state.height / 2
+                    width: state.width / 4,
+                    height: state.height / 4
                 };
             case TrainUIState.Choice:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: state.height / 4,
-                    width: state.width / 2,
-                    height: state.height / 2
+                    width: state.width / 4,
+                    height: state.height / 4
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: state.height / 4,
-                    width: state.width / 2,
-                    height: state.height / 2
+                    width: state.width / 4,
+                    height: state.height / 4
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: state.height / 4,
-                    width: state.width / 2,
-                    height: state.height / 2
+                    width: state.width / 4,
+                    height: state.height / 4
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: state.width / 4,
+                    x: 3*state.width / 8,
                     y: state.height / 4,
-                    width: state.width / 2,
-                    height: state.height / 2
+                    width: state.width / 4,
+                    height: state.height / 4
                 };
             case TrainUIState.Done:
                 console.error("Done ui should not render buttons");
@@ -360,7 +361,7 @@ export class MidAir {
     }
 
     _align(state) {
-        
+
         const btns = this.buttons();
         // this.finger = state.fingerRect();
         this.finger = this._fingerRect(state);
@@ -370,18 +371,18 @@ export class MidAir {
 
         if (btns && btns.finger && btns.finger.input) {
             const n = btns.finger.input.length;
-            this.dx_col = (this.width - (n+1) * this.gap) / n;
+            this.dx_col = (this.width - (n + 1) * this.gap) / n;
             this.dy_row = (this.height - 2 * this.gap) / 1;
 
-            for (let i = 0; i < n; i ++) {
-                btns.finger.input[i].x = this.finger.x + i*this.dx_col + i*this.gap;
+            for (let i = 0; i < n; i++) {
+                btns.finger.input[i].x = this.finger.x + i * this.dx_col + i * this.gap;
                 btns.finger.input[i].y = this.finger.y;
                 btns.finger.input[i].width = this.dx_col;
                 btns.finger.input[i].height = this.dy_row;
                 btns.finger.input[i].topleft.x = btns.finger.input[i].x;
                 btns.finger.input[i].topleft.y = btns.finger.input[i].y;
-    
-                btns.finger.output[i].x = this.finger.x + i*this.dx_col + i*this.gap;
+
+                btns.finger.output[i].x = this.finger.x + i * this.dx_col + i * this.gap;
                 btns.finger.output[i].y = this.finger.y;
                 btns.finger.output[i].width = this.dx_col;
                 btns.finger.output[i].height = this.dy_row;
@@ -440,7 +441,7 @@ export class MidAir {
     }
 
     draw(state) {
-        if (!state.initiator.left.show) return;
+        // if (!state.initiator.left.show) return;
 
         this.parent._drawTextHighlightedBtnID(state);
         this.parent._drawTextMarkedMarkedBtnID(state);
