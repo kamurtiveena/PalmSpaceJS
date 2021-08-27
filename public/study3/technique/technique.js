@@ -495,8 +495,8 @@ class Technique {
 
         // drawStrokeRect(state.canvasCVOutCtx, p.x, p.y, p.width, p.height);
 
-        if (!state.isExistingPresentation() && !state.initiator.left.show) return;
-
+        if (!state.initiator.left.show && !state.technique.alwaysShow) return;
+        
         const btns = this.anchor.buttons();
 
         // draw targets

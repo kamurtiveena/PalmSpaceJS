@@ -15,7 +15,8 @@ export class MidAir {
         this.gap = 3;
 
         this.trainUIState = TrainUIState.Welcome;
-
+        this.alwaysShow = true;
+        
         this.parent.buttonsUIs = {
             Unassigned: {
                 finger: {
