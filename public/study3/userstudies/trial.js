@@ -10,6 +10,9 @@ export class Trial {
         this.cursorOverBtn = false;
         this.cursorOverBackBtn = false;
 
+        this.uiCurTargetStrJoins = [", ", " for ", " travel costing ", "$, and pay with ", "!"];
+
+
         this.startBtn = {
             rect: new cv.Rect(1, 1, 70, 50),
             label: 'Start',
@@ -54,15 +57,15 @@ export class Trial {
             const p = [];
             const hash = {};
             for (let j = 0; j < this.permutation.length; j++) {
-                
+
                 let id = null;
                 let name = "-";
                 const n = this.permutation[j].btnIDs.length;
 
                 if (n > 0) {
-                    const m = (n*(n+1))/2;
+                    const m = (n * (n + 1)) / 2;
                     id = Math.floor(Math.random() * m);
-                    for (let r = 0, k = 0, l = 2; k < m && r < n; r ++, k += l, l ++) {
+                    for (let r = 0, k = 0, l = 2; k < m && r < n; r++, k += l, l++) {
                         // console.log("r")
                         if (id <= k) {
                             id = r;
@@ -243,12 +246,13 @@ export class Trial {
     }
 
     isCursorOverStartBtn(state) {
-
         if (this.remainingStartButtonPauseTime(state) > 0) return;
 
+        console.log("isCursorOverStartBtn() state.cursor:", state.cursor);
         if (state.cursor) {
             if (this.status != TrialState.DONE) {
                 const r = this.startBtn.rect;
+                console.log("r:", r);
                 if (this.status != TrialState.STARTED &&
                     r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 5 &&
                     r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 5) {
@@ -332,14 +336,15 @@ export class Trial {
 
     updateStartBtnInputLoc(state) {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
-            state.technique.type == TechniqueType.MidAir) {
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             this._updateStartBtnInputLocBtnID(state);
+        } else if (state.technique.type == TechniqueType.MidAir) {
+            this._updateStartBtnInputLocBtnIDMidAir(state);
         } else {
             this._updateStartBtnInputLoc(state);
         }
     }
-
+    
     _updateStartBtnInputLocBtnID(state) {
 
         const p = state.initiator.left.landmarks[4];
@@ -353,6 +358,16 @@ export class Trial {
             p.x + state.config.landmarkButtons.widthHalf + state.config.experiment.startButton.widthHalf,
             p.y + state.config.landmarkButtons.heightHalf + state.config.experiment.startButton.heightHalf,
         );
+
+        this.startBtn.rect = new cv.Rect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
+    }
+    
+    _updateStartBtnInputLocBtnIDMidAir(state) {
+
+        const p = this._drawStartBtnAlwaysShow(state);
+
+        const tl = p.tl;
+        const br = p.br;
 
         this.startBtn.rect = new cv.Rect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
     }
@@ -470,7 +485,11 @@ export class Trial {
         }
 
         let tl = null, br = null;
-        if (state.isExistingPresentation()) {
+        if (state.technique.alwaysShow) {
+            const p = this._drawStartBtnAlwaysShow(state);
+            tl = p.tl;
+            br = p.br;
+        } else if (state.isExistingPresentation()) {
             const p = this._drawStartBtnTopRight(state);
             tl = p.tl;
             br = p.br;
@@ -512,6 +531,22 @@ export class Trial {
         state.canvasCVOutCtx.fillStyle = "white";
         state.canvasCVOutCtx.fillText(this.startBtn.label, -20 + (tl.x + br.x) / 2, (tl.y + br.y + 10) / 2);
         // }
+    }
+
+    _drawStartBtnAlwaysShow(state) {
+        const p = state.initiator.left.landmarks[4];
+
+        const tl = new cv.Point(
+            state.width - 350,
+            -50 + state.height / 2
+        );
+
+        const br = new cv.Point(
+            state.width - 260,
+            +50 + state.height / 2
+        );
+
+        return { tl, br };
     }
 
     _drawStartBtnTopRight(state) {
@@ -585,8 +620,15 @@ export class Trial {
         const u = this.currentTarget();
         const h = u.hash[u.currentUI];
         // console.log("currentTargetUIStr() u:", u, "h:", h);
-        return `current: ${u.currentUI}: btn_id: ${h.btn_id}, label: ${h.name}`;
 
+        let s = "";
+        for (let i = 0; i < this.trainUIStates.length - 1; i ++) {
+            console.log("u.hash[this.trainUIStates[i]].name:", u.hash[this.trainUIStates[i]].name);
+            s = s + u.hash[this.trainUIStates[i]].name;
+            s += this.uiCurTargetStrJoins[i];
+        }
+        // return `current: ${u.currentUI}: btn_id: ${h.btn_id}, label: ${h.name}`;
+        return s;
     }
 
 
