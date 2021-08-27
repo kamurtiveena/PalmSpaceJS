@@ -558,7 +558,7 @@ class Technique {
                     state.canvasCVOutCtx.fillText(
                         btns.finger.output[i].name[j],
                         btns.finger.output[i].topleft.x + Math.max(0, - 12*btns.finger.output[i].name[j].length/2 + btns.finger.output[i].width/2),
-                        btns.finger.output[i].topleft.y + btns.finger.output[i].height/2 + 20*j - 10*n,
+                        btns.finger.output[i].topleft.y + btns.finger.output[i].height/2 + 20*j - 5*n,
                     );
                 }
             }
