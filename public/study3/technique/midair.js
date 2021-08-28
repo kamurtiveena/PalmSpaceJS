@@ -14,11 +14,13 @@ export class MidAir {
         this.parent.type = TechniqueType.MidAir;
         this.gap = 3;
 
-        this.trainUIState = TrainUIState.Welcome;
+        // this.trainUIState = TrainUIState.Welcome;
+        this.trainUIState = TrainUIState.Choice;
+
         this.parent.alwaysShow = true;
 
-        this.midairWidth = state.width/6;
-        this.midairHeight = state.height/6;
+        this.midairWidth = state.width / 6;
+        this.midairHeight = state.height / 6;
 
         this.parent.buttonsUIs = {
             Unassigned: {
@@ -37,23 +39,23 @@ export class MidAir {
                     ]
                 }
             },
-            Welcome: {
-                finger: {
-                    input: [
-                    ],
-                    output: [
+            // Welcome: {
+            //     finger: {
+            //         input: [
+            //         ],
+            //         output: [
 
-                    ]
-                },
-                palm: {
-                    input: [
-                        new LandmarkButton(this, 0, state, null, ["Welcome"])
-                    ],
-                    output: [
-                        new LandmarkButton(this, 0, state, null, ["Welcome"])
-                    ]
-                }
-            },
+            //         ]
+            //     },
+            //     palm: {
+            //         input: [
+            //             new LandmarkButton(this, 0, state, null, ["Welcome"])
+            //         ],
+            //         output: [
+            //             new LandmarkButton(this, 0, state, null, ["Welcome"])
+            //         ]
+            //     }
+            // },
             Choice: {
                 finger: {
                     input: [
@@ -184,13 +186,15 @@ export class MidAir {
     }
 
     reset() {
-        this.trainUIState = TrainUIState.Welcome;
+        // this.trainUIState = TrainUIState.Welcome;
+        this.trainUIState = TrainUIState.Choice;
     }
 
     transitionUI(state) {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
-                this.trainUIState = TrainUIState.Choice;
+                // this.trainUIState = TrainUIState.Choice;
+                console.error("midair transitionUI(): state should not be in Welcome");
                 break;
             case TrainUIState.Choice:
                 this.trainUIState = TrainUIState.CardTypeQty;
@@ -204,6 +208,12 @@ export class MidAir {
             case TrainUIState.PaymentMethod:
                 this.trainUIState = TrainUIState.Done;
                 break;
+            case TrainUIState.Done:
+                console.error("midair transitionUI(): state should not be in Done");
+                break;
+            default:
+                console.error("midair transitionUI(): invalid state:", this.trainUIState);
+                break;
         }
 
         this._align(state);
@@ -214,7 +224,9 @@ export class MidAir {
     buttonsSelect(trainUIState) {
         switch (trainUIState) {
             case TrainUIState.Welcome:
-                return this.parent.buttonsUIs.Welcome;
+                console.error("midair buttonsSelect(): trainUIState should not be Welcome");
+                return null;
+            // return this.parent.buttonsUIs.Welcome;
             case TrainUIState.Choice:
                 return this.parent.buttonsUIs.Choice;
             case TrainUIState.CardTypeQty:
@@ -223,8 +235,11 @@ export class MidAir {
                 return this.parent.buttonsUIs.PayAmnt;
             case TrainUIState.PaymentMethod:
                 return this.parent.buttonsUIs.PaymentMethod;
+            case TrainUIState.Done:
+                console.error("midair buttonsSelect(): trainUIState should not be Done");
+                return null;
             default:
-                console.error("invalid train ui state: ", trainUIState);
+                console.error("midair buttonsSelect(): invalid state:", trainUIState);
                 return null;
         }
     }
@@ -232,7 +247,9 @@ export class MidAir {
     buttons() {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
-                return this.parent.buttonsUIs.Welcome;
+                console.error("midair buttons(): trainUIState should not be Welcome");
+                return null
+            // return this.parent.buttonsUIs.Welcome;
             case TrainUIState.Choice:
                 return this.parent.buttonsUIs.Choice;
             case TrainUIState.CardTypeQty:
@@ -244,8 +261,11 @@ export class MidAir {
             case TrainUIState.Done:
                 console.error("Done ui should not render buttons");
                 return null;
+            case TrainUIState.Done:
+                console.error("midair buttons(): trainUIState should not be Done");
+                return null;
             default:
-                console.error("invalid train ui state");
+                console.error("midair buttons(): invalid state:", trainUIState);
                 return null;
         }
 
@@ -254,42 +274,44 @@ export class MidAir {
     _fingerRect(state) {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
-                return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - 1.5*this.midairHeight + 50,
-                    width: this.midairWidth,
-                    height: this.midairHeight - 50
-                };
+                console.error("midair _fingerRect(): trainUIState should not be Welcome");
+                return null;
+                // return {
+                //     x: state.width / 2 - this.midairWidth / 2,
+                //     y: state.height / 2 - 1.5 * this.midairHeight + 50,
+                //     width: this.midairWidth,
+                //     height: this.midairHeight - 50
+                // };
             case TrainUIState.Choice:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
                     width: this.midairWidth,
                     height: this.midairHeight - 50
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
                     width: this.midairWidth,
                     height: this.midairHeight - 50
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
                     width: this.midairWidth,
                     height: this.midairHeight - 50
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - 1.5*this.midairHeight + 50,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
                     width: this.midairWidth,
                     height: this.midairHeight - 50
                 };
             case TrainUIState.Done:
-                console.error("Done ui should not render buttons");
+                console.error("midair _fingerRect(): trainUIState should not be Done");
                 return {
                     x: -1,
                     y: -1,
@@ -297,7 +319,7 @@ export class MidAir {
                     height: -1
                 };
             default:
-                console.error("invalid train ui state");
+                console.error("midair _fingerRect(): invalid state:", trainUIState);
                 return {
                     x: -1,
                     y: -1,
@@ -310,42 +332,44 @@ export class MidAir {
     _palmRect(state) {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
-                return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - this.midairHeight/2,
-                    width: this.midairWidth,
-                    height: this.midairHeight
-                };
+                console.error("midair _palmRect(): trainUIState should not be Welcome");
+                return null;
+                // return {
+                //     x: state.width / 2 - this.midairWidth / 2,
+                //     y: state.height / 2 - this.midairHeight / 2,
+                //     width: this.midairWidth,
+                //     height: this.midairHeight
+                // };
             case TrainUIState.Choice:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - this.midairHeight/2,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - this.midairHeight / 2,
                     width: this.midairWidth,
                     height: this.midairHeight
                 };
             case TrainUIState.CardTypeQty:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - this.midairHeight/2,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - this.midairHeight / 2,
                     width: this.midairWidth,
                     height: this.midairHeight
                 };
             case TrainUIState.PayAmnt:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - this.midairHeight/2,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - this.midairHeight / 2,
                     width: this.midairWidth,
                     height: this.midairHeight
                 };
             case TrainUIState.PaymentMethod:
                 return {
-                    x: state.width/2 - this.midairWidth/2,
-                    y: state.height/2 - this.midairHeight/2,
+                    x: state.width / 2 - this.midairWidth / 2,
+                    y: state.height / 2 - this.midairHeight / 2,
                     width: this.midairWidth,
                     height: this.midairHeight
                 };
             case TrainUIState.Done:
-                console.error("Done ui should not render buttons");
+                console.error("midair _palmRect(): trainUIState should not be Done");
                 return {
                     x: -1,
                     y: -1,
@@ -353,7 +377,7 @@ export class MidAir {
                     height: -1
                 };
             default:
-                console.error("invalid train ui state");
+                console.error("midair _fingerRect(): invalid state:", trainUIState);
                 return {
                     x: -1,
                     y: -1,

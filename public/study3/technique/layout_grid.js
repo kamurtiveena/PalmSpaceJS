@@ -16,7 +16,8 @@ export class LayoutGrid {
         //     output: []
         // };
 
-        this.trainUIState = TrainUIState.Welcome;
+        // this.trainUIState = TrainUIState.Welcome;
+        this.trainUIState = TrainUIState.Choice;
 
         this.parent.buttonsUIs = {
             Unassigned: {
@@ -24,34 +25,34 @@ export class LayoutGrid {
                     input: [
                     ],
                     output: [
-                        
+
                     ]
                 },
                 palm: {
                     input: [
                     ],
                     output: [
-                        
+
                     ]
                 }
             },
-            Welcome: {
-                finger: {
-                    input: [
-                    ],
-                    output: [
-                        
-                    ]
-                },
-                palm: {
-                    input: [
-                        new LandmarkButton(this, 0, state, null, ["Welcome"])
-                    ],
-                    output: [
-                        new LandmarkButton(this, 0, state, null, ["Welcome"])
-                    ]
-                }
-            },
+            // Welcome: {
+            //     finger: {
+            //         input: [
+            //         ],
+            //         output: [
+
+            //         ]
+            //     },
+            //     palm: {
+            //         input: [
+            //             new LandmarkButton(this, 0, state, null, ["Welcome"])
+            //         ],
+            //         output: [
+            //             new LandmarkButton(this, 0, state, null, ["Welcome"])
+            //         ]
+            //     }
+            // },
             Choice: {
                 finger: {
                     input: [
@@ -182,13 +183,15 @@ export class LayoutGrid {
     }
 
     reset() {
-        this.trainUIState = TrainUIState.Welcome;
+        // this.trainUIState = TrainUIState.Welcome;
+        this.trainUIState = TrainUIState.Choice;
     }
 
     transitionUI(state) {
-        switch(this.trainUIState) {
+        switch (this.trainUIState) {
             case TrainUIState.Welcome:
-                this.trainUIState = TrainUIState.Choice;
+                // this.trainUIState = TrainUIState.Choice;
+                console.error("palm transitionUI(): state should not be in Welcome");
                 break;
             case TrainUIState.Choice:
                 this.trainUIState = TrainUIState.CardTypeQty;
@@ -202,8 +205,14 @@ export class LayoutGrid {
             case TrainUIState.PaymentMethod:
                 this.trainUIState = TrainUIState.Done;
                 break;
+            case TrainUIState.Done:
+                console.error("palm transitionUI(): state should not be in Done");
+                break;
+            default:
+                console.error("palm transitionUI(): invalid state:", this.trainUIState);
+                break;
         }
-        
+
     }
 
     doneUI() { return this.trainUIState == TrainUIState.Done; }
@@ -211,7 +220,9 @@ export class LayoutGrid {
     buttonsSelect(trainUIState) {
         switch (trainUIState) {
             case TrainUIState.Welcome:
-                return this.parent.buttonsUIs.Welcome;
+                console.error("palm buttonsSelect(): trainUIState should not be Welcome");
+                return null;
+            // return this.parent.buttonsUIs.Welcome;
             case TrainUIState.Choice:
                 return this.parent.buttonsUIs.Choice;
             case TrainUIState.CardTypeQty:
@@ -221,10 +232,10 @@ export class LayoutGrid {
             case TrainUIState.PaymentMethod:
                 return this.parent.buttonsUIs.PaymentMethod;
             case TrainUIState.Done:
-                console.error("Done ui should not be selected");
+                console.error("palm buttonsSelect(): trainUIState should not be Done");
                 return null;
             default:
-                console.error("invalid train ui state");
+                console.error("palm buttonsSelect(): invalid state:", trainUIState);
                 return null;
         }
     }
@@ -232,7 +243,9 @@ export class LayoutGrid {
     buttons() {
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
-                return this.parent.buttonsUIs.Welcome;
+                console.error("palm buttons(): trainUIState should not be Welcome");
+                return null;
+            // return this.parent.buttonsUIs.Welcome;
             case TrainUIState.Choice:
                 return this.parent.buttonsUIs.Choice;
             case TrainUIState.CardTypeQty:
@@ -242,48 +255,48 @@ export class LayoutGrid {
             case TrainUIState.PaymentMethod:
                 return this.parent.buttonsUIs.PaymentMethod;
             case TrainUIState.Done:
-                console.error("Done ui should not render buttons");
+                console.error("palm buttons(): trainUIState should not be Done");
                 return null;
             default:
-                console.error("invalid train ui state");
+                console.error("palm buttons(): invalid state:", trainUIState);
                 return null;
         }
 
     }
 
     _align(state) {
-        
+
         this.palm = state.palmRect();
         this.width = this.palm.width;
         this.height = this.palm.height;
 
-        const btns = this.buttons(); 
+        const btns = this.buttons();
 
         if (btns && btns.finger && btns.finger.input) {
             const n = btns.finger.input.length;
-            this.dx_col = (this.width  - 4 * this.gap) / 3; 
+            this.dx_col = (this.width - 4 * this.gap) / 3;
             this.dy_row = (this.height - 4 * this.gap) / 3;
-            
+
             for (let i = 0, j = 8; i < n; i++, j += 4) {
                 btns.finger.input[i].x = state.initiator.left.landmarks[j].x;
                 btns.finger.input[i].y = state.initiator.left.landmarks[j].y;
-                btns.finger.input[i].width  = this.dx_col;
+                btns.finger.input[i].width = this.dx_col;
                 btns.finger.input[i].height = this.dy_row;
-                btns.finger.input[i].topleft.x = btns.finger.input[i].x - this.dx_col/2; 
-                btns.finger.input[i].topleft.y = btns.finger.input[i].y - this.dy_row/2; 
-    
+                btns.finger.input[i].topleft.x = btns.finger.input[i].x - this.dx_col / 2;
+                btns.finger.input[i].topleft.y = btns.finger.input[i].y - this.dy_row / 2;
+
                 btns.finger.output[i].x = state.initiator.left.landmarks[j].x;
                 btns.finger.output[i].y = state.initiator.left.landmarks[j].y;
                 btns.finger.output[i].width = this.dx_col;
                 btns.finger.output[i].height = this.dy_row;
-                btns.finger.output[i].topleft.x = btns.finger.output[i].x - this.dx_col/2; 
-                btns.finger.output[i].topleft.y = btns.finger.output[i].y - this.dy_row/2; 
+                btns.finger.output[i].topleft.x = btns.finger.output[i].x - this.dx_col / 2;
+                btns.finger.output[i].topleft.y = btns.finger.output[i].y - this.dy_row / 2;
             }
         }
 
         if (btns && btns.palm && btns.palm.input) {
             const n = btns.palm.input.length;
-            if(n >= 3) {
+            if (n >= 3) {
                 this.dx_col = (this.width - 4 * this.gap) / 3;
                 // this.dy_row = (this.height - (1 + n - 3) * this.gap) / (n-2);
                 this.dy_row = (this.height - 2 * this.gap);
@@ -295,23 +308,23 @@ export class LayoutGrid {
                 this.dx_col = (this.width - 2 * this.gap);
                 this.dy_row = (this.height - 2 * this.gap);
             }
-        
+
             for (let i = 0, j = 0, k = 0; i < n; i++) {
-                const dy = this.dy_row / ((n > 3 && (j >= 2)) ? 3: 1);
-                btns.palm.input[i].x = this.palm.x + (j * this.dx_col) + (j*this.gap);
-                btns.palm.input[i].y = this.palm.y + (k * dy) + (k*this.gap);
+                const dy = this.dy_row / ((n > 3 && (j >= 2)) ? 3 : 1);
+                btns.palm.input[i].x = this.palm.x + (j * this.dx_col) + (j * this.gap);
+                btns.palm.input[i].y = this.palm.y + (k * dy) + (k * this.gap);
                 btns.palm.input[i].width = this.dx_col;
-                btns.palm.input[i].height = this.dy_row / ((n > 3 && (j >= 2)) ? 3: 1);
-                btns.palm.input[i].topleft.x = btns.palm.input[i].x; 
-                btns.palm.input[i].topleft.y = btns.palm.input[i].y; 
-    
-                btns.palm.output[i].x = this.palm.x + (j * this.dx_col) + (j*this.gap);
-                btns.palm.output[i].y = this.palm.y + (k * dy) + (k*this.gap);
+                btns.palm.input[i].height = this.dy_row / ((n > 3 && (j >= 2)) ? 3 : 1);
+                btns.palm.input[i].topleft.x = btns.palm.input[i].x;
+                btns.palm.input[i].topleft.y = btns.palm.input[i].y;
+
+                btns.palm.output[i].x = this.palm.x + (j * this.dx_col) + (j * this.gap);
+                btns.palm.output[i].y = this.palm.y + (k * dy) + (k * this.gap);
                 btns.palm.output[i].width = this.dx_col;
                 btns.palm.output[i].height = dy;
-                btns.palm.output[i].topleft.x = btns.palm.output[i].x; 
-                btns.palm.output[i].topleft.y = btns.palm.output[i].y; 
-        
+                btns.palm.output[i].topleft.x = btns.palm.output[i].x;
+                btns.palm.output[i].topleft.y = btns.palm.output[i].y;
+
                 if (j < 2) {
                     j++;
                 } else {

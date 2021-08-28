@@ -77,6 +77,16 @@ window.onload = function () {
     }
 
     {
+        document.getElementById("menutechnique_grid").onchange = function(ev) {
+            document.getElementById("cameraCheck").checked = false;
+        }
+
+        document.getElementById("menutechnique_midair").onchange = function(ev) {
+            document.getElementById("cameraCheck").checked = true;
+        }
+    }
+
+    {
         const practiceElem = document.getElementById('practiceCheck');
 
         practiceElem.onchange = function (ev) {
@@ -225,6 +235,7 @@ window.onload = function () {
         state.menu.userID = parseInt(checkSelectList("selectUserID"));
         state.menu.practice = document.getElementById("practiceCheck").checked;
         state.menu.debug = document.getElementById("debugCheck").checked;
+        state.menu.camera = document.getElementById("cameraCheck").checked;
 
         // study2 choices
         state.menu.study2 = {
@@ -319,7 +330,8 @@ window.onload = function () {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-        if (state.menu.study2.presentation == PresentationType.Existing ||
+        if (state.menu.camera ||
+            state.menu.study2.presentation == PresentationType.Existing ||
             state.technique.type == TechniqueType.H2S_Relative ||
             state.technique.type == TechniqueType.H2S_Absolute ||
             state.technique.type == TechniqueType.H2S_Relative_Finger

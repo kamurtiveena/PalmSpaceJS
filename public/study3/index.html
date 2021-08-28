@@ -64,6 +64,15 @@
 
           <div class="form-group">
             <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="cameraCheck">
+              <label class="form-check-label" for="cameraCheck">
+                Camera
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-check">
               <input class="form-check-input" type="checkbox" id="debugCheck" disabled>
               <label class="form-check-label" for="debugCheck">
                 Debug Mode
@@ -168,7 +177,7 @@
 
           <div>
             <label for="startbtn_pausetime_sec">Pause time before start (in seconds):</label>
-            <input type="number" id="startbtn_pausetime_sec" name="startbtn_pausetime_sec" min="0" max="100" value=3>
+            <input type="number" id="startbtn_pausetime_sec" name="startbtn_pausetime_sec" min="0" max="100" value=6>
           </div>
         </div>
 
@@ -234,17 +243,18 @@
 
 
           <div class="row" id="technique_list">
-            <h2>Layout</h2>
+            <h2>Input Space</h2>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="menutechnique" id="menutechnique_grid" value="Grid"  checked>
+              <input class="form-check-input" type="radio" name="menutechnique" id="menutechnique_grid" value="Grid"
+                checked>
               <label class="form-check-label" for="menutechnique_grid">
                 Palm
               </label>
             </div>
 
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="menutechnique" id="menutechnique_midair" value="MidAir"
-                >
+              <input class="form-check-input" type="radio" name="menutechnique" id="menutechnique_midair"
+                value="MidAir">
               <label class="form-check-label" for="menutechnique_midair">
                 MidAir
               </label>

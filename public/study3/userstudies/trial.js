@@ -10,7 +10,7 @@ export class Trial {
         this.cursorOverBtn = false;
         this.cursorOverBackBtn = false;
 
-        this.uiCurTargetStrJoins = [", ", " for ", " travel costing ", "$, and pay with ", "!"];
+        this.uiCurTargetStrJoins = ["Welcome! ", " for ", " travel costing ", "$, and pay with ", "!"];
 
 
         this.startBtn = {
@@ -26,7 +26,7 @@ export class Trial {
         }
 
         this.trainUIStates = [
-            TrainUIState.Welcome,
+            // TrainUIState.Welcome,
             TrainUIState.Choice,
             TrainUIState.CardTypeQty,
             TrainUIState.PayAmnt,
@@ -89,7 +89,8 @@ export class Trial {
             this.targetList.push({
                 hash: hash,
                 all: p,
-                currentUI: TrainUIState.Welcome
+                // currentUI: TrainUIState.Welcome
+                currentUI: TrainUIState.Choice
             });
             i++;
         }
@@ -622,8 +623,8 @@ export class Trial {
 
         let s = "";
         for (let i = 0; i < this.trainUIStates.length - 1; i ++) {
-            s = s + u.hash[this.trainUIStates[i]].name;
             s += this.uiCurTargetStrJoins[i];
+            s = s + u.hash[this.trainUIStates[i]].name;
         }
         // return `current: ${u.currentUI}: btn_id: ${h.btn_id}, label: ${h.name}`;
         return s;
@@ -698,8 +699,10 @@ export class Trial {
         const u = this.currentTarget();
         switch (u.currentUI) {
             case TrainUIState.Welcome:
-                u.currentUI = TrainUIState.Choice;
+                console.error("trial moveToNextUI() currentUI should not be Welcome");
                 break;
+                // u.currentUI = TrainUIState.Choice;
+                // break;
             case TrainUIState.Choice:
                 u.currentUI = TrainUIState.CardTypeQty;
                 break;
@@ -713,7 +716,7 @@ export class Trial {
                 u.currentUI = TrainUIState.Done;
                 break;
             default:
-                console.error(`moveToNextUI() no ${u.currentUI} not allowed`);
+                console.error(`trial moveToNextUI() no ${u.currentUI} not allowed`);
                 break;
         }
     }

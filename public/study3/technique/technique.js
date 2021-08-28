@@ -525,7 +525,7 @@ class Technique {
                     state.canvasCVOutCtx.fillText(
                         btns.palm.output[i].name[j],
                         btns.palm.output[i].x + Math.max(0, - 12*btns.palm.output[i].name[j].length/2 + btns.palm.output[i].width/2),
-                        btns.palm.output[i].y + btns.palm.output[i].height/2 + 20*j - 10*n,
+                        btns.palm.output[i].y + btns.palm.output[i].height/2 + 20*j - 5*n,
                     );
                 }
 

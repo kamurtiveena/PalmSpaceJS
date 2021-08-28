@@ -32,7 +32,7 @@ const PresentationType = {
 
 const TrainUIState = {
     Unassigned: null,
-    Welcome: "Welcome",
+    // Welcome: "Welcome",
     Choice: "2Choice",
     CardTypeQty: "3CardTypeQty",
     PayAmnt: "4PayAmnt",
