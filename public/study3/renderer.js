@@ -249,7 +249,8 @@ window.onload = function () {
             readingDirection: checkRadio("menuReadingDirection"),
             numberOfButtonsPerRow: parseInt(checkRadio("menuNumberOfButtonsPerRow")),
             presentation: checkRadio("menupresentation"),
-            startButtonPauseTime: parseInt(document.getElementById("startbtn_pausetime_sec").value)
+            startButtonPauseTime: parseInt(document.getElementById("startbtn_pausetime_sec").value),
+            uiPauseTime: parseInt(document.getElementById("ui_pausetime_sec").value)
         };
 
         state.config.landmarkButtons.total = state.menu.study2.numberOfButtonsPerRow;
@@ -395,6 +396,16 @@ window.onload = function () {
         }
 
         const remainingStartButtonPauseTime = state.experiment.trial.remainingStartButtonPauseTime(state);
+        const remainingUIPauseTime = state.experiment.trial.remainingUIPauseTime(state);
+
+        if (remainingUIPauseTime > 0 || remainingStartButtonPauseTime > 0) {
+            // console.log("remainingUIPauseTime:", remainingUIPauseTime, "remainingStartButtonPauseTime:", remainingStartButtonPauseTime);
+            state.trigger.reset(state);
+        }
+
+        if (remainingStartButtonPauseTime <= 0 && state.experiment.trial.isRestartingSameTarget()) {
+            state.experiment.trial.resumeSameTarget();
+        }
 
         if (state.initiator.show || state.technique.alwaysShow) {
 
@@ -404,7 +415,6 @@ window.onload = function () {
             state.experiment.trial.updateBackBtnInputLoc(state);
 
             state.trigger.update(state);
-
 
             if (state.trigger.status != TRIGGER.PRESSED) {
                 state.selection.locked = false;
@@ -441,7 +451,6 @@ window.onload = function () {
                         goBackToMenu();
                     } else if (state.experiment.trial.started()) {
 
-
                         if (state.experiment.trial.matchedUI(state)) {
                             state.technique.anchor.markSelected(state);
                             state.experiment.trial.incrementAttempts(state);
@@ -460,7 +469,6 @@ window.onload = function () {
                                     state.experiment.trial.generateTarget(state);
                                     resetAnchor = true;
                                 }
-
                             } else {
                                 state.experiment.trial.resetCurrentTarget(state);
                                 resetAnchor = true;
@@ -470,7 +478,6 @@ window.onload = function () {
                         } else {
                             console.error("current UI is in invalid state:", state);
                         }
-
                     }
 
                     state.selection.resetSelectedButton();
@@ -481,7 +488,9 @@ window.onload = function () {
                     break;
             }
 
-            if (resetSelection || remainingStartButtonPauseTime > 0) {
+            if (resetSelection || 
+                (state.experiment.trial.started() && remainingUIPauseTime > 0) ||
+                (!state.experiment.trial.started() && remainingStartButtonPauseTime > 0)) {
                 console.log("reseting selection");
                 state.selection.reset();
             }
@@ -500,7 +509,6 @@ window.onload = function () {
             // state.experiment.trial.drawCompletedTargetsText(state);
             // state.experiment.trial.drawCurrentUITarget();
             // state.experiment.trial.drawTarget(state);
-
 
             cv.addWeighted(
                 state.overlay,
@@ -554,7 +562,7 @@ window.onload = function () {
             state.technique.drawCustom(state);
 
 
-            if (state.experiment.trial.remainingStartButtonPauseTime(state) <= 0 && state.selection.currentBtn.btn_id != -1) {
+            if (state.selection.currentBtn.btn_id != -1 && remainingUIPauseTime <= 0) {
                 // draw rectangle around highlighted button
 
                 canvasCVOutCtx.strokeStyle = "white";
@@ -616,11 +624,26 @@ window.onload = function () {
         }
 
         {
+            canvasCVOutCtx.fillStyle = "black";
+            canvasCVOutCtx.globalAlpha = 0.7;
+            canvasCVOutCtx.fillRect(
+                state.width - 270,
+                state.height - 60,
+                270,
+                60
+            );
+
+            canvasCVOutCtx.font = "15px Georgia";
+            canvasCVOutCtx.fillStyle = "white";
             if (remainingStartButtonPauseTime > 0) {
-                canvasCVOutCtx.font = "15px Georgia";
-                canvasCVOutCtx.fillStyle = "read";
                 canvasCVOutCtx.fillText(
                     `Waiting for ${remainingStartButtonPauseTime} seconds.`,
+                    state.width - 250,
+                    state.height - 40
+                );
+            } else if (remainingUIPauseTime > 0) {
+                canvasCVOutCtx.fillText(
+                    `Waiting for ${remainingUIPauseTime} seconds for UI update.`,
                     state.width - 250,
                     state.height - 40
                 );

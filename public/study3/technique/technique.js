@@ -701,6 +701,10 @@ class Technique {
             state.selection.currentBtn.ref = btn;
 
             state.selection.addToPastSelectionsBtnID(btn.id);
+        } else {
+            state.selection.previousBtn.btn_id = -1;
+            state.selection.previousBtn.name = "-";
+            state.selection.previousBtn.ref = null;
         }
     }
 

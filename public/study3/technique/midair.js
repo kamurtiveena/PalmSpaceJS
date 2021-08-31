@@ -286,30 +286,30 @@ export class MidAir {
             case TrainUIState.Choice:
                 return {
                     x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
+                    y: state.height / 2 - 1.5 * this.midairHeight,
                     width: this.midairWidth,
-                    height: this.midairHeight - 50
+                    height: this.midairHeight 
                 };
             case TrainUIState.CardTypeQty:
                 return {
                     x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
+                    y: state.height / 2 - 1.5 * this.midairHeight,
                     width: this.midairWidth,
-                    height: this.midairHeight - 50
+                    height: this.midairHeight
                 };
             case TrainUIState.PayAmnt:
                 return {
                     x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
+                    y: state.height / 2 - 1.5 * this.midairHeight,
                     width: this.midairWidth,
-                    height: this.midairHeight - 50
+                    height: this.midairHeight
                 };
             case TrainUIState.PaymentMethod:
                 return {
                     x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight + 50,
+                    y: state.height / 2 - 1.5 * this.midairHeight,
                     width: this.midairWidth,
-                    height: this.midairHeight - 50
+                    height: this.midairHeight
                 };
             case TrainUIState.Done:
                 console.error("midair _fingerRect(): trainUIState should not be Done");

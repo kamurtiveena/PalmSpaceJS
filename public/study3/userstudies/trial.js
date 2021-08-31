@@ -132,6 +132,7 @@ export class Trial {
         }
 
         this.startButtonPauseTime = performance.now();
+        this.uiPauseTime = performance.now();
     }
 
     attemptsDetailsStr() {
@@ -143,9 +144,28 @@ export class Trial {
         return ret;
     }
 
+    resumeSameTarget() {
+        this.status = TrialState.STARTED;
+    }
+
+    isRestartingSameTarget() {
+        return this.status == TrialState.SAMETARGETRESTART;
+    }
+
     resetCurrentTarget(state) {
+        this.status = TrialState.SAMETARGETRESTART;
         this.targetList[this.targetID].currentUI = TrainUIState.Choice;
         this.startButtonPauseTime = performance.now();
+        this.uiPauseTime = performance.now();
+    }
+
+    remainingUIPauseTime(state) {
+        return Math.max(
+            0,
+            state.menu.study2.uiPauseTime - Math.round(
+                (performance.now() - this.uiPauseTime) / 1000
+            )
+        );
     }
 
     remainingStartButtonPauseTime(state) {
@@ -711,7 +731,7 @@ export class Trial {
     }
 
     moveToNextUI() {
-        this.startButtonPauseTime = performance.now();
+        this.uiPauseTime = performance.now();
         const u = this.currentTarget();
         switch (u.currentUI) {
             case TrainUIState.Welcome:

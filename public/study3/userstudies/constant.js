@@ -3,7 +3,8 @@ const TrialState = {
     OPEN: 1,
     STARTED: 2,
     PAUSED: 3,
-    DONE: 4
+    SAMETARGETRESTART: 4,
+    DONE: 5,
 };
 
 const TrialBtnState = {
