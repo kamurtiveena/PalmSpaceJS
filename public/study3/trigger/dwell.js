@@ -32,7 +32,7 @@ class Dwell {
     _updateBtnID(state) {
         this.curTime = performance.now();
         
-        if (state.experiment.trial.started()) {
+        if (state.experiment.trial.started() && state.experiment.trial.remainingStartButtonPauseTime(state) <= 0) {
             // btn_id 0 based
             this.selection.previousBtn.btn_id = this.selection.currentBtn.btn_id;
             

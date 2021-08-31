@@ -145,6 +145,7 @@ export class Trial {
 
     resetCurrentTarget(state) {
         this.targetList[this.targetID].currentUI = TrainUIState.Choice;
+        this.startButtonPauseTime = performance.now();
     }
 
     remainingStartButtonPauseTime(state) {

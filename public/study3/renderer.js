@@ -554,7 +554,7 @@ window.onload = function () {
             state.technique.drawCustom(state);
 
 
-            if (state.selection.currentBtn.btn_id != -1) {
+            if (state.experiment.trial.remainingStartButtonPauseTime(state) <= 0 && state.selection.currentBtn.btn_id != -1) {
                 // draw rectangle around highlighted button
 
                 canvasCVOutCtx.strokeStyle = "white";
