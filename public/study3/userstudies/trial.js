@@ -10,7 +10,7 @@ export class Trial {
         this.cursorOverBtn = false;
         this.cursorOverBackBtn = false;
 
-        this.uiCurTargetStrJoins = ["Welcome! ", " for ", " travel costing ", "$, and pay with ", "!"];
+        this.uiCurTargetStrJoins = ["", " for ", " travel costing ", "$, and pay with ", "!"];
 
 
         this.startBtn = {
@@ -66,7 +66,6 @@ export class Trial {
                     const m = (n * (n + 1)) / 2;
                     id = Math.floor(Math.random() * m);
                     for (let r = 0, k = 0, l = 2; k < m && r < n; r++, k += l, l++) {
-                        // console.log("r")
                         if (id <= k) {
                             id = r;
                             break;
@@ -124,10 +123,28 @@ export class Trial {
             visitedCells: (new Array(this.targetSeqSize)).fill(0),
             targetsLastVisitedTime: (new Array(this.targetSeqSize)).fill(0),
             valid: true,
-            events: ""
+            events: "",
+            attemptsUI: {}
         };
 
+        for (let i = 0;i < this.trainUIStates.length; i ++) {
+            this.stats.attemptsUI[this.trainUIStates[i]] = (new Array(this.targetSeqSize)).fill(0);
+        }
+
         this.startButtonPauseTime = performance.now();
+    }
+
+    attemptsDetailsStr() {
+        let ret = "";
+        for (let i = 0;i < this.trainUIStates.length; i ++) {
+            ret += this.stats.attemptsUI[this.trainUIStates[i]][this.targetID] + ";";
+        }
+
+        return ret;
+    }
+
+    resetCurrentTarget(state) {
+        this.targetList[this.targetID].currentUI = TrainUIState.Choice;
     }
 
     remainingStartButtonPauseTime(state) {
@@ -240,6 +257,7 @@ export class Trial {
         const d = performance.now() - this.targetsStartTime[this.targetID];
         this.stats.events += `${this.stats.attempts[this.targetID]}:${state.selection.currentBtn.btn_id}:${d};`;
         this.stats.attempts[this.targetID]++;
+        this.stats.attemptsUI[this.targetList[this.targetID].currentUI][this.targetID] ++;
     }
 
     started() {
@@ -248,12 +266,9 @@ export class Trial {
 
     isCursorOverStartBtn(state) {
         if (this.remainingStartButtonPauseTime(state) > 0) return;
-
-        console.log("isCursorOverStartBtn() state.cursor:", state.cursor);
         if (state.cursor) {
             if (this.status != TrialState.DONE) {
                 const r = this.startBtn.rect;
-                console.log("r:", r);
                 if (this.status != TrialState.STARTED &&
                     r.x <= state.cursor.x && state.cursor.x <= r.x + r.width + 5 &&
                     r.y <= state.cursor.y && state.cursor.y <= r.y + r.height + 5) {

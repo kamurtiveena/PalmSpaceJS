@@ -22,7 +22,7 @@ window.onload = function () {
     }
 
     const repetitionsElem = document.getElementById('repetitions');
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 40; i++) {
         let opt = document.createElement('option');
         opt.appendChild(document.createTextNode(i));
         opt.value = i;
@@ -78,11 +78,17 @@ window.onload = function () {
 
     {
         document.getElementById("menutechnique_grid").onchange = function(ev) {
-            document.getElementById("cameraCheck").checked = false;
+            document.getElementById("cameraCheck").checked = true;
         }
 
         document.getElementById("menutechnique_midair").onchange = function(ev) {
+            document.getElementById("cameraCheck").checked = false;
+        }
+
+        if (document.getElementById("menutechnique_grid").checked) {
             document.getElementById("cameraCheck").checked = true;
+        } else {
+            document.getElementById("cameraCheck").checked = false;
         }
     }
 
@@ -330,7 +336,7 @@ window.onload = function () {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-        if (state.menu.camera ||
+        if (!state.menu.camera ||
             state.menu.study2.presentation == PresentationType.Existing ||
             state.technique.type == TechniqueType.H2S_Relative ||
             state.technique.type == TechniqueType.H2S_Absolute ||
@@ -438,11 +444,11 @@ window.onload = function () {
 
                         if (state.experiment.trial.matchedUI(state)) {
                             state.technique.anchor.markSelected(state);
-                            // state.experiment.trial.incrementAttempts(state);
+                            state.experiment.trial.incrementAttempts(state);
                             if (state.experiment.trial.matched(state)) {
 
                                 state.selection.resetMarkedButton();
-                                state.technique.anchor.transitionUI(state);
+                                state.technique.anchor.moveToNextUI(state);
                                 state.experiment.trial.moveToNextUI();
 
                                 if (state.experiment.trial.currentTarget().currentUI == TrainUIState.Done) {
@@ -455,9 +461,12 @@ window.onload = function () {
                                     resetAnchor = true;
                                 }
 
-                                resetSelection = true;
+                            } else {
+                                state.experiment.trial.resetCurrentTarget(state);
+                                resetAnchor = true;
                             }
-
+                            
+                            resetSelection = true;                                
                         } else {
                             console.error("current UI is in invalid state:", state);
                         }
@@ -547,8 +556,6 @@ window.onload = function () {
 
             if (state.selection.currentBtn.btn_id != -1) {
                 // draw rectangle around highlighted button
-                console.log("selected btn:", state.selection.currentBtn);
-
 
                 canvasCVOutCtx.strokeStyle = "white";
                 canvasCVOutCtx.lineWidth = 4;
@@ -580,12 +587,21 @@ window.onload = function () {
                 state.height - 50
             );
 
+            const s = state.experiment.trial.currentTargetUIStr();
+            canvasCVOutCtx.fillStyle = "black";
+            canvasCVOutCtx.globalAlpha = 0.5;
+            canvasCVOutCtx.fillRect(
+                state.width/11,
+                10,
+                s.length * 14,
+                40
+            );
 
             canvasCVOutCtx.font = "30px Georgia";
-            canvasCVOutCtx.fillStyle = "black";
-
+            canvasCVOutCtx.fillStyle = "white";
+            canvasCVOutCtx.globalAlpha = 0.8;
             canvasCVOutCtx.fillText(
-                state.experiment.trial.currentTargetUIStr(),
+                s,
                 state.width / 10,
                 40
             );

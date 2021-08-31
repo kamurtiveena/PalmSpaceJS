@@ -479,27 +479,29 @@ class Technique {
     }
 
     drawCustom(state) {
+
         // draw hand image at the top-right corner
-        state.canvasCVOutCtx.globalAlpha = 0.8;
-        if (state.menu.study2.presentation == PresentationType.Existing) {
-            state.canvasCVOutCtx.drawImage(
-                state.config.icons.hand.image,
-                state.width - 200,
-                27,
-                200,
-                220
-            );
-        }
+        // if (state.menu.study2.presentation == PresentationType.Existing) {
+            // state.canvasCVOutCtx.globalAlpha = 0.8;
+        //     state.canvasCVOutCtx.drawImage(
+        //         state.config.icons.hand.image,
+        //         state.width - 200,
+        //         27,
+        //         200,
+        //         220
+        //     );
+        // }
 
-        const p = state.palmRect();
-
+        
         // drawStrokeRect(state.canvasCVOutCtx, p.x, p.y, p.width, p.height);
-
+        
         if (!state.initiator.left.show && !state.technique.alwaysShow) return;
         
         const btns = this.anchor.buttons();
 
         // draw targets
+        state.canvasCVOutCtx.globalAlpha = 0.8;
+
         if (btns && btns.palm && btns.palm.output) {
             for (let i = 0; i < btns.palm.output.length; i++) {
                 // this._drawIconsOnCanvas(
@@ -507,13 +509,16 @@ class Technique {
                 //     btns.palm.output[i]
                 // );
 
+                let color = "black";
+                // if (state.selection.currentBtn.btn_id == btns.palm.output[i].btn_id) color = "grey";
+                
                 drawFillRect(
                     state.canvasCVOutCtx,
                     btns.palm.output[i].topleft.x,
                     btns.palm.output[i].topleft.y,
                     btns.palm.output[i].width,
                     btns.palm.output[i].height,
-                    'black',
+                    color,
                     0.7
                 );
 

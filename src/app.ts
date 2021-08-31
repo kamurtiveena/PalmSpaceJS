@@ -143,7 +143,8 @@ app.post('/admin/create/table/:name', async (req, res) => {
             readingDirection VARCHAR(255) NOT NULL,
             numberOfButtonsPerRow VARCHAR(255) NOT NULL,
             presentation VARCHAR(255) NOT NULL,
-            events VARCHAR(1000)
+            events VARCHAR(1000),
+            attempts_details VARCHAR(1000)
         );`;
 
         console.log(sql);
@@ -208,7 +209,8 @@ app.post('/save/:tablename', async (req, res) => {
                 readingDirection,
                 numberOfButtonsPerRow,
                 presentation,
-                events
+                events,
+                attempts_details
             ) 
             VALUES (
                 ${body.user_id}, 
@@ -232,7 +234,8 @@ app.post('/save/:tablename', async (req, res) => {
                 "${body.readingDirection}",
                 "${body.numberOfButtonsPerRow}",
                 "${body.presentation}",
-                "${body.events}"
+                "${body.events}",
+                "${body.attempts_details}"
             );`;
 
         const result = await conn.query(sql);

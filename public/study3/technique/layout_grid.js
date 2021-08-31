@@ -86,13 +86,13 @@ export class LayoutGrid {
                         new LandmarkButton(this, 3, state, null, ["Help"]),
                         new LandmarkButton(this, 4, state, null, ["Exit"]),
                         new LandmarkButton(this, 5, state, null, ["Next"]),
-                        new LandmarkButton(this, 6, state, null, ["Erase", "Mode"]),
+                        new LandmarkButton(this, 6, state, null, ["Previous"]),
                     ],
                     output: [
                         new LandmarkButton(this, 3, state, null, ["Help"]),
                         new LandmarkButton(this, 4, state, null, ["Exit"]),
                         new LandmarkButton(this, 5, state, null, ["Next"]),
-                        new LandmarkButton(this, 6, state, null, ["Erase", "Mode"]),
+                        new LandmarkButton(this, 6, state, null, ["Previous"]),
                     ]
                 },
                 palm: {
@@ -113,14 +113,14 @@ export class LayoutGrid {
                     input: [
                         new LandmarkButton(this, 5, state, null, ["Help"]),
                         new LandmarkButton(this, 6, state, null, ["Exit"]),
-                        new LandmarkButton(this, 7, state, null, ["Confirm"]),
-                        new LandmarkButton(this, 8, state, null, ["Erase", "Mode"]),
+                        new LandmarkButton(this, 7, state, null, ["Next"]),
+                        new LandmarkButton(this, 8, state, null, ["Previous"]),
                     ],
                     output: [
                         new LandmarkButton(this, 5, state, null, ["Help"]),
                         new LandmarkButton(this, 6, state, null, ["Exit"]),
-                        new LandmarkButton(this, 7, state, null, ["Confirm"]),
-                        new LandmarkButton(this, 8, state, null, ["Erase", "Mode"]),
+                        new LandmarkButton(this, 7, state, null, ["Next"]),
+                        new LandmarkButton(this, 8, state, null, ["Previous"]),
                     ]
                 },
                 palm: {
@@ -145,13 +145,13 @@ export class LayoutGrid {
                     input: [
                         new LandmarkButton(this, 2, state, null, ["Help"]),
                         new LandmarkButton(this, 3, state, null, ["Exit"]),
-                        new LandmarkButton(this, 4, state, null, ["Confirm"]),
+                        new LandmarkButton(this, 4, state, null, ["Next"]),
                         new LandmarkButton(this, 5, state, null, ["Go", "Back"]),
                     ],
                     output: [
                         new LandmarkButton(this, 2, state, null, ["Help"]),
                         new LandmarkButton(this, 3, state, null, ["Exit"]),
-                        new LandmarkButton(this, 4, state, null, ["Confirm"]),
+                        new LandmarkButton(this, 4, state, null, ["Next"]),
                         new LandmarkButton(this, 5, state, null, ["Go", "Back"]),
                     ]
                 },
@@ -187,11 +187,12 @@ export class LayoutGrid {
         this.trainUIState = TrainUIState.Choice;
     }
 
-    transitionUI(state) {
+    moveToNextUI(state) {
+        // state required for aligning grid
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 // this.trainUIState = TrainUIState.Choice;
-                console.error("palm transitionUI(): state should not be in Welcome");
+                console.error("palm moveToNextUI(): state should not be in Welcome");
                 break;
             case TrainUIState.Choice:
                 this.trainUIState = TrainUIState.CardTypeQty;
@@ -206,10 +207,10 @@ export class LayoutGrid {
                 this.trainUIState = TrainUIState.Done;
                 break;
             case TrainUIState.Done:
-                console.error("palm transitionUI(): state should not be in Done");
+                console.error("palm moveToNextUI(): state should not be in Done");
                 break;
             default:
-                console.error("palm transitionUI(): invalid state:", this.trainUIState);
+                console.error("palm moveToNextUI(): invalid state:", this.trainUIState);
                 break;
         }
 

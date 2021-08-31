@@ -21,7 +21,7 @@ class Study {
             target_btn_id: t.btn_id | "",
             target_rowcol: "",
             target_id: state.experiment.trial.targetID,
-            targets_visit_time_ms: state.experiment.trial.lastVisitTime(),
+            targets_visit_time_ms: state.experiment.trial.lastVisitTime() | 0,
             elapsed_time_ms: state.experiment.trial.elapsedTime(),
             cursor_dist_px: state.experiment.trial.stats.distance.cursor[state.experiment.trial.targetID].toFixed(1),
             attempts: state.experiment.trial.stats.attempts[state.experiment.trial.targetID],
@@ -31,7 +31,8 @@ class Study {
             readingDirection: state.menu.study2.readingDirection,
             numberOfButtonsPerRow: state.menu.study2.numberOfButtonsPerRow,
             presentation: state.menu.study2.presentation,
-            events: state.experiment.trial.stats.events
+            events: state.experiment.trial.stats.events,
+            attempts_details: state.experiment.trial.attemptsDetailsStr()
         }
 
         state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study3`, body]);
