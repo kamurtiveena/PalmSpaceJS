@@ -12,15 +12,24 @@ export class MidAir {
     constructor(parent, state) {
         this.parent = parent;
         this.parent.type = TechniqueType.MidAir;
-        this.gap = 3;
+        this.gap = 80;
 
         // this.trainUIState = TrainUIState.Welcome;
         this.trainUIState = TrainUIState.Choice;
 
         this.parent.alwaysShow = true;
 
-        this.midairWidth = 3*state.width / 5;
-        this.midairHeight = state.height / 6;
+        this.fixedDim = {
+            button: {
+                width: 160,
+                height: 80
+            }
+        };
+
+        this.offset = {
+            y: -60,
+            x_secondrow: 120
+        };
 
         this.parent.buttonsUIs = {
             Unassigned: {
@@ -273,43 +282,66 @@ export class MidAir {
     }
 
     _fingerRect(state) {
+        let n, w, h;
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 console.error("midair _fingerRect(): trainUIState should not be Welcome");
                 return null;
-                // return {
-                //     x: state.width / 2 - this.midairWidth / 2,
-                //     y: state.height / 2 - 1.5 * this.midairHeight + 50,
-                //     width: this.midairWidth,
-                //     height: this.midairHeight - 50
-                // };
+            // return {
+            //     x: state.width / 2 - this.midairWidth / 2,
+            //     y: state.height / 2 - 1.5 * this.midairHeight + 50,
+            //     width: this.midairWidth,
+            //     height: this.midairHeight - 50
+            // };
             case TrainUIState.Choice:
+
+                n = this.parent.buttonsUIs.Choice.finger.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+
+
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight,
-                    width: this.midairWidth,
-                    height: this.midairHeight 
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 - h + this.offset.y - this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.CardTypeQty:
+
+                n = this.parent.buttonsUIs.CardTypeQty.finger.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 - h + this.offset.y - this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.PayAmnt:
+
+                n = this.parent.buttonsUIs.PayAmnt.finger.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 - h + this.offset.y - this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.PaymentMethod:
+
+                n = this.parent.buttonsUIs.PaymentMethod.finger.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - 1.5 * this.midairHeight,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 - h + this.offset.y - this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.Done:
                 console.error("midair _fingerRect(): trainUIState should not be Done");
@@ -331,43 +363,77 @@ export class MidAir {
     }
 
     _palmRect(state) {
+        let w, h, n;
         switch (this.trainUIState) {
             case TrainUIState.Welcome:
                 console.error("midair _palmRect(): trainUIState should not be Welcome");
                 return null;
-                // return {
-                //     x: state.width / 2 - this.midairWidth / 2,
-                //     y: state.height / 2 - this.midairHeight / 2,
-                //     width: this.midairWidth,
-                //     height: this.midairHeight
-                // };
+            // return {
+            //     x: state.width / 2 - this.midairWidth / 2,
+            //     y: state.height / 2 - this.midairHeight / 2,
+            //     width: this.midairWidth,
+            //     height: this.midairHeight
+            // };
             case TrainUIState.Choice:
+                n = this.parent.buttonsUIs.Choice.palm.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+                if (n > 3) {
+                    w = 3 * this.fixedDim.button.width + 2 * this.gap;
+                    h = 2 * this.fixedDim.button.height + this.gap;
+                }
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - this.midairHeight / 2,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 + this.offset.y + this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.CardTypeQty:
+
+                n = this.parent.buttonsUIs.CardTypeQty.palm.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+                if (n > 3) {
+                    w = 3 * this.fixedDim.button.width + 2 * this.gap;
+                    h = 2 * this.fixedDim.button.height + this.gap;
+                }
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - this.midairHeight / 2,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 + this.offset.y + this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.PayAmnt:
+                n = this.parent.buttonsUIs.PayAmnt.palm.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+                if (n > 3) {
+                    w = 3 * this.fixedDim.button.width + 2 * this.gap;
+                    h = 2 * this.fixedDim.button.height + this.gap;
+                }
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - this.midairHeight / 2,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 + this.offset.y + this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.PaymentMethod:
+                n = this.parent.buttonsUIs.PaymentMethod.palm.input.length;
+                w = n * this.fixedDim.button.width + (n - 1) * this.gap;
+                h = this.fixedDim.button.height;
+                if (n > 3) {
+                    w = 3 * this.fixedDim.button.width + 2*this.gap;
+                    h = 2 * this.fixedDim.button.height + this.gap;
+                }
+
                 return {
-                    x: state.width / 2 - this.midairWidth / 2,
-                    y: state.height / 2 - this.midairHeight / 2,
-                    width: this.midairWidth,
-                    height: this.midairHeight
+                    x: state.width / 2 - w / 2,
+                    y: state.height / 2 + this.offset.y + this.gap/2,
+                    width: w,
+                    height: h
                 };
             case TrainUIState.Done:
                 console.error("midair _palmRect(): trainUIState should not be Done");
@@ -399,8 +465,8 @@ export class MidAir {
 
         if (btns && btns.finger && btns.finger.input) {
             const n = btns.finger.input.length;
-            this.dx_col = (this.width - (n + 1) * this.gap) / n;
-            this.dy_row = (this.height - 2 * this.gap) / 1;
+            this.dx_col = this.fixedDim.button.width;
+            this.dy_row = this.fixedDim.button.height;
 
             for (let i = 0; i < n; i++) {
                 btns.finger.input[i].x = this.finger.x + i * this.dx_col + i * this.gap;
@@ -423,41 +489,35 @@ export class MidAir {
         this.width = this.palm.width;
         this.height = this.palm.height;
 
+        console.log("_align() this.palm:", this.palm);
 
         if (btns && btns.palm && btns.palm.input) {
             const n = btns.palm.input.length;
-            if (n >= 3) {
-                this.dx_col = (this.width - 4 * this.gap) / 3;
-                // this.dy_row = (this.height - (1 + n - 3) * this.gap) / (n-2);
-                this.dy_row = (this.height - 2 * this.gap);
-            } else if (n == 2) {
-                this.dx_col = (this.width - 3 * this.gap) / 2;
-                // this.dy_row = (this.height - 2 * this.gap);
-                this.dy_row = (this.height - 2 * this.gap);
-            } else if (n == 1) {
-                this.dx_col = (this.width - 2 * this.gap);
-                this.dy_row = (this.height - 2 * this.gap);
-            }
+            
+            let dx = (this.width - (Math.min(2, n-1)*this.gap))/ Math.min(3, n);
+
+            this.dy_row = this.fixedDim.button.height;
 
             for (let i = 0, j = 0, k = 0; i < n; i++) {
-                const dy = this.dy_row / ((n > 3 && (j >= 2)) ? 3 : 1);
-                btns.palm.input[i].x = this.palm.x + (j * this.dx_col) + (j * this.gap);
-                btns.palm.input[i].y = this.palm.y + (k * dy) + (k * this.gap);
-                btns.palm.input[i].width = this.dx_col;
-                btns.palm.input[i].height = this.dy_row / ((n > 3 && (j >= 2)) ? 3 : 1);
+                btns.palm.input[i].x = this.palm.x + (j * dx) + (j * this.gap) + k * (this.offset.x_secondrow);
+                btns.palm.input[i].y = this.palm.y + (k * this.dy_row) + (k * this.gap);
+                btns.palm.input[i].width = dx;
+                btns.palm.input[i].height = this.dy_row;
                 btns.palm.input[i].topleft.x = btns.palm.input[i].x;
                 btns.palm.input[i].topleft.y = btns.palm.input[i].y;
 
-                btns.palm.output[i].x = this.palm.x + (j * this.dx_col) + (j * this.gap);
-                btns.palm.output[i].y = this.palm.y + (k * dy) + (k * this.gap);
-                btns.palm.output[i].width = this.dx_col;
-                btns.palm.output[i].height = dy;
+                btns.palm.output[i].x = btns.palm.input[i].x;
+                btns.palm.output[i].y = btns.palm.input[i].y;
+                btns.palm.output[i].width = dx;
+                btns.palm.output[i].height = this.dy_row;
                 btns.palm.output[i].topleft.x = btns.palm.output[i].x;
                 btns.palm.output[i].topleft.y = btns.palm.output[i].y;
 
                 if (j < 2) {
                     j++;
                 } else {
+                    // dx = (this.width - Math.min(n-4, 1)*this.gap)/ Math.min(n-3, 2);
+                    j = 0;
                     k++;
                 }
             }

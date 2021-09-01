@@ -105,6 +105,7 @@ export class Trial {
         this.targetSeq = new Array(this.targetSeqSize);
 
         this.stats = {
+            reset: (new Array(this.targetSeqSize)).fill(false),
             attempts: (new Array(this.targetSeqSize)).fill(0),
             distance: {
                 cursor: (new Array(this.targetSeqSize)).fill(0),
@@ -153,10 +154,13 @@ export class Trial {
     }
 
     resetCurrentTarget(state) {
-        this.status = TrialState.SAMETARGETRESTART;
+        // this.status = TrialState.SAMETARGETRESTART;
+        this.status = TrialState.PAUSED;
         this.targetList[this.targetID].currentUI = TrainUIState.Choice;
+        this.stats.reset[this.targetID] = true;
+        this.targetsStartTime[this.targetID] = performance.now();
+        // this.uiPauseTime = performance.now();
         this.startButtonPauseTime = performance.now();
-        this.uiPauseTime = performance.now();
     }
 
     remainingUIPauseTime(state) {
@@ -574,13 +578,13 @@ export class Trial {
         const p = state.initiator.left.landmarks[4];
 
         const tl = new cv.Point(
-            state.width - 350,
-            -50 + state.height / 2
+            state.width - 130,
+            -50 + state.height / 2 - 40
         );
 
         const br = new cv.Point(
-            state.width - 260,
-            +50 + state.height / 2
+            state.width - 40,
+            +50 + state.height / 2 - 40
         );
 
         return { tl, br };

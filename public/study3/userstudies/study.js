@@ -32,7 +32,8 @@ class Study {
             numberOfButtonsPerRow: state.menu.study2.numberOfButtonsPerRow,
             presentation: state.menu.study2.presentation,
             events: state.experiment.trial.stats.events,
-            attempts_details: state.experiment.trial.attemptsDetailsStr()
+            attempts_details: state.experiment.trial.attemptsDetailsStr(),
+            reset: state.experiment.trial.stats.reset[state.experiment.trial.targetID]
         }
 
         state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study3`, body]);

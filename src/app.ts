@@ -144,7 +144,8 @@ app.post('/admin/create/table/:name', async (req, res) => {
             numberOfButtonsPerRow VARCHAR(255) NOT NULL,
             presentation VARCHAR(255) NOT NULL,
             events VARCHAR(1000),
-            attempts_details VARCHAR(1000)
+            attempts_details VARCHAR(1000),
+            reset BOOL DEFAULT FALSE
         );`;
 
         console.log(sql);
@@ -210,7 +211,8 @@ app.post('/save/:tablename', async (req, res) => {
                 numberOfButtonsPerRow,
                 presentation,
                 events,
-                attempts_details
+                attempts_details,
+                reset
             ) 
             VALUES (
                 ${body.user_id}, 
@@ -235,7 +237,8 @@ app.post('/save/:tablename', async (req, res) => {
                 "${body.numberOfButtonsPerRow}",
                 "${body.presentation}",
                 "${body.events}",
-                "${body.attempts_details}"
+                "${body.attempts_details}",
+                ${body.reset}
             );`;
 
         const result = await conn.query(sql);
