@@ -98,7 +98,7 @@ window.onload = function () {
         practiceElem.onchange = function (ev) {
 
             let v = '30';
-            if (ev && ev.target.checked) v = '5';
+            if (ev && ev.target.checked) v = '10';
             const opts = repetitionsElem.options;
             for (let opt, j = 0; opt = opts[j]; j++) {
                 if (opt.value == v) {
