@@ -112,6 +112,26 @@ app.get('/csv/:tableName', async (req, res) => {
 });
 
 
+app.get('/data/:tableName/:userid', async (req, res) => {
+    let conn
+    try {
+        conn = await pool.getConnection()
+
+        const sql = `SELECT * FROM ${req.params.tableName} WHERE user_id = ${req.params.userid}`
+        const result = await conn.query(sql)
+
+        res.send(result)
+    } catch (error) {
+        throw error
+    } finally {
+        if (conn) {
+            conn.release()
+        }
+    }
+});
+
+
+
 app.post('/admin/create/table/:name', async (req, res) => {
 
     let conn
