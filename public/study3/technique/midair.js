@@ -294,13 +294,9 @@ export class MidAir {
             //     height: this.midairHeight - 50
             // };
             case TrainUIState.Choice:
-
                 n = this.parent.buttonsUIs.Choice.finger.input.length;
                 w = n * this.fixedDim.button.width + (n - 1) * this.gap;
                 h = this.fixedDim.button.height;
-
-
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 - h + this.offset.y - this.gap/2,
@@ -308,11 +304,9 @@ export class MidAir {
                     height: h
                 };
             case TrainUIState.CardTypeQty:
-
                 n = this.parent.buttonsUIs.CardTypeQty.finger.input.length;
                 w = n * this.fixedDim.button.width + (n - 1) * this.gap;
                 h = this.fixedDim.button.height;
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 - h + this.offset.y - this.gap/2,
@@ -320,11 +314,9 @@ export class MidAir {
                     height: h
                 };
             case TrainUIState.PayAmnt:
-
                 n = this.parent.buttonsUIs.PayAmnt.finger.input.length;
                 w = n * this.fixedDim.button.width + (n - 1) * this.gap;
                 h = this.fixedDim.button.height;
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 - h + this.offset.y - this.gap/2,
@@ -332,11 +324,9 @@ export class MidAir {
                     height: h
                 };
             case TrainUIState.PaymentMethod:
-
                 n = this.parent.buttonsUIs.PaymentMethod.finger.input.length;
                 w = n * this.fixedDim.button.width + (n - 1) * this.gap;
                 h = this.fixedDim.button.height;
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 - h + this.offset.y - this.gap/2,
@@ -382,7 +372,6 @@ export class MidAir {
                     w = 3 * this.fixedDim.button.width + 2 * this.gap;
                     h = 2 * this.fixedDim.button.height + this.gap;
                 }
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 + this.offset.y + this.gap/2,
@@ -390,7 +379,6 @@ export class MidAir {
                     height: h
                 };
             case TrainUIState.CardTypeQty:
-
                 n = this.parent.buttonsUIs.CardTypeQty.palm.input.length;
                 w = n * this.fixedDim.button.width + (n - 1) * this.gap;
                 h = this.fixedDim.button.height;
@@ -398,7 +386,6 @@ export class MidAir {
                     w = 3 * this.fixedDim.button.width + 2 * this.gap;
                     h = 2 * this.fixedDim.button.height + this.gap;
                 }
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 + this.offset.y + this.gap/2,
@@ -413,7 +400,6 @@ export class MidAir {
                     w = 3 * this.fixedDim.button.width + 2 * this.gap;
                     h = 2 * this.fixedDim.button.height + this.gap;
                 }
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 + this.offset.y + this.gap/2,
@@ -428,7 +414,6 @@ export class MidAir {
                     w = 3 * this.fixedDim.button.width + 2*this.gap;
                     h = 2 * this.fixedDim.button.height + this.gap;
                 }
-
                 return {
                     x: state.width / 2 - w / 2,
                     y: state.height / 2 + this.offset.y + this.gap/2,
@@ -489,13 +474,10 @@ export class MidAir {
         this.width = this.palm.width;
         this.height = this.palm.height;
 
-        console.log("_align() this.palm:", this.palm);
 
         if (btns && btns.palm && btns.palm.input) {
             const n = btns.palm.input.length;
-            
             let dx = (this.width - (Math.min(2, n-1)*this.gap))/ Math.min(3, n);
-
             this.dy_row = this.fixedDim.button.height;
 
             for (let i = 0, j = 0, k = 0; i < n; i++) {

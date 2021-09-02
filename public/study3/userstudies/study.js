@@ -33,7 +33,8 @@ class Study {
             presentation: state.menu.study2.presentation,
             events: state.experiment.trial.stats.events,
             attempts_details: state.experiment.trial.attemptsDetailsStr(),
-            reset: state.experiment.trial.stats.reset[state.experiment.trial.targetID]
+            reset: state.experiment.trial.stats.reset[state.experiment.trial.targetID],
+            targets_ui_visit_time_ms: state.experiment.trial.targetsLastVisitedTimeStr()
         }
 
         state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study3`, body]);

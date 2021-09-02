@@ -145,7 +145,8 @@ app.post('/admin/create/table/:name', async (req, res) => {
             presentation VARCHAR(255) NOT NULL,
             events VARCHAR(1000),
             attempts_details VARCHAR(1000),
-            reset BOOL DEFAULT FALSE
+            reset BOOL DEFAULT FALSE,
+            targets_ui_visit_time_ms VARCHAR(2000)
         );`;
 
         console.log(sql);
@@ -212,7 +213,8 @@ app.post('/save/:tablename', async (req, res) => {
                 presentation,
                 events,
                 attempts_details,
-                reset
+                reset,
+                targets_ui_visit_time_ms
             ) 
             VALUES (
                 ${body.user_id}, 
@@ -238,7 +240,8 @@ app.post('/save/:tablename', async (req, res) => {
                 "${body.presentation}",
                 "${body.events}",
                 "${body.attempts_details}",
-                ${body.reset}
+                ${body.reset},
+                "${body.targets_ui_visit_time_ms}"
             );`;
 
         const result = await conn.query(sql);

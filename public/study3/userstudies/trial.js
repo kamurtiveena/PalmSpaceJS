@@ -125,36 +125,45 @@ export class Trial {
             targetsLastVisitedTime: (new Array(this.targetSeqSize)).fill(0),
             valid: true,
             events: "",
-            attemptsUI: {}
+            attemptsUI: {},
+            targetsUIVisitTime: {}
         };
 
         for (let i = 0;i < this.trainUIStates.length; i ++) {
             this.stats.attemptsUI[this.trainUIStates[i]] = (new Array(this.targetSeqSize)).fill(0);
+            this.stats.targetsUIVisitTime[this.trainUIStates[i]] = (new Array(this.targetSeqSize)).fill({
+                start: null,
+                end: null
+            });
         }
 
         this.startButtonPauseTime = performance.now();
         this.uiPauseTime = performance.now();
     }
 
+    targetsLastVisitedTimeStr() {
+        let ret = "";
+        const t = this.targetSeq[this.targetID];
+        for (let i = 0;i < this.trainUIStates.length - 1; i ++) {
+            const d = this.stats.targetsUIVisitTime[this.trainUIStates[i]].end - 
+                        this.stats.targetsUIVisitTime[this.trainUIStates[i]].start;
+            const btnName = (t.hash[this.trainUIStates[i]].name.split(" ")).join("_");
+            ret += `${btnName}:${d};`;
+        }
+
+        return ret;
+    }
+
     attemptsDetailsStr() {
         let ret = "";
-        for (let i = 0;i < this.trainUIStates.length; i ++) {
+        for (let i = 0;i < this.trainUIStates.length - 1; i ++) {
             ret += this.stats.attemptsUI[this.trainUIStates[i]][this.targetID] + ";";
         }
 
         return ret;
     }
 
-    resumeSameTarget() {
-        this.status = TrialState.STARTED;
-    }
-
-    isRestartingSameTarget() {
-        return this.status == TrialState.SAMETARGETRESTART;
-    }
-
     resetCurrentTarget(state) {
-        // this.status = TrialState.SAMETARGETRESTART;
         this.status = TrialState.PAUSED;
         this.targetList[this.targetID].currentUI = TrainUIState.Choice;
         this.stats.reset[this.targetID] = true;
@@ -684,6 +693,14 @@ export class Trial {
                 2
             );
         }
+    }
+
+    setCurrentUIEndTime() {
+        this.stats.targetsUIVisitTime[this.targetList[this.targetID].currentUI].end = performance.now();
+    }
+
+    setCurrentUIStartTime() {
+        this.stats.targetsUIVisitTime[this.targetList[this.targetID].currentUI].start = performance.now();
     }
 
     clickStartBtn(state) {

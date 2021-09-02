@@ -26,7 +26,7 @@ window.onload = function () {
         let opt = document.createElement('option');
         opt.appendChild(document.createTextNode(i));
         opt.value = i;
-        if (i == 20) opt.selected = true;
+        if (i == 30) opt.selected = true;
         repetitionsElem.appendChild(opt);
     }
 
@@ -97,7 +97,7 @@ window.onload = function () {
 
         practiceElem.onchange = function (ev) {
 
-            let v = '20';
+            let v = '30';
             if (ev && ev.target.checked) v = '5';
             const opts = repetitionsElem.options;
             for (let opt, j = 0; opt = opts[j]; j++) {
@@ -403,10 +403,6 @@ window.onload = function () {
             state.trigger.reset(state);
         }
 
-        if (remainingStartButtonPauseTime <= 0 && state.experiment.trial.isRestartingSameTarget()) {
-            state.experiment.trial.resumeSameTarget();
-        }
-
         if (state.initiator.show || state.technique.alwaysShow) {
 
             state.technique.calculate(state);
@@ -443,6 +439,7 @@ window.onload = function () {
 
                     if (state.experiment.trial.isCursorOverStartBtn(state)) {
                         state.experiment.trial.clickStartBtn(state);
+                        state.experiment.trial.setCurrentUIStartTime();
                         state.technique.stats.visitedCells = 0;
                         resetAnchor = true;
                         resetSelection = true;
@@ -458,7 +455,10 @@ window.onload = function () {
 
                                 state.selection.resetMarkedButton();
                                 state.technique.anchor.moveToNextUI(state);
+                                
+                                state.experiment.trial.setCurrentUIEndTime();
                                 state.experiment.trial.moveToNextUI();
+                                state.experiment.trial.setCurrentUIStartTime();
 
                                 if (state.experiment.trial.currentTarget().currentUI == TrainUIState.Done) {
                                     state.experiment.trial.clickTarget(state);
