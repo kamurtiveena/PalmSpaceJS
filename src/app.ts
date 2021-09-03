@@ -307,6 +307,38 @@ app.get('/stats/:tablename', async (req, res) => {
     }
 });
 
+app.get('/stats/:tablename/:userid', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const sql = `
+            SELECT 
+                SUM(elapsed_time_ms)/1000 as 'total_time_sec', 
+                COUNT(elapsed_time_ms) as 'total_events', 
+                (SUM(elapsed_time_ms)/COUNT(elapsed_time_ms))/1000 as 'avg_elapsed_time_sec', 
+                SUM(attempts) as 'total_attempts', 
+                SUM(attempts)/COUNT(attempts) as 'avg_attempts', 
+                SUM(visited_cells) as 'visited_cells', 
+                SUM(visited_cells)/COUNT(visited_cells) as 'avg_visited_cells', 
+                technique, 
+                cells_row, 
+                cells_col
+            From ${req.params.tablename}
+            WHERE ${req.params.tablename}
+            GROUP BY layout;`;
+        const result = await conn.query(sql);
+        console.log(result);
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+        res.send({ "error": error });
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+
+
 app.post('/admin/delete/table/:name', async (req, res) => {
     let conn;
     try {
