@@ -324,7 +324,7 @@ app.get('/stats/:tablename/:userid', async (req, res) => {
                 cells_row, 
                 cells_col
             From ${req.params.tablename}
-            WHERE ${req.params.tablename}
+            WHERE userid = ${req.params.userid}
             GROUP BY layout;`;
         const result = await conn.query(sql);
         console.log(result);
