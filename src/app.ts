@@ -313,6 +313,8 @@ app.get('/stats/:tablename/:userid', async (req, res) => {
         conn = await pool.getConnection();
         const sql = `
             SELECT 
+                user_id,
+                layout,
                 SUM(elapsed_time_ms)/1000 as 'total_time_sec', 
                 COUNT(elapsed_time_ms) as 'total_events', 
                 (SUM(elapsed_time_ms)/COUNT(elapsed_time_ms))/1000 as 'avg_elapsed_time_sec', 
@@ -324,7 +326,7 @@ app.get('/stats/:tablename/:userid', async (req, res) => {
                 cells_row, 
                 cells_col
             From ${req.params.tablename}
-            WHERE userid = ${req.params.userid}
+            WHERE user_id = ${req.params.userid}
             GROUP BY layout;`;
         const result = await conn.query(sql);
         console.log(result);
