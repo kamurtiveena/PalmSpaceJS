@@ -1,5 +1,7 @@
 export class LandmarkButton {
-    constructor(parent, id, state, icon, name) {
+    constructor(parent, id, state, icon, name, opts, onclick) {
+        this.onclick = onclick;
+        this.opts = opts;
         this.name = name;
         this.id = id;
         this.parent = parent;

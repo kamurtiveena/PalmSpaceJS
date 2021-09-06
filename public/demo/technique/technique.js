@@ -150,11 +150,16 @@ class Technique {
         }
 
         if (btns && btns.palm && btns.palm.input) {
-            for (let i = 0; i < btns.palm.input.length; i++)
+            for (let i = 0; i < btns.palm.input.length; i++) {
+                if (btns.palm.input[i].opts) {
+                    if (btns.palm.input[i].opts.dead) continue;
+                }
+                
                 if (btns.palm.input[i].isCursorInside(state)) {
                     this.isCursorInsideBtn = true;
                     return btns.palm.input[i];
                 }
+            }
         }
 
         return null;
@@ -475,14 +480,14 @@ class Technique {
     }
 
     buttons() {
-        return this.anchor.buttons(); 
+        return this.anchor.buttons();
     }
 
     drawCustom(state) {
 
         // draw hand image at the top-right corner
         // if (state.menu.study2.presentation == PresentationType.Existing) {
-            // state.canvasCVOutCtx.globalAlpha = 0.8;
+        // state.canvasCVOutCtx.globalAlpha = 0.8;
         //     state.canvasCVOutCtx.drawImage(
         //         state.config.icons.hand.image,
         //         state.width - 200,
@@ -492,18 +497,19 @@ class Technique {
         //     );
         // }
 
-        
+
         // drawStrokeRect(state.canvasCVOutCtx, p.x, p.y, p.width, p.height);
-        
+
         if (!state.initiator.left.show && !state.technique.alwaysShow) return;
-        
+
         const btns = this.anchor.buttons();
 
         // draw targets
         state.canvasCVOutCtx.globalAlpha = 0.8;
 
         if (btns && btns.palm && btns.palm.output) {
-            for (let i = 0; i < btns.palm.output.length; i++) {
+            const N = btns.palm.output.length;
+            for (let i = 0; i < N; i++) {
                 // this._drawIconsOnCanvas(
                 //     state, 
                 //     btns.palm.output[i]
@@ -511,7 +517,7 @@ class Technique {
 
                 let color = "black";
                 // if (state.selection.currentBtn.btn_id == btns.palm.output[i].btn_id) color = "grey";
-                
+
                 drawFillRect(
                     state.canvasCVOutCtx,
                     btns.palm.output[i].topleft.x,
@@ -522,19 +528,36 @@ class Technique {
                     0.7
                 );
 
-                const n = btns.palm.output[i].name.length;
-                for (let j = 0; j < n; j ++) {
-                    state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width/50);
-                    state.canvasCVOutCtx.font = `${Math.min(18, btns.palm.output[i].width/3)}px Georgia`;
+                if (N == 3) {
+                    
+                    state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width / 50);
+                    state.canvasCVOutCtx.font = `${Math.min(18, btns.palm.output[i].width / 8)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
+                    const s = btns.palm.output[i].name.join(" ");
+                    
+                    
                     state.canvasCVOutCtx.fillText(
-                        btns.palm.output[i].name[j],
-                        btns.palm.output[i].x + Math.max(0, - 12*btns.palm.output[i].name[j].length/2 + btns.palm.output[i].width/2),
-                        btns.palm.output[i].y + btns.palm.output[i].height/2 + 20*j - 5*n,
+                        s,
+                        btns.palm.output[i].x + Math.max(0, - 10 * s.length / 2 + btns.palm.output[i].width / 2),
+                        btns.palm.output[i].y + btns.palm.output[i].height / 2 ,
                     );
+                } else {
+                    const n = btns.palm.output[i].name.length;
+                    state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width / 50);
+                    state.canvasCVOutCtx.font = `${Math.min(18, btns.palm.output[i].width / 3)}px Georgia`;
+                    state.canvasCVOutCtx.fillStyle = "white";
+                    for (let j = 0; j < n; j++) {
+                        state.canvasCVOutCtx.fillText(
+                            btns.palm.output[i].name[j],
+                            btns.palm.output[i].x + Math.max(0, - 12 * btns.palm.output[i].name[j].length / 2 + btns.palm.output[i].width / 2),
+                            btns.palm.output[i].y + btns.palm.output[i].height / 2 + 20 * j - 5 * n,
+                        );
+                    }
+
                 }
 
-                
+
+
 
             }
         }
@@ -554,16 +577,16 @@ class Technique {
                     'black',
                     0.7
                 );
-                
+
                 const n = btns.finger.output[i].name.length;
-                for (let j = 0; j < n; j ++) {
-                    state.canvasCVOutCtx.globalAlpha = (btns.finger.output[i].width/50);
-                    state.canvasCVOutCtx.font = `${Math.min(18, (btns.finger.output[i].width/3))}px Georgia`;
+                for (let j = 0; j < n; j++) {
+                    state.canvasCVOutCtx.globalAlpha = (btns.finger.output[i].width / 50);
+                    state.canvasCVOutCtx.font = `${Math.min(18, (btns.finger.output[i].width / 3))}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     state.canvasCVOutCtx.fillText(
                         btns.finger.output[i].name[j],
-                        btns.finger.output[i].topleft.x + Math.max(0, - 12*btns.finger.output[i].name[j].length/2 + btns.finger.output[i].width/2),
-                        btns.finger.output[i].topleft.y + btns.finger.output[i].height/2 + 20*j - 5*n,
+                        btns.finger.output[i].topleft.x + Math.max(0, - 12 * btns.finger.output[i].name[j].length / 2 + btns.finger.output[i].width / 2),
+                        btns.finger.output[i].topleft.y + btns.finger.output[i].height / 2 + 20 * j - 5 * n,
                     );
                 }
             }

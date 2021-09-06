@@ -7,6 +7,7 @@ import {PresentationType, ReadingDirectionType, TechniqueType} from './technique
 class State {
     constructor() {
 
+        this.outputFrame = null;
         this.menu = {};
         this.menu.showMenu = true;
         this.menu.technique = null;
@@ -72,6 +73,22 @@ class State {
         }
 
         console.log(this.imageCombinations);
+    }
+
+    moveOutputFrameFromView() {
+        this.outputFrame.style.top = "-1000px";
+        this.outputFrame.style.left = "-1000px";
+    }
+
+    alignOutputFrame() {
+        const p = this.technique.buttonsUIs.Output.palm.output[0];
+        const tx = -this.canvasCVOutCtx.canvas.width + p.x;
+        const ty = -this.canvasCVOutCtx.canvas.height + parseInt(this.outputFrame.style.height) + p.y;
+
+        this.outputFrame.style.top = `${ty}px`;
+        this.outputFrame.style.left = `${tx}px`;
+        this.outputFrame.style.width = `${p.width}px`;
+        this.outputFrame.style.height = `${p.height}px`;
     }
 
     study2ImageIndices() {

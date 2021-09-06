@@ -49,4 +49,11 @@ const TrainUIState = {
     Done: "Done"
 };
 
-export {TrainUIState, TechniqueType, ReadingDirectionType, PresentationType};
+const DemoSelection = {
+    Unassigned: null,
+    FoodMenu: "FoodMenu",
+    Map: "Map",
+    BusRoute: "BusRoute"
+};
+
+export {DemoSelection, TrainUIState, TechniqueType, ReadingDirectionType, PresentationType};

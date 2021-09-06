@@ -292,10 +292,16 @@
 
     </form>
 
-    <div class="fixed-size" id="video_container">
+    <div class="fixed-size" id="video_container" style="position: absolute;">
       <video id="input_video"></video>
       <canvas id="cv_output_canvas" width="1280px" height="720px"></canvas>
-      <canvas id="output_canvas" width="1280px" height="720px"></canvas>
+      <iframe id="output_frame"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"
+        title="Inline Frame Example"
+        style="z-index: 1; position: relative; top: -1000px; left: -1000px; width:300px; height: 200px;">
+      </iframe>
+      <canvas id="onresult_canvas" width="1280px" height="720px"></canvas>
+
 
     </div>
 

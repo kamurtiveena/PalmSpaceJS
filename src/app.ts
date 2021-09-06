@@ -69,7 +69,7 @@ app.use(authenticator);
 
 
 app.get('/', (req, res) => {
-    res.redirect("/study3");
+    res.redirect("/demo");
     // res.send(`${PORT} working`);
 });
 

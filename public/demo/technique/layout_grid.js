@@ -1,4 +1,4 @@
-import { TechniqueType, ReadingDirectionType } from "./constant.js";
+import { DemoSelection, TechniqueType } from "./constant.js";
 
 import { LandmarkButton } from "../ds/button.js";
 
@@ -18,6 +18,9 @@ export class LayoutGrid {
 
         // this.trainUIState = TrainUIState.Welcome;
         this.trainUIState = TrainUIState.Choice;
+        // this.trainUIState = TrainUIState.Output;
+
+        this.demoSelection = DemoSelection.Unassigned;
 
         this.parent.buttonsUIs = {
             Unassigned: {
@@ -45,32 +48,125 @@ export class LayoutGrid {
                 },
                 palm: {
                     input: [
-                        new LandmarkButton(this, 0, state, null, ["View", "Nearby", "Map"]),
-                        new LandmarkButton(this, 1, state, null, ["Menu"]),
-                        new LandmarkButton(this, 2, state, null, ["Bus", "Routes"]),
+                        new LandmarkButton(
+                            this,
+                            0,
+                            state,
+                            null,
+                            ["View", "Map"],
+                            {
+                                outputFrame: {
+                                    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2896.726385428737!2d-1.5554569845089736!3d43.445430179128934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd51151c6db98a55%3A0xa0f1a4641e85a2c9!2sExakis%20Nelite%20Biarritz!5e0!3m2!1sen!2sca!4v1630874121900!5m2!1sen!2sca"
+                                }
+                            },
+                            function () {
+                                console.log("view map clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.Map;
+
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            1,
+                            state,
+                            null,
+                            ["Food", "Menu"],
+                            { outputFrame: { src: "" } },
+                            function () {
+                                console.log("food menu clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.FoodMenu;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            2,
+                            state,
+                            null,
+                            ["Bus", "Routes"],
+                            { 
+                                outputFrame: { 
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/busroutes/1.png"
+                                        }
+                                    ] 
+                                } 
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.BusRoute;
+                            }
+                        ),
                     ],
                     output: [
-                        new LandmarkButton(this, 0, state, null, ["View", "Nearby", "Map"]),
-                        new LandmarkButton(this, 1, state, null, ["Menu"]),
-                        new LandmarkButton(this, 2, state, null, ["Bus", "Routes"]),                    ]
+                        new LandmarkButton(
+                            this,
+                            0,
+                            state,
+                            null,
+                            ["View", "Map"],
+                            {
+                                outputFrame: {
+                                    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2896.726385428737!2d-1.5554569845089736!3d43.445430179128934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd51151c6db98a55%3A0xa0f1a4641e85a2c9!2sExakis%20Nelite%20Biarritz!5e0!3m2!1sen!2sca!4v1630874121900!5m2!1sen!2sca"
+                                }
+                            },
+                            function () {
+                                console.log("view map clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.Map;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            1,
+                            state,
+                            null,
+                            ["Food", "Menu"],
+                            { outputFrame: { src: "" } },
+                            function () {
+                                console.log("food menu clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.FoodMenu;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            2,
+                            state,
+                            null,
+                            ["Bus", "Routes"],
+                            { 
+                                outputFrame: { 
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/busroutes/1.png"
+                                        }
+                                    ] 
+                                } 
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.BusRoute;
+                            }
+                        ),
+                    ]
                 }
-
             },
             Output: {
                 finger: {
                     input: [
-                        new LandmarkButton(this, 6, state, null, ["Go", "Back"]),
+                        new LandmarkButton(this, 6, state, null, ["Go", "Back"], {}, null),
                     ],
                     output: [
-                        new LandmarkButton(this, 6, state, null, ["Go", "Back"]),
+                        new LandmarkButton(this, 6, state, null, ["Go", "Back"], {}, null),
                     ]
                 },
                 palm: {
                     input: [
-                        new LandmarkButton(this, 0, state, null, ["Output"])
+                        new LandmarkButton(this, 0, state, null, ["Output"], { dead: true, offset: { x: -400, y: -400 } }, null)
                     ],
                     output: [
-                        new LandmarkButton(this, 0, state, null, ["Output"])
+                        new LandmarkButton(this, 0, state, null, ["Output"], { dead: true, offset: { x: -400, y: -400 } }, null)
                     ]
                 }
             },
@@ -78,6 +174,30 @@ export class LayoutGrid {
 
 
         this.isCursorInsideBtn = false; // todo what is it doing
+    }
+
+    createOutputFrame(state) {
+
+        const f = document.createElement('iframe');
+        f.id = "output_frame";
+        f.style.width = state.outputFrame.style.width;
+        f.style.height = state.outputFrame.style.height;
+        f.style.zIndex = 1;
+        f.style.position = "relative";
+        f.style.top = state.outputFrame.style.top;
+        f.style.left = state.outputFrame.style.left;
+
+        if (this.demoSelection == DemoSelection.BusRoute) {
+            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
+        } else {
+            f.setAttribute("src", state.selection.currentBtn.ref.opts.outputFrame.src);
+        }
+
+        return f;
+    }
+
+    isOutput() {
+        return this.trainUIState == TrainUIState.Output;
     }
 
     calculate(state) {
@@ -169,10 +289,10 @@ export class LayoutGrid {
 
         if (btns && btns.finger && btns.finger.input) {
             const n = btns.finger.input.length;
-            this.dx_col = (this.width - 4 * this.gap) / 3;
-            this.dy_row = (this.height - 4 * this.gap) / 3;
+            this.dx_col = 80;
+            this.dy_row = 60;
 
-            for (let i = 0, j = 8; i < n; i++, j += 4) {
+            for (let i = 0, j = 4; i < n; i++, j += 4) {
                 btns.finger.input[i].x = state.initiator.left.landmarks[j].x;
                 btns.finger.input[i].y = state.initiator.left.landmarks[j].y;
                 btns.finger.input[i].width = this.dx_col;
@@ -191,15 +311,15 @@ export class LayoutGrid {
 
         if (btns && btns.palm && btns.palm.input) {
             const n = btns.palm.input.length;
-            
+
             if (n > 3) {
                 this.dx_col = (this.width - 4 * this.gap) / 3;
                 // this.dy_row = (this.height - (1 + n - 3) * this.gap) / (n-2);
                 this.dy_row = (this.height - 2 * this.gap);
             } else if (n == 3) {
                 this.dx_col = this.width;
-                this.dy_row = (this.height - this.gap*2) / 3;
-            }else if (n == 2) {
+                this.dy_row = (this.height - this.gap * 2) / 3;
+            } else if (n == 2) {
                 this.dx_col = (this.width - 3 * this.gap) / 2;
                 // this.dy_row = (this.height - 2 * this.gap);
                 this.dy_row = (this.height - 2 * this.gap);
@@ -209,40 +329,59 @@ export class LayoutGrid {
             }
 
             if (n == 3) {
-                for (let i = 0; i < n; i ++) {
+                for (let i = 0; i < n; i++) {
                     btns.palm.input[i].x = this.palm.x;
                     btns.palm.input[i].y = this.palm.y + (i * this.dy_row) + (i * this.gap);
+
+
                     btns.palm.input[i].width = this.dx_col;
                     btns.palm.input[i].height = this.dy_row;
                     btns.palm.input[i].topleft.x = btns.palm.input[i].x;
                     btns.palm.input[i].topleft.y = btns.palm.input[i].y;
-    
-                    btns.palm.output[i].x = this.palm.x;
-                    btns.palm.output[i].y = this.palm.y + (i * this.dy_row) + (i * this.gap);
+
+                    btns.palm.output[i].x = btns.palm.input[i].x;
+                    btns.palm.output[i].y = btns.palm.input[i].y;
                     btns.palm.output[i].width = this.dx_col;
                     btns.palm.output[i].height = this.dy_row;
                     btns.palm.output[i].topleft.x = btns.palm.output[i].x;
                     btns.palm.output[i].topleft.y = btns.palm.output[i].y;
-    
+
                 }
             } else {
                 for (let i = 0, j = 0, k = 0; i < n; i++) {
                     const dy = this.dy_row / ((n > 3 && (j >= 2)) ? 3 : 1);
+
                     btns.palm.input[i].x = this.palm.x + (j * this.dx_col) + (j * this.gap);
                     btns.palm.input[i].y = this.palm.y + (k * dy) + (k * this.gap);
+
                     btns.palm.input[i].width = this.dx_col;
                     btns.palm.input[i].height = dy;
+
+                    if (btns.palm.input[i].opts.offset) {
+
+                        const xx = btns.palm.input[i].x + btns.palm.input[i].width;
+                        const yy = btns.palm.input[i].y + btns.palm.input[i].height;
+
+                        btns.palm.input[i].x += btns.palm.input[i].opts.offset.x;
+                        btns.palm.input[i].y += btns.palm.input[i].opts.offset.y;
+                        btns.palm.input[i].width = xx - btns.palm.input[i].x;
+                        btns.palm.input[i].height = yy - btns.palm.input[i].y;
+                        if (btns.palm.input[i].x < 0) btns.palm.input[i].x = 0;
+                        if (btns.palm.input[i].y < 0) btns.palm.input[i].y = 0;
+                    }
+
                     btns.palm.input[i].topleft.x = btns.palm.input[i].x;
                     btns.palm.input[i].topleft.y = btns.palm.input[i].y;
-    
-                    btns.palm.output[i].x = this.palm.x + (j * this.dx_col) + (j * this.gap);
-                    btns.palm.output[i].y = this.palm.y + (k * dy) + (k * this.gap);
-                    btns.palm.output[i].width = this.dx_col;
-                    btns.palm.output[i].height = dy;
+
+                    btns.palm.output[i].x = btns.palm.input[i].x;
+                    btns.palm.output[i].y = btns.palm.input[i].y;
+                    btns.palm.output[i].width = btns.palm.input[i].width;
+                    btns.palm.output[i].height = btns.palm.input[i].height;
                     btns.palm.output[i].topleft.x = btns.palm.output[i].x;
                     btns.palm.output[i].topleft.y = btns.palm.output[i].y;
-    
+
                     if (j < 2) {
+
                         j++;
                     } else {
                         k++;

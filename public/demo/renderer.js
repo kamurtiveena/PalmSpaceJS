@@ -77,11 +77,11 @@ window.onload = function () {
     }
 
     {
-        document.getElementById("menutechnique_grid").onchange = function(ev) {
+        document.getElementById("menutechnique_grid").onchange = function (ev) {
             document.getElementById("cameraCheck").checked = true;
         }
 
-        document.getElementById("menutechnique_midair").onchange = function(ev) {
+        document.getElementById("menutechnique_midair").onchange = function (ev) {
             document.getElementById("cameraCheck").checked = false;
         }
 
@@ -131,6 +131,9 @@ window.onload = function () {
 
     const state = new State();
 
+
+    state.outputFrame = document.getElementById("output_frame");
+
     if (window.Worker) {
         state.myWorker = new Worker("worker.js");
 
@@ -150,20 +153,19 @@ window.onload = function () {
 
     // Our input frames will come from here.
 
-    const videoContainer = document.getElementById("video_container");
-    // videoContainer.style.display = "none";
-
+    state.videoContainer = document.getElementById("video_container");
+    
     const videoElement =
         document.getElementById('input_video');
     videoElement.style.display = "none";
 
-    const canvasElement =
-        document.getElementById('output_canvas');
-    canvasElement.style.width = state.config.CAMWIDTH + "px";
-    canvasElement.style.height = state.config.CAMHEIGHT + "px";
-    canvasElement.style.display = "none";
+    const canvasOnResult =
+        document.getElementById('onresult_canvas');
+    canvasOnResult.style.width = state.config.CAMWIDTH + "px";
+    canvasOnResult.style.height = state.config.CAMHEIGHT + "px";
+    canvasOnResult.style.display = "none";
 
-    const canvasCtx = canvasElement.getContext('2d');
+    const canvasCtx = canvasOnResult.getContext('2d');
 
 
     const canvasCVOut =
@@ -282,7 +284,6 @@ window.onload = function () {
         console.groupEnd();
 
         menu.style.display = "none";
-        videoContainer.style.display = "block";
 
         state.initiator = new Initiator(state);
         state.technique = new Technique(state);
@@ -336,7 +337,7 @@ window.onload = function () {
 
         // Draw the overlays.
 
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.clearRect(0, 0, canvasOnResult.width, canvasOnResult.height);
 
         if (!state.menu.camera ||
             state.menu.study2.presentation == PresentationType.Existing ||
@@ -345,16 +346,16 @@ window.onload = function () {
             state.technique.type == TechniqueType.H2S_Relative_Finger
         ) {
             canvasCtx.fillStyle = "#fec";
-            canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.fillRect(0, 0, canvasOnResult.width, canvasOnResult.height);
         } else {
             canvasCtx.drawImage(
-                results.image, 0, 0, canvasElement.width, canvasElement.height
+                results.image, 0, 0, canvasOnResult.width, canvasOnResult.height
             );
         }
 
         canvasCtx.save();
 
-        state.imageCV = cv.imread('output_canvas');
+        state.imageCV = cv.imread('onresult_canvas');
         state.outputCV = state.imageCV.clone();
 
         state.initiator.initiate(state, results);
@@ -377,25 +378,7 @@ window.onload = function () {
             state.experiment.trial.updateTargetLastVisitTime(state);
         }
 
-        if (state.experiment.trial.targetsDuration[state.experiment.trial.targetID] > state.config.experiment.trialMaxDurationMilliSec) {
-            state.resetCursorPath();
-
-            console.error("target taking long time", "elapsed time:", state.experiment.trial.elapsedTime());
-            state.experiment.trial.stats.valid = false;
-            state.experiment.trial.clickTarget(state);
-            state.selection.resetMarkedButton();
-            if (!state.menu.practice) {
-                state.experiment.study1.save(state); // should use worker to send save request
-            }
-
-            state.experiment.trial.generateTarget(state);
-            state.selection.reset();
-            state.technique.resetLastTimeVisited();
-
-            state.selection.resetSelectedButton();
-            state.trigger.reset(state);
-        }
-
+        
         const remainingStartButtonPauseTime = state.experiment.trial.remainingStartButtonPauseTime(state);
         const remainingUIPauseTime = state.experiment.trial.remainingUIPauseTime(state);
 
@@ -404,6 +387,12 @@ window.onload = function () {
             state.trigger.reset(state);
         }
 
+        if (state.technique.anchor.isOutput()) {
+            state.alignOutputFrame();
+        } else {
+            state.moveOutputFrameFromView();
+        }
+        
         if (state.initiator.show || state.technique.alwaysShow) {
 
             state.technique.calculate(state);
@@ -450,36 +439,29 @@ window.onload = function () {
                         goBackToMenu();
                     } else if (state.experiment.trial.started()) {
 
-                        if (state.experiment.trial.matchedUI(state)) {
-                            state.technique.anchor.markSelected(state);
-                            state.experiment.trial.incrementAttempts(state);
-                            if (state.experiment.trial.matched(state)) {
-
-                                state.selection.resetMarkedButton();
-                                state.technique.anchor.moveToNextUI(state);
-                                
-                                state.experiment.trial.setCurrentUIEndTime();
-                                state.experiment.trial.moveToNextUI();
-                                state.experiment.trial.setCurrentUIStartTime();
-
-                                if (state.experiment.trial.currentTarget().currentUI == TrainUIState.Done) {
-                                    state.experiment.trial.clickTarget(state);
-                                    if (!state.menu.practice) {
-                                        state.experiment.study1.save(state); // should use worker to send save request
-                                    }
-
-                                    state.experiment.trial.generateTarget(state);
-                                    resetAnchor = true;
-                                }
-                            } else {
-                                state.experiment.trial.resetCurrentTarget(state);
-                                resetAnchor = true;
-                            }
-                            
-                            resetSelection = true;                                
-                        } else {
-                            console.error("current UI is in invalid state:", state);
+                        state.technique.anchor.markSelected(state);
+                        
+                        if (state.selection.currentBtn.ref.onclick) {
+                            state.selection.currentBtn.ref.onclick();
                         }
+
+                        console.log("state.technique.anchor.demoSelection:", state.technique.anchor.demoSelection);
+                        if (state.selection.currentBtn.ref && state.selection.currentBtn.ref.opts.outputFrame) {
+
+                            const f = state.technique.anchor.createOutputFrame(state);
+                            
+                            state.outputFrame.remove();
+                            state.outputFrame = f;
+                            state.videoContainer.appendChild(f);
+
+                            console.log("updated outputframe:", state.outputFrame);
+                            // state.outputFrame.src = state.selection.currentBtn.ref.opts.outputFrame.src;
+                        }
+
+
+                        state.technique.anchor.moveToNextUI(state);
+
+                        resetSelection = true;
                     }
 
                     state.selection.resetSelectedButton();
@@ -490,7 +472,7 @@ window.onload = function () {
                     break;
             }
 
-            if (resetSelection || 
+            if (resetSelection ||
                 (state.experiment.trial.started() && remainingUIPauseTime > 0) ||
                 (!state.experiment.trial.started() && remainingStartButtonPauseTime > 0)) {
                 console.log("reseting selection");
@@ -506,11 +488,6 @@ window.onload = function () {
             state.overlay = state.imageCV.clone();
 
             state.technique.draw(state);
-
-            state.experiment.trial.drawBackBtn(state);
-            // state.experiment.trial.drawCompletedTargetsText(state);
-            // state.experiment.trial.drawCurrentUITarget();
-            // state.experiment.trial.drawTarget(state);
 
             cv.addWeighted(
                 state.overlay,
@@ -551,18 +528,13 @@ window.onload = function () {
                     state.width - 250,
                     state.height - 80
                 );
-                
+
             }
 
         }
 
-        // if (state.initiator.show || state.technique.alwaysShow) {
-        //     state.technique.drawIconsOnGridCanvas(state);
-        // }
-
         if (state.experiment.trial.started()) {
             state.technique.drawCustom(state);
-
 
             if (state.selection.currentBtn.btn_id != -1 && remainingUIPauseTime <= 0) {
                 // draw rectangle around highlighted button
@@ -587,35 +559,7 @@ window.onload = function () {
         }
 
         {
-            canvasCVOutCtx.font = "30px Georgia";
-            canvasCVOutCtx.fillStyle = "white";
-
-            // completedtargets / totaltargets
-            canvasCVOutCtx.fillText(
-                state.experiment.trial.completedTargetsStr(),
-                20,
-                state.height - 50
-            );
-
-            const s = state.experiment.trial.currentTargetUIStr();
-            canvasCVOutCtx.fillStyle = "black";
-            canvasCVOutCtx.globalAlpha = 0.5;
-            canvasCVOutCtx.fillRect(
-                state.width/11,
-                10,
-                s.length * 14,
-                40
-            );
-
-            canvasCVOutCtx.font = "30px Georgia";
-            canvasCVOutCtx.fillStyle = "white";
-            canvasCVOutCtx.globalAlpha = 0.8;
-            canvasCVOutCtx.fillText(
-                s,
-                state.width / 10,
-                40
-            );
-
+         
             if (state.menu.practice) {
                 canvasCVOutCtx.fillText(
                     "Practice Mode",
@@ -623,47 +567,6 @@ window.onload = function () {
                     60
                 );
             }
-        }
-
-        {
-            canvasCVOutCtx.fillStyle = "black";
-            canvasCVOutCtx.globalAlpha = 0.7;
-            canvasCVOutCtx.fillRect(
-                state.width - 270,
-                state.height - 60,
-                270,
-                60
-            );
-
-            canvasCVOutCtx.font = "15px Georgia";
-            canvasCVOutCtx.fillStyle = "white";
-            if (remainingStartButtonPauseTime > 0) {
-                canvasCVOutCtx.fillText(
-                    `Waiting for ${remainingStartButtonPauseTime} seconds.`,
-                    state.width - 250,
-                    state.height - 40
-                );
-            } else if (remainingUIPauseTime > 0) {
-                canvasCVOutCtx.fillText(
-                    `Waiting for ${remainingUIPauseTime} seconds for UI update.`,
-                    state.width - 250,
-                    state.height - 40
-                );
-            }
-
-            const tt = Math.max(
-                0,
-                state.config.experiment.trialMaxDurationMilliSec -
-                state.experiment.trial.targetsDuration[state.experiment.trial.targetID]
-            );
-
-            canvasCVOutCtx.font = "15px Georgia";
-            canvasCVOutCtx.fillStyle = "white";
-            canvasCVOutCtx.fillText(
-                `Remaining time: ${((tt | 0) / 1000).toFixed()} seconds.`,
-                state.width - 250,
-                state.height - 20
-            );
         }
 
         if (state.menu.debug) {
