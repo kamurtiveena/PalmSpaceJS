@@ -518,20 +518,62 @@ window.onload = function () {
         cv.imshow('cv_output_canvas', state.outputCV);
 
         {
-            // draw marked button text
-            if (state.selection.markedBtn.btn_id != -1) {
-                canvasCVOutCtx.font = "22px Georgia";
-                canvasCVOutCtx.fillStyle = "green";
+            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.fillStyle = "white";
 
-                canvasCVOutCtx.fillText(
-                    state.selection.messages.marked,
-                    state.width - 250,
-                    state.height - 80
-                );
+            let s = "•Show your left palm towards the camera.";
+            canvasCVOutCtx.fillStyle = "black";
+            canvasCVOutCtx.globalAlpha = 0.5;
+            canvasCVOutCtx.fillRect(
+                20,
+                10,
+                s.length * 14,
+                40
+            );
 
-            }
+            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.fillStyle = "white";
+            canvasCVOutCtx.globalAlpha = 0.8;
+            canvasCVOutCtx.fillText(
+                s,
+                30,
+                40
+            );
+            s = "•Point to the buttons using your right hand's index finger.";
+            canvasCVOutCtx.fillStyle = "black";
+            canvasCVOutCtx.globalAlpha = 0.5;
+            canvasCVOutCtx.fillRect(
+                20,
+                50,
+                s.length * 14,
+                40
+            );
 
+            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.fillStyle = "white";
+            canvasCVOutCtx.globalAlpha = 0.8;
+            canvasCVOutCtx.fillText(
+                s,
+                30,
+                80
+            );
         }
+
+        // {
+        //     // draw marked button text
+        //     if (state.selection.markedBtn.btn_id != -1) {
+        //         canvasCVOutCtx.font = "22px Georgia";
+        //         canvasCVOutCtx.fillStyle = "green";
+
+        //         canvasCVOutCtx.fillText(
+        //             state.selection.messages.marked,
+        //             state.width - 250,
+        //             state.height - 80
+        //         );
+
+        //     }
+
+        // }
 
         if (state.experiment.trial.started()) {
             state.technique.drawCustom(state);
