@@ -4,7 +4,7 @@ import { H2SRelative } from './h2s_rel.js';
 import { MidAir } from './midair.js';
 import { FishEye } from './fisheye.js';
 import { Grid } from '../ds/grid.js';
-import { PresentationType, TechniqueType } from './constant.js';
+import { TrainUIState, PresentationType, TechniqueType } from './constant.js';
 import { H2SAbsolute } from './h2s_abs.js';
 import { GridFishEye } from '../ds/gridfisheye.js';
 import { S2HRelativeFinger } from './s2h_rel_finger.js';
@@ -510,6 +510,7 @@ class Technique {
         if (btns && btns.palm && btns.palm.output) {
             const N = btns.palm.output.length;
             for (let i = 0; i < N; i++) {
+                if (this.anchor.trainUIState == TrainUIState.Output) continue;
                 // this._drawIconsOnCanvas(
                 //     state, 
                 //     btns.palm.output[i]
@@ -530,7 +531,7 @@ class Technique {
 
                 if (N == 3) {
                     state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width / 50);
-                    state.canvasCVOutCtx.font = `${Math.min(18, btns.palm.output[i].width / 8)}px Georgia`;
+                    state.canvasCVOutCtx.font = `${Math.min(13, btns.palm.output[i].width / 8)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     const s = btns.palm.output[i].name.join(" ");
                     
@@ -542,7 +543,7 @@ class Technique {
                 } else {
                     const n = btns.palm.output[i].name.length;
                     state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width / 50);
-                    state.canvasCVOutCtx.font = `${Math.min(18, btns.palm.output[i].width / 3)}px Georgia`;
+                    state.canvasCVOutCtx.font = `${Math.min(13, btns.palm.output[i].width / 3)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
                     for (let j = 0; j < n; j++) {
                         state.canvasCVOutCtx.fillText(

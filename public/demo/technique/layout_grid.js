@@ -120,6 +120,32 @@ export class LayoutGrid {
 
                             }
                         ),
+                        new LandmarkButton(
+                            this,
+                            3,
+                            state,
+                            null,
+                            ["Weather", "Today"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/weather/1.png"
+                                        }
+                                    ],
+                                }
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.WeatherToday;
+                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -700;
+                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -600;
+                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -700;
+                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -600;
+
+                            }
+                        ),
                     ],
                     output: [
                         new LandmarkButton(
@@ -195,6 +221,32 @@ export class LayoutGrid {
 
                             }
                         ),
+                        new LandmarkButton(
+                            this,
+                            3,
+                            state,
+                            null,
+                            ["Weather", "Today"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/weather/1.png"
+                                        }
+                                    ],
+                                }
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.WeatherToday;
+                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -700;
+                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -600;
+                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -700;
+                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -600;
+
+                            }
+                        ),
                     ]
                 }
             },
@@ -226,16 +278,18 @@ export class LayoutGrid {
 
         const f = document.createElement('iframe');
         f.id = "output_frame";
-        f.style.width = state.outputFrame.style.width;
-        f.style.height = state.outputFrame.style.height;
+        f.style.width = 400; //state.outputFrame.style.width;
+        f.style.height = 400; //state.outputFrame.style.height;
         f.style.zIndex = 1;
         f.style.position = "relative";
-        f.style.top = state.outputFrame.style.top;
-        f.style.left = state.outputFrame.style.left;
+        f.style.top = -state.canvasCVOutCtx.canvas.width;//state.outputFrame.style.top;
+        f.style.left = -state.canvasCVOutCtx.canvas.height + parseInt(state.outputFrame.style.height); //state.outputFrame.style.left;
 
         if (this.demoSelection == DemoSelection.BusRoute) {
             f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
         } else if (this.demoSelection == DemoSelection.FoodMenu) {
+            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
+        } else if (this.demoSelection == DemoSelection.WeatherToday) {
             f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
         } else {
             f.setAttribute("src", state.selection.currentBtn.ref.opts.outputFrame.src);

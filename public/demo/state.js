@@ -82,13 +82,13 @@ class State {
 
     alignOutputFrame() {
         const p = this.technique.buttonsUIs.Output.palm.output[0];
-        const tx = -this.canvasCVOutCtx.canvas.width + p.x;
-        const ty = -this.canvasCVOutCtx.canvas.height + parseInt(this.outputFrame.style.height) + p.y;
+        const tx = -parseInt(this.outputFrame.style.width) -5; // -this.canvasCVOutCtx.canvas.width; // + p.x;
+        const ty = this.outputFrame.style.top; // -parseInt(this.outputFrame.style.height); //-this.canvasCVOutCtx.canvas.height + parseInt(this.outputFrame.style.height); // + p.y;
 
         this.outputFrame.style.top = `${ty}px`;
         this.outputFrame.style.left = `${tx}px`;
-        this.outputFrame.style.width = `${p.width}px`;
-        this.outputFrame.style.height = `${p.height}px`;
+        this.outputFrame.style.width = "500px"; //`${p.width}px`;
+        this.outputFrame.style.height = "500px"; //`${p.height}px`;
     }
 
     study2ImageIndices() {

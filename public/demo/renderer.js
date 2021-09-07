@@ -518,14 +518,14 @@ window.onload = function () {
         cv.imshow('cv_output_canvas', state.outputCV);
 
         {
-            canvasCVOutCtx.font = "30px Georgia";
+            canvasCVOutCtx.font = "24px Georgia";
             canvasCVOutCtx.fillStyle = "white";
 
-            let s = "•Show your left palm towards the camera.";
+            let s = "Show your left palm towards the camera.";
             canvasCVOutCtx.fillStyle = "black";
             canvasCVOutCtx.globalAlpha = 0.5;
             canvasCVOutCtx.fillRect(
-                20,
+                345,
                 10,
                 s.length * 14,
                 40
@@ -536,25 +536,26 @@ window.onload = function () {
             canvasCVOutCtx.globalAlpha = 0.8;
             canvasCVOutCtx.fillText(
                 s,
-                30,
-                40
-            );
-            s = "•Point to the buttons using your right hand's index finger.";
-            canvasCVOutCtx.fillStyle = "black";
-            canvasCVOutCtx.globalAlpha = 0.5;
-            canvasCVOutCtx.fillRect(
-                20,
-                50,
-                s.length * 14,
+                350,
                 40
             );
 
-            canvasCVOutCtx.font = "30px Georgia";
+            s = "Point to the buttons using your right hand's index finger.";
+            canvasCVOutCtx.fillStyle = "black";
+            canvasCVOutCtx.globalAlpha = 0.5;
+            canvasCVOutCtx.fillRect(
+                395,
+                50,
+                s.length * 8,
+                40
+            );
+
+            canvasCVOutCtx.font = "18px Georgia";
             canvasCVOutCtx.fillStyle = "white";
             canvasCVOutCtx.globalAlpha = 0.8;
             canvasCVOutCtx.fillText(
                 s,
-                30,
+                400,
                 80
             );
         }

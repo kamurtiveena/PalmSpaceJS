@@ -53,7 +53,8 @@ const DemoSelection = {
     Unassigned: null,
     FoodMenu: "FoodMenu",
     Map: "Map",
-    BusRoute: "BusRoute"
+    BusRoute: "BusRoute",
+    WeatherToday: "WeatherToday"
 };
 
 export {DemoSelection, TrainUIState, TechniqueType, ReadingDirectionType, PresentationType};
