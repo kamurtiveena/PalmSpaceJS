@@ -30,11 +30,13 @@ class ButtonSelection {
         this.currentBtn.row_i = -1;
         this.currentBtn.col_j = -1;
         this.currentBtn.btn_id = -1;
-        
+        this.currentBtn.ref = null;
+
         this.previousBtn.row_i = -1;
         this.previousBtn.col_j = -1;
         this.previousBtn.btn_id = -1;
-
+        this.previousBtn.ref = null;
+        
         this.messages.selected = "";
 
         this.pastSelections.head = null;

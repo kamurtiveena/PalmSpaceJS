@@ -832,6 +832,7 @@ class Technique {
     _markSelectedBtnID(state) {
         state.selection.markedBtn.btn_id = state.selection.currentBtn.btn_id;
         state.selection.markedBtn.name = state.selection.currentBtn.name;
+        state.selection.markedBtn.ref = state.selection.currentBtn.ref;
         if (state.selection.markedBtn.btn_id == -1) return;
         // state.selection.messages.marked = `Marked: ${state.selection.currentBtn.btn_id + 1}`;
         state.selection.messages.marked = `Selected: ${state.selection.currentBtn.name}`;
@@ -840,6 +841,7 @@ class Technique {
     _markSelected(state) {
         state.selection.markedBtn.row_i = state.selection.currentBtn.row_i;
         state.selection.markedBtn.col_j = state.selection.currentBtn.col_j;
+        state.selection.markedBtn.ref = state.selection.currentBtn.ref;
 
         if (state.selection.markedBtn.row_i > 0 &&
             state.selection.markedBtn.col_j > 0) {

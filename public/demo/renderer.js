@@ -407,6 +407,12 @@ window.onload = function () {
                 state.resetCursorPath();
             }
 
+            if (state.selection.currentBtn.ref && 
+                state.selection.markedBtn.ref && 
+                state.selection.currentBtn.ref.name.join(" ") == state.selection.markedBtn.ref.name.join(" ")) {
+                state.trigger.reset(state);
+            }
+
             let resetAnchor = false;
             let resetSelection = false;
             state.experiment.trial.clickStartBtn(state); // ...
@@ -501,6 +507,11 @@ window.onload = function () {
 
             state.overlay.delete();
 
+        } else {
+            state.outputFrame.style.display = "none";
+            state.selection.reset();
+            state.selection.markedBtn.ref = null;
+            state.trigger.reset(state);
         }
 
         if (state.cursor) {
