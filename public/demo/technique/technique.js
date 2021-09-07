@@ -519,6 +519,13 @@ class Technique {
                 let color = "black";
                 // if (state.selection.currentBtn.btn_id == btns.palm.output[i].btn_id) color = "grey";
 
+                if (state.selection.markedBtn.ref && 
+                    state.selection.markedBtn.ref.name.join(" ") == btns.palm.output[i].name.join(" ")
+                    ) {
+
+                    color = "green";
+                }
+
                 drawFillRect(
                     state.canvasCVOutCtx,
                     btns.palm.output[i].topleft.x,

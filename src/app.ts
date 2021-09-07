@@ -140,34 +140,37 @@ app.post('/admin/create/table/:name', async (req, res) => {
 
         const sql = `
         CREATE TABLE ${req.params.name} (
-            id INT AUTO_INCREMENT PRIMARY KEY, 
-            user_id VARCHAR(255) NOT NULL, 
-            technique VARCHAR(255) NOT NULL,
-            selection VARCHAR(255) NOT NULL,
-            cells_row INT NOT NULL,
-            cells_col INT NOT NULL,
-            button_sz VARCHAR(255),
-            btn_width INT,
-            btn_height INT,
-            target_btn_id VARCHAR(255),
-            target_rowcol VARCHAR(255),
-            target_id INT,
-            targets_visit_time_ms FLOAT,
             elapsed_time_ms FLOAT,
-            cursor_dist_px FLOAT,
-            attempts INT,
-            visited_cells INT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            valid BOOL DEFAULT TRUE,
-            layout VARCHAR(255) NOT NULL,
-            readingDirection VARCHAR(255) NOT NULL,
-            numberOfButtonsPerRow VARCHAR(255) NOT NULL,
-            presentation VARCHAR(255) NOT NULL,
-            events VARCHAR(1000),
-            attempts_details VARCHAR(1000),
-            reset BOOL DEFAULT FALSE,
-            targets_ui_visit_time_ms VARCHAR(2000)
+            buttons_clicked INT
         );`;
+        //     id INT AUTO_INCREMENT PRIMARY KEY, 
+        //     user_id VARCHAR(255) NOT NULL, 
+        //     technique VARCHAR(255) NOT NULL,
+        //     selection VARCHAR(255) NOT NULL,
+        //     cells_row INT NOT NULL,
+        //     cells_col INT NOT NULL,
+        //     button_sz VARCHAR(255),
+        //     btn_width INT,
+        //     btn_height INT,
+        //     target_btn_id VARCHAR(255),
+        //     target_rowcol VARCHAR(255),
+        //     target_id INT,
+        //     targets_visit_time_ms FLOAT,
+        //     elapsed_time_ms FLOAT,
+        //     cursor_dist_px FLOAT,
+        //     attempts INT,
+        //     visited_cells INT,
+        //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        //     valid BOOL DEFAULT TRUE,
+        //     layout VARCHAR(255) NOT NULL,
+        //     readingDirection VARCHAR(255) NOT NULL,
+        //     numberOfButtonsPerRow VARCHAR(255) NOT NULL,
+        //     presentation VARCHAR(255) NOT NULL,
+        //     events VARCHAR(1000),
+        //     attempts_details VARCHAR(1000),
+        //     reset BOOL DEFAULT FALSE,
+        //     targets_ui_visit_time_ms VARCHAR(2000)
+        // );`;
 
         console.log(sql);
 
@@ -276,6 +279,53 @@ app.post('/save/:tablename', async (req, res) => {
         if (conn) conn.release();
     }
 });
+
+
+app.post('/demo', async (req, res) => {
+    
+    console.log(`entered /demo`);
+    
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        console.log(req.body);
+
+        let body = req.body;
+        if (Array.isArray(body)) {
+            if (body.length > 0) body = body[0];
+            else {
+                res.send("request body empty");
+                return;
+            }
+        }
+
+        const sql = `
+            INSERT INTO 
+            demo (
+                elapsed_time_ms, 
+                buttons_clicked
+            ) 
+            VALUES (
+                ${body.elapsed_time_ms}, 
+                ${body.buttons_clicked}
+            );`;
+
+        const result = await conn.query(sql);
+        console.log(result);
+
+        res.send(result);
+
+    } catch (error) {
+        console.error(error);
+        res.send({ "error": error });
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+
+
+
 
 
 app.get('/stats/:tablename', async (req, res) => {

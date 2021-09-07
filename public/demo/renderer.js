@@ -9,6 +9,7 @@ import { Trial } from './userstudies/trial.js';
 import { TrialState } from './userstudies/constant.js';
 import { PresentationType, TechniqueType, TrainUIState } from "./technique/constant.js";
 import { Study } from './userstudies/study.js';
+import {DemoObserver} from './userstudies/demo.js';
 
 window.onload = function () {
 
@@ -130,6 +131,8 @@ window.onload = function () {
     }
 
     const state = new State();
+
+    state.demoObserver = new DemoObserver();
 
 
     state.outputFrame = document.getElementById("output_frame");
@@ -395,6 +398,13 @@ window.onload = function () {
         
         if (state.initiator.show || state.technique.alwaysShow) {
 
+            if (!state.demoObserver.handFound) {
+                state.demoObserver.handFound = true;
+                state.demoObserver.stats.start_time = performance.now();
+            }
+
+
+
             state.technique.calculate(state);
 
             state.experiment.trial.updateStartBtnInputLoc(state);
@@ -446,6 +456,8 @@ window.onload = function () {
                     } else if (state.experiment.trial.started()) {
 
                         state.technique.anchor.markSelected(state);
+
+                        state.demoObserver.stats.buttons_clicked ++;
                         
                         if (state.selection.currentBtn.ref.onclick) {
                             state.selection.currentBtn.ref.onclick();
@@ -512,6 +524,12 @@ window.onload = function () {
             state.selection.reset();
             state.selection.markedBtn.ref = null;
             state.trigger.reset(state);
+
+            if (state.demoObserver.handFound) {
+                state.demoObserver.processStats();
+                state.demoObserver.save(state);
+                state.demoObserver.reset();
+            }
         }
 
         if (state.cursor) {
