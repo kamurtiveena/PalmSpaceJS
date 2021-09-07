@@ -520,10 +520,13 @@ class Technique {
                 // if (state.selection.currentBtn.btn_id == btns.palm.output[i].btn_id) color = "grey";
 
                 if (state.selection.markedBtn.ref && 
-                    state.selection.markedBtn.ref.name.join(" ") == btns.palm.output[i].name.join(" ")
-                    ) {
+                    state.selection.markedBtn.ref.name.join(" ") == btns.palm.output[i].name.join(" ")) {
 
                     color = "green";
+                } else if (state.selection.currentBtn.ref && 
+                    state.selection.currentBtn.ref.name.join(" ") == btns.palm.output[i].name.join(" ")) {
+                    
+                    color = "grey";
                 }
 
                 drawFillRect(
