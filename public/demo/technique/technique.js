@@ -510,7 +510,7 @@ class Technique {
         if (btns && btns.palm && btns.palm.output) {
             const N = btns.palm.output.length;
             for (let i = 0; i < N; i++) {
-                if (this.anchor.trainUIState == TrainUIState.Output) continue;
+                // if (this.anchor.trainUIState == TrainUIState.Output) continue;
                 // this._drawIconsOnCanvas(
                 //     state, 
                 //     btns.palm.output[i]

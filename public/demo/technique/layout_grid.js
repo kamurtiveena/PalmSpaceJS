@@ -62,10 +62,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("view map clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.Map;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -500;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -500;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -500;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -500;
                             }
                         ),
                         new LandmarkButton(
@@ -87,11 +83,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("food menu clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.FoodMenu;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -400;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -530;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -400;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -530;
-
                             }
                         ),
                         new LandmarkButton(
@@ -113,11 +104,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("bus route clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.BusRoute;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -600;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -600;
-
                             }
                         ),
                         new LandmarkButton(
@@ -139,11 +125,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("bus route clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.WeatherToday;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -600;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -600;
-
                             }
                         ),
                     ],
@@ -162,11 +143,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("view map clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.Map;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -500;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -500;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -500;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -500;
-
                             }
                         ),
                         new LandmarkButton(
@@ -188,11 +164,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("food menu clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.FoodMenu;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -400;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -530;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -400;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -530;
-
                             }
                         ),
                         new LandmarkButton(
@@ -214,11 +185,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("bus route clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.BusRoute;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -600;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -600;
-
                             }
                         ),
                         new LandmarkButton(
@@ -240,11 +206,6 @@ export class LayoutGrid {
                             function () {
                                 console.log("bus route clicked, this:", this);
                                 this.parent.demoSelection = DemoSelection.WeatherToday;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.input[0].opts.offset.y = -600;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.x = -700;
-                                this.parent.parent.buttonsUIs.Output.palm.output[0].opts.offset.y = -600;
-
                             }
                         ),
                     ]
@@ -253,18 +214,182 @@ export class LayoutGrid {
             Output: {
                 finger: {
                     input: [
-                        new LandmarkButton(this, 6, state, null, ["Go", "Back"], {}, null),
+                        // new LandmarkButton(this, 6, state, null, ["Go", "Back"], {}, null),
                     ],
                     output: [
-                        new LandmarkButton(this, 6, state, null, ["Go", "Back"], {}, null),
+                        // new LandmarkButton(this, 6, state, null, ["Go", "Back"], {}, null),
                     ]
                 },
+                // palm: {
+                //     input: [
+                //         new LandmarkButton(this, 0, state, null, ["Output"], { dead: true, offset: { x: -500, y: -500 } }, null)
+                //     ],
+                //     output: [
+                //         new LandmarkButton(this, 0, state, null, ["Output"], { dead: true, offset: { x: -500, y: -500 } }, null)
+                //     ]
+                // }
                 palm: {
                     input: [
-                        new LandmarkButton(this, 0, state, null, ["Output"], { dead: true, offset: { x: -500, y: -500 } }, null)
+                        new LandmarkButton(
+                            this,
+                            0,
+                            state,
+                            null,
+                            ["View", "Map"],
+                            {
+                                outputFrame: {
+                                    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2896.726385428737!2d-1.5554569845089736!3d43.445430179128934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd51151c6db98a55%3A0xa0f1a4641e85a2c9!2sExakis%20Nelite%20Biarritz!5e0!3m2!1sen!2sca!4v1630874121900!5m2!1sen!2sca"
+                                }
+                            },
+                            function () {
+                                console.log("view map clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.Map;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            1,
+                            state,
+                            null,
+                            ["Food", "Menu"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/foodmenu/1.png"
+                                        }
+                                    ]
+                                }
+                            },
+                            function () {
+                                console.log("food menu clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.FoodMenu;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            2,
+                            state,
+                            null,
+                            ["Bus", "Routes"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/busroutes/1.png"
+                                        }
+                                    ]
+                                }
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.BusRoute;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            3,
+                            state,
+                            null,
+                            ["Weather", "Today"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/weather/1.png"
+                                        }
+                                    ],
+                                }
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.WeatherToday;
+                            }
+                        ),
                     ],
                     output: [
-                        new LandmarkButton(this, 0, state, null, ["Output"], { dead: true, offset: { x: -500, y: -500 } }, null)
+                        new LandmarkButton(
+                            this,
+                            0,
+                            state,
+                            null,
+                            ["View", "Map"],
+                            {
+                                outputFrame: {
+                                    src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2896.726385428737!2d-1.5554569845089736!3d43.445430179128934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd51151c6db98a55%3A0xa0f1a4641e85a2c9!2sExakis%20Nelite%20Biarritz!5e0!3m2!1sen!2sca!4v1630874121900!5m2!1sen!2sca"
+                                }
+                            },
+                            function () {
+                                console.log("view map clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.Map;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            1,
+                            state,
+                            null,
+                            ["Food", "Menu"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/foodmenu/1.png"
+                                        }
+                                    ]
+                                }
+                            },
+                            function () {
+                                console.log("food menu clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.FoodMenu;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            2,
+                            state,
+                            null,
+                            ["Bus", "Routes"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/busroutes/1.png"
+                                        }
+                                    ]
+                                }
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.BusRoute;
+                            }
+                        ),
+                        new LandmarkButton(
+                            this,
+                            3,
+                            state,
+                            null,
+                            ["Weather", "Today"],
+                            {
+                                outputFrame: {
+                                    src: "",
+                                    img: [
+                                        {
+                                            src: "res/weather/1.png"
+                                        }
+                                    ],
+                                }
+                            },
+                            function () {
+                                console.log("bus route clicked, this:", this);
+                                this.parent.demoSelection = DemoSelection.WeatherToday;
+                            }
+                        ),
                     ]
                 }
             },
@@ -330,7 +455,7 @@ export class LayoutGrid {
                 this.trainUIState = TrainUIState.Output;
                 break;
             case TrainUIState.Output:
-                this.trainUIState = TrainUIState.Choice;
+                this.trainUIState = TrainUIState.Output;
                 break;
             case TrainUIState.Done:
                 console.error("palm moveToNextUI(): state should not be in Done");
