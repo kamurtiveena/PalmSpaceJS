@@ -419,11 +419,11 @@ window.onload = function () {
                     break;
                 case TRIGGER.PRESSED:
 
-                    if (state.technique.isCursorInside(state)) {
-                        state.technique.anchor.adjustSelection(state);
-                        state.lockSelection();
-                    }
-                    state.updateCursorPath();
+                    // if (state.technique.isCursorInside(state)) {
+                    //     state.technique.anchor.adjustSelection(state);
+                    //     state.lockSelection();
+                    // }
+                    // state.updateCursorPath();
                     break;
                 case TRIGGER.RELEASED:
                     state.resetCursorPath();

@@ -284,13 +284,15 @@ export class LayoutGrid {
         f.style.position = "relative";
         f.style.top = -state.canvasCVOutCtx.canvas.width;//state.outputFrame.style.top;
         f.style.left = -state.canvasCVOutCtx.canvas.height + parseInt(state.outputFrame.style.height); //state.outputFrame.style.left;
+        f.style.overflow = "hidden";
+        f.scrolling = "no";
 
         if (this.demoSelection == DemoSelection.BusRoute) {
-            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
+            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img width = 500px height = 500px src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
         } else if (this.demoSelection == DemoSelection.FoodMenu) {
-            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
+            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img width = 500px height = 500px src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
         } else if (this.demoSelection == DemoSelection.WeatherToday) {
-            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
+            f.srcdoc = `<!html doctype><style>*{padding:0;margin:0}</style><img width = 500px height = 500px src="${state.selection.currentBtn.ref.opts.outputFrame.img[0].src}">`
         } else {
             f.setAttribute("src", state.selection.currentBtn.ref.opts.outputFrame.src);
         }
@@ -337,7 +339,6 @@ export class LayoutGrid {
                 console.error("palm moveToNextUI(): invalid state:", this.trainUIState);
                 break;
         }
-
     }
 
     doneUI() { return this.trainUIState == TrainUIState.Done; }
@@ -414,10 +415,13 @@ export class LayoutGrid {
         if (btns && btns.palm && btns.palm.input) {
             const n = btns.palm.input.length;
 
-            if (n > 3) {
+            if (n > 4) {
                 this.dx_col = (this.width - 4 * this.gap) / 3;
                 // this.dy_row = (this.height - (1 + n - 3) * this.gap) / (n-2);
                 this.dy_row = (this.height - 2 * this.gap);
+            } else if (n == 4) {
+                this.dx_col = this.width;
+                this.dy_row = (this.height - this.gap * 3) / 4;
             } else if (n == 3) {
                 this.dx_col = this.width;
                 this.dy_row = (this.height - this.gap * 2) / 3;
@@ -430,7 +434,7 @@ export class LayoutGrid {
                 this.dy_row = (this.height - 2 * this.gap);
             }
 
-            if (n == 3) {
+            if (n == 4) {
                 for (let i = 0; i < n; i++) {
                     btns.palm.input[i].x = this.palm.x;
                     btns.palm.input[i].y = this.palm.y + (i * this.dy_row) + (i * this.gap);

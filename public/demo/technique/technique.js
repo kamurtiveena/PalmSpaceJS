@@ -529,7 +529,7 @@ class Technique {
                     0.7
                 );
 
-                if (N == 3) {
+                if (N == 4) {
                     state.canvasCVOutCtx.globalAlpha = (btns.palm.output[i].width / 50);
                     state.canvasCVOutCtx.font = `${Math.min(13, btns.palm.output[i].width / 8)}px Georgia`;
                     state.canvasCVOutCtx.fillStyle = "white";
@@ -552,10 +552,7 @@ class Technique {
                             btns.palm.output[i].y + btns.palm.output[i].height / 2 + 20 * j - 5 * n,
                         );
                     }
-
                 }
-
-
             }
         }
 

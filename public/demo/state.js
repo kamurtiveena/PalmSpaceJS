@@ -209,10 +209,10 @@ class State {
             }
 
 
-            ret.x -= 25;
-            ret.y -= 5;
-            ret.mxx += 25;
-            ret.mxy += 5;
+            ret.x -= 30;
+            ret.y -= 45;
+            ret.mxx += 30;
+            ret.mxy += 20;
 
             ret.width = ret.mxx - ret.x;
             ret.height = ret.mxy - ret.y;
