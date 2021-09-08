@@ -569,11 +569,11 @@ window.onload = function () {
                 40
             );
 
-            s = "Point to the buttons using your right hand's index finger.";
+            s = "Touch the buttons on the left hand's palm using your right hand's index finger.";
             canvasCVOutCtx.fillStyle = "black";
             canvasCVOutCtx.globalAlpha = 0.5;
             canvasCVOutCtx.fillRect(
-                395,
+                300,
                 50,
                 s.length * 8,
                 40
@@ -584,7 +584,7 @@ window.onload = function () {
             canvasCVOutCtx.globalAlpha = 0.8;
             canvasCVOutCtx.fillText(
                 s,
-                400,
+                305,
                 80
             );
         }
