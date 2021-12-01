@@ -506,7 +506,7 @@ window.onload = function () {
             }
 
             state.experiment.trial.drawBackBtn(state);
-            state.experiment.trial.drawCompletedTargetsText(state);
+            // state.experiment.trial.drawCompletedTargetsText(state);
             // state.experiment.trial.drawTarget(state);
             
             

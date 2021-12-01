@@ -273,48 +273,18 @@ window.onload = function () {
         state.height = state.config.CAMHEIGHT;
         state.width = state.config.CAMWIDTH;
         
-        switch (state.menu.buttonSize) {
-            case "Dynamic":
-                state.config.landmarkButtons.width = 30;
-                state.config.landmarkButtons.height = 30;
-                state.config.buttons.width = 30;
-                state.config.buttons.height = 30;
-                state.config.buttons.isDynamic = true;
-                break;
-                case "Small":
-                    state.config.landmarkButtons.width = 30;
-                    state.config.landmarkButtons.height = 30;
-                    state.config.buttons.width = 30;
-                    state.config.buttons.height = 30;
-                    break;
-                    case "Large":
-                        state.config.landmarkButtons.width = 50;
-                        state.config.landmarkButtons.height = 50;
-                        state.config.buttons.width = 50;
-                        state.config.buttons.height = 50;
-                        
-                        break;
-                        case "Custom":
-                            state.config.landmarkButtons.width = parseInt(document.getElementById('cell_width').value, 10);
-                            state.config.landmarkButtons.height = parseInt(document.getElementById('cell_height').value, 10);
-                            state.config.buttons.width = parseInt(document.getElementById('cell_width').value, 10);
-                            state.config.buttons.height = parseInt(document.getElementById('cell_height').value, 10);
-                            console.table(state.config.buttons);
-                            console.table(state.config.landmarkButtons);
-                            break;
-                            default:
-                                state.config.landmarkButtons.width = 30;
-                                state.config.landmarkButtons.height = 30;
-                                state.config.buttons.width = 30;
-                                state.config.buttons.height = 30;
-                            }
-                            
-                            state.config.landmarkButtons.widthHalf = state.config.landmarkButtons.width / 2;
-                            state.config.landmarkButtons.heightHalf = state.config.landmarkButtons.height / 2;
-                            state.config.buttons.widthHalf = state.config.buttons.width / 2;
-                            state.config.buttons.heightHalf = state.config.buttons.height / 2;
-                            
-                            state.config.grid.width = state.config.grid.gap * (state.menu.cellscnt.col + 1) + state.config.buttons.width * (state.menu.cellscnt.col);
+        state.config.landmarkButtons.width = 30;
+        state.config.landmarkButtons.height = 30;
+        state.config.buttons.width = 30;
+        state.config.buttons.height = 30;
+        state.config.buttons.isDynamic = true;
+        
+        state.config.landmarkButtons.widthHalf = state.config.landmarkButtons.width / 2;
+        state.config.landmarkButtons.heightHalf = state.config.landmarkButtons.height / 2;
+        state.config.buttons.widthHalf = state.config.buttons.width / 2;
+        state.config.buttons.heightHalf = state.config.buttons.height / 2;
+        
+        state.config.grid.width = state.config.grid.gap * (state.menu.cellscnt.col + 1) + state.config.buttons.width * (state.menu.cellscnt.col);
         state.config.grid.height = state.config.grid.gap * (state.menu.cellscnt.row + 1) + state.config.buttons.height * (state.menu.cellscnt.row);
         
         state.config.experiment.repetitions = parseInt(checkSelectList('repetitions'));
@@ -343,7 +313,8 @@ window.onload = function () {
         const hands = new Hands({
             locateFile: (file) => {
                 // return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                // return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                return `third_party/mediapipe/hands/${file}`;
             }
         });
 
@@ -474,11 +445,11 @@ window.onload = function () {
                     break;
                 case TRIGGER.PRESSED:
 
-                    if (state.technique.isCursorInside(state)) {
-                        state.technique.anchor.adjustSelection(state);
-                        state.lockSelection();
-                    }
-                    state.updateCursorPath();
+                    // if (state.technique.isCursorInside(state)) {
+                    //     state.technique.anchor.adjustSelection(state);
+                    //     state.lockSelection();
+                    // }
+                    // state.updateCursorPath();
                     break;
                 case TRIGGER.RELEASED:
                     state.resetCursorPath();
@@ -612,28 +583,28 @@ window.onload = function () {
             }
         }
 
-        if (state.cursorPath.head != null) {
+        // if (state.cursorPath.head != null) {
 
-            let p = state.cursorPath.head;
-            let q = p.next;
+        //     let p = state.cursorPath.head;
+        //     let q = p.next;
 
-            let r = p;
+        //     let r = p;
 
-            canvasCVOutCtx.beginPath();
-            canvasCVOutCtx.lineWidth = 3;
-            canvasCVOutCtx.globalAlpha = 0.6;
-            canvasCVOutCtx.strokeStyle = "purple";
-            while (q != null) {
-                canvasCVOutCtx.moveTo(r.x, r.y);
-                // canvasCVOutCtx.lineTo(q.x, q.y);                
-                canvasCVOutCtx.quadraticCurveTo(p.x, p.y, q.x, q.y);
-                r = p;
-                p = q;
-                q = p.next;
-            }
+        //     canvasCVOutCtx.beginPath();
+        //     canvasCVOutCtx.lineWidth = 3;
+        //     canvasCVOutCtx.globalAlpha = 0.6;
+        //     canvasCVOutCtx.strokeStyle = "purple";
+        //     while (q != null) {
+        //         canvasCVOutCtx.moveTo(r.x, r.y);
+        //         // canvasCVOutCtx.lineTo(q.x, q.y);                
+        //         canvasCVOutCtx.quadraticCurveTo(p.x, p.y, q.x, q.y);
+        //         r = p;
+        //         p = q;
+        //         q = p.next;
+        //     }
 
-            canvasCVOutCtx.stroke();
-        }
+        //     canvasCVOutCtx.stroke();
+        // }
 
         if (state.technique.type == TechniqueType.H2S_Absolute && state.technique.inputBound && state.technique.inputBound) {
             canvasCVOutCtx.strokeStyle = "white";

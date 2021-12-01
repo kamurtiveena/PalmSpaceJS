@@ -39,7 +39,7 @@ class Dwell {
             
             this.selection.currentBtn.btn_id = btn.btn_id;
                     
-            if (btn.btn_id != -1) {
+            if (state.experiment.trial.started() && btn.btn_id != -1) {
                 if (this.selection.previousBtn.btn_id != -1) {
                     
                     if (this.selection.previousBtn.btn_id == btn.btn_id) {
@@ -93,7 +93,7 @@ class Dwell {
         this.selection.currentBtn.row_i = btn.row_i;
         this.selection.currentBtn.col_j = btn.col_j;
                 
-        if (btn.row_i != -1 && btn.row_j != -1) {
+        if (state.experiment.trial.started() && btn.row_i != -1 && btn.row_j != -1) {
             if (this.selection.previousBtn.row_i != -1 && 
                 this.selection.previousBtn.col_j != -1) {
                 

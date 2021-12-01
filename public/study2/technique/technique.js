@@ -684,6 +684,7 @@ class Technique {
     }
 
     _drawTextHighlightedBtnID(state) {
+        return; // added for video
         if (state.selection.currentBtn.btn_id != -1) {
 
             cv.putText(
@@ -699,6 +700,7 @@ class Technique {
     }
 
     _drawTextHighlighted(state) {
+        return; // added for video
         if (state.selection.currentBtn.row_i != -1 &&
             state.selection.currentBtn.col_j != -1) {
 
@@ -715,6 +717,7 @@ class Technique {
     }
 
     _drawTextMarkedMarkedBtnID(state) {
+        return; // added for video
         if (state.selection.markedBtn.btn_id != -1) {
             cv.putText(
                 state.overlay,
@@ -729,6 +732,7 @@ class Technique {
     }
 
     _drawTextMarked(state) {
+        return; // added for video
         if (state.selection.markedBtn.row_i != -1 &&
             state.selection.markedBtn.col_j != -1) {
 
