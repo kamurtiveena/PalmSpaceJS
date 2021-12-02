@@ -263,8 +263,6 @@ window.onload = function () {
         };
 
         state.menu.buttonSize = checkRadio("buttonSize");
-        state.height = state.config.CAMHEIGHT;
-        state.width = state.config.CAMWIDTH;
 
         state.config.landmarkButtons.widthHalf = state.config.landmarkButtons.width / 2;
         state.config.landmarkButtons.heightHalf = state.config.landmarkButtons.height / 2;
@@ -337,11 +335,13 @@ window.onload = function () {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-        if (!state.menu.camera ||
-            state.menu.study2.presentation == PresentationType.Existing ||
-            state.technique.type == TechniqueType.H2S_Relative ||
-            state.technique.type == TechniqueType.H2S_Absolute ||
-            state.technique.type == TechniqueType.H2S_Relative_Finger
+        if (
+            // !state.menu.camera ||
+            // state.menu.study2.presentation == PresentationType.Existing ||
+            // state.technique.type == TechniqueType.H2S_Relative ||
+            // state.technique.type == TechniqueType.H2S_Absolute ||
+            // state.technique.type == TechniqueType.H2S_Relative_Finger
+            state.technique.type == TechniqueType.MidAir
         ) {
             canvasCtx.fillStyle = "#fec";
             canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);

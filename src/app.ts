@@ -69,7 +69,7 @@ app.use(authenticator);
 
 
 app.get('/', (req, res) => {
-    res.redirect("/demo");
+    res.redirect("/study3v2");
     // res.send(`${PORT} working`);
 });
 
@@ -138,39 +138,42 @@ app.post('/admin/create/table/:name', async (req, res) => {
     try {
         conn = await pool.getConnection()
 
+        // const sql = `
+        // CREATE TABLE ${req.params.name} (
+        //     elapsed_time_ms FLOAT,
+        //     buttons_clicked INT
+        // );`;
+
         const sql = `
         CREATE TABLE ${req.params.name} (
+            id INT AUTO_INCREMENT PRIMARY KEY, 
+            user_id VARCHAR(255) NOT NULL, 
+            technique VARCHAR(255) NOT NULL,
+            selection VARCHAR(255) NOT NULL,
+            cells_row INT NOT NULL,
+            cells_col INT NOT NULL,
+            button_sz VARCHAR(255),
+            btn_width INT,
+            btn_height INT,
+            target_btn_id VARCHAR(255),
+            target_rowcol VARCHAR(255),
+            target_id INT,
+            targets_visit_time_ms FLOAT,
             elapsed_time_ms FLOAT,
-            buttons_clicked INT
+            cursor_dist_px FLOAT,
+            attempts INT,
+            visited_cells INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            valid BOOL DEFAULT TRUE,
+            layout VARCHAR(255) NOT NULL,
+            readingDirection VARCHAR(255) NOT NULL,
+            numberOfButtonsPerRow VARCHAR(255) NOT NULL,
+            presentation VARCHAR(255) NOT NULL,
+            events VARCHAR(1000),
+            attempts_details VARCHAR(1000),
+            reset BOOL DEFAULT FALSE,
+            targets_ui_visit_time_ms VARCHAR(2000)
         );`;
-        //     id INT AUTO_INCREMENT PRIMARY KEY, 
-        //     user_id VARCHAR(255) NOT NULL, 
-        //     technique VARCHAR(255) NOT NULL,
-        //     selection VARCHAR(255) NOT NULL,
-        //     cells_row INT NOT NULL,
-        //     cells_col INT NOT NULL,
-        //     button_sz VARCHAR(255),
-        //     btn_width INT,
-        //     btn_height INT,
-        //     target_btn_id VARCHAR(255),
-        //     target_rowcol VARCHAR(255),
-        //     target_id INT,
-        //     targets_visit_time_ms FLOAT,
-        //     elapsed_time_ms FLOAT,
-        //     cursor_dist_px FLOAT,
-        //     attempts INT,
-        //     visited_cells INT,
-        //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        //     valid BOOL DEFAULT TRUE,
-        //     layout VARCHAR(255) NOT NULL,
-        //     readingDirection VARCHAR(255) NOT NULL,
-        //     numberOfButtonsPerRow VARCHAR(255) NOT NULL,
-        //     presentation VARCHAR(255) NOT NULL,
-        //     events VARCHAR(1000),
-        //     attempts_details VARCHAR(1000),
-        //     reset BOOL DEFAULT FALSE,
-        //     targets_ui_visit_time_ms VARCHAR(2000)
-        // );`;
 
         console.log(sql);
 

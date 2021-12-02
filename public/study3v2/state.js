@@ -36,6 +36,9 @@ class State {
 
         this.config = new Config();
         this.selection = new ButtonSelection();
+
+        this.width = this.config.CAMWIDTH;
+        this.height = this.config.CAMHEIGHT;
   
         this.cursorPath = {
             show: false,
@@ -165,6 +168,83 @@ class State {
 
         return ret;
     }
+
+
+    staticRect() {
+        let ret = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+            mxx: 0,
+            mxy: 0,
+            maxDim: 0
+        }
+
+        if (this.initiator && this.initiator.left.landmarks) {
+            
+            ret.width = this.width/5;
+            ret.height = this.height/5;
+            ret.maxDim = Math.max(ret.width, ret.height);
+
+            ret.x = (this.width / 2) - (ret.width / 2);
+            ret.y = (this.height / 2) - (ret.height / 2);
+            ret.mxx = ret.x + ret.width;
+            ret.mxy = ret.y + ret.height;
+        }
+
+        return ret;
+    }
+
+
+    palmRectStatic() {
+        let ret = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+            mxx: 0,
+            mxy: 0,
+            maxDim: 0
+        }
+
+        if (this.initiator && this.initiator.left.landmarks) {
+            ret.width = this.width/5;
+            ret.height = this.height/5;
+            ret.maxDim = Math.max(ret.width, ret.height);
+
+
+
+            ret.x = this.initiator.left.landmarks[this.palmLandmarkIDs[0]].x;
+            ret.y = this.initiator.left.landmarks[this.palmLandmarkIDs[0]].y;
+            
+            for (let i = 1, len = this.palmLandmarkIDs.length; i < len; i ++) {
+                
+                const l = this.initiator.left.landmarks[this.palmLandmarkIDs[i]];
+                
+                ret.x = Math.min(ret.x, l.x);
+                ret.y = Math.min(ret.y, l.y);
+                ret.mxx = Math.max(ret.mxx, l.x);
+                ret.mxy = Math.max(ret.mxy, l.y);
+            }
+
+            ret.x = ((ret.mxx + ret.x)/2) - (ret.width/2);
+            ret.y = ((ret.mxy + ret.y)/2) - (ret.height/2);
+
+            ret.mxx = ret.x + ret.width;
+            ret.mxy = ret.y + ret.height;
+
+
+            // ret.x -= 25;
+            // ret.y -= 5;
+            // ret.mxx += 25;
+            // ret.mxy += 5;
+
+        }
+
+        return ret;
+    }
+
 
     palmRect() {
         let ret = {

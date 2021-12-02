@@ -2,6 +2,7 @@ import { S2HRelative } from './s2h_rel.js';
 import { S2HAbsolute } from './s2h_abs.js';
 import { H2SRelative } from './h2s_rel.js';
 import { MidAir } from './midair.js';
+import { MidAirV2 } from './midairv2.js';
 import { FishEye } from './fisheye.js';
 import { Grid } from '../ds/grid.js';
 import { PresentationType, TechniqueType } from './constant.js';
@@ -85,6 +86,9 @@ class Technique {
                 break;
             case "MidAir":
                 this.anchor = new MidAir(this, state);
+                break;
+            case "MidAirV2":
+                this.anchor = new MidAirV2(this, state);
                 break;
             case "FishEye":
                 this.anchor = new FishEye(this, state);
@@ -596,7 +600,7 @@ class Technique {
     isCursorInside(state) {
         if (this.type == TechniqueType.Landmark_Btn || this.type == TechniqueType.Landmark_Btn_FishEye ||
             this.type == TechniqueType.LayoutFlow || this.type == TechniqueType.LayoutGrid ||
-            this.type == TechniqueType.MidAir) {
+            this.type == TechniqueType.MidAir || this.type == TechniqueType.MidAirV2) {
             return this._isCursorInsideBtnID(state);
         }
 

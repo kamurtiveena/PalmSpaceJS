@@ -6,6 +6,7 @@ const TechniqueType = {
     H2S_Relative: "H2S_Relative",
     H2S_Absolute: "H2S_Absolute",
     MidAir: "MidAir",
+    MidAirV2: "MidAirV2",
     FishEye: "FishEye",
     S2H_Relative_Finger: "S2H_Relative_Finger",
     H2S_Relative_Finger: "H2S_Relative_Finger",

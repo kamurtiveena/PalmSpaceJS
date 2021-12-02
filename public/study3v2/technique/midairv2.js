@@ -4,11 +4,11 @@ import { LandmarkButton } from "../ds/button.js";
 
 import { TrainUIState } from "./constant.js";
 
-export class LayoutGrid {
+export class MidAirV2 {
     // todo implement delete attributes in class destructor
     constructor(parent, state) {
         this.parent = parent;
-        this.parent.type = TechniqueType.LayoutGrid;
+        this.parent.type = TechniqueType.MidAirV2;
         this.gap = 3;
 
         // this.parent.buttons = {
@@ -173,6 +173,7 @@ export class LayoutGrid {
     }
 
     calculate(state) {
+
         if (!state.initiator.left.show) return;
 
         if (state.initiator.left.landmarks) {
@@ -267,8 +268,10 @@ export class LayoutGrid {
 
     _align(state) {
 
+        this.palm = state.staticRect();
         // this.palm = state.palmRect();
-        this.palm = state.palmRectStatic();
+        console.log("this.palm:", this.palm);
+
         this.width = this.palm.width;
         this.height = this.palm.height;
 
@@ -280,19 +283,19 @@ export class LayoutGrid {
             this.dy_row = (this.height - 4 * this.gap) / 3;
 
             for (let i = 0, j = 8; i < n; i++, j += 4) {
-                btns.finger.input[i].x = state.initiator.left.landmarks[j].x;
-                btns.finger.input[i].y = state.initiator.left.landmarks[j].y;
+                btns.finger.input[i].x = this.palm.x + (i * this.dx_col) + (i * this.gap); // state.initiator.left.landmarks[j].x;
+                btns.finger.input[i].y = this.palm.y - this.dy_row - this.gap; // state.initiator.left.landmarks[j].y;
                 btns.finger.input[i].width = this.dx_col;
                 btns.finger.input[i].height = this.dy_row;
-                btns.finger.input[i].topleft.x = btns.finger.input[i].x - this.dx_col / 2;
-                btns.finger.input[i].topleft.y = btns.finger.input[i].y - this.dy_row / 2;
+                btns.finger.input[i].topleft.x = btns.finger.input[i].x; // btns.finger.input[i].x - this.dx_col / 2;
+                btns.finger.input[i].topleft.y = btns.finger.input[i].y; // btns.finger.input[i].y - this.dy_row / 2;
 
-                btns.finger.output[i].x = state.initiator.left.landmarks[j].x;
-                btns.finger.output[i].y = state.initiator.left.landmarks[j].y;
+                btns.finger.output[i].x = this.palm.x + (i * this.dx_col) + (i * this.gap); // state.initiator.left.landmarks[j].x;
+                btns.finger.output[i].y = this.palm.y - this.dy_row - this.gap; // state.initiator.left.landmarks[j].y;
                 btns.finger.output[i].width = this.dx_col;
                 btns.finger.output[i].height = this.dy_row;
-                btns.finger.output[i].topleft.x = btns.finger.output[i].x - this.dx_col / 2;
-                btns.finger.output[i].topleft.y = btns.finger.output[i].y - this.dy_row / 2;
+                btns.finger.output[i].topleft.x = btns.finger.output[i].x; // btns.finger.output[i].x - this.dx_col / 2;
+                btns.finger.output[i].topleft.y = btns.finger.output[i].y; // btns.finger.output[i].y - this.dy_row / 2;
             }
         }
 

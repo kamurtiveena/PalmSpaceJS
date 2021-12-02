@@ -37,9 +37,9 @@ class Study {
             targets_ui_visit_time_ms: state.experiment.trial.targetsLastVisitedTimeStr()
         }
 
-        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study3`, body]);
+        state.myWorker.postMessage([`post_record`, `${state.config.host.url}/save/study3v2`, body]);
 
-        console.log("study2.save() body:", JSON.stringify(body));
+        console.log("study3v2.save() body:", JSON.stringify(body));
     }
 }
 
