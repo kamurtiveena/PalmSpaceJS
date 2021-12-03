@@ -86,13 +86,13 @@ export class LayoutGrid {
                         new LandmarkButton(this, 3, state, null, ["Help"]),
                         new LandmarkButton(this, 4, state, null, ["Exit"]),
                         new LandmarkButton(this, 5, state, null, ["Next"]),
-                        new LandmarkButton(this, 6, state, null, ["Previous"]),
+                        new LandmarkButton(this, 6, state, null, ["Back"]),
                     ],
                     output: [
                         new LandmarkButton(this, 3, state, null, ["Help"]),
                         new LandmarkButton(this, 4, state, null, ["Exit"]),
                         new LandmarkButton(this, 5, state, null, ["Next"]),
-                        new LandmarkButton(this, 6, state, null, ["Previous"]),
+                        new LandmarkButton(this, 6, state, null, ["Back"]),
                     ]
                 },
                 palm: {
@@ -114,13 +114,13 @@ export class LayoutGrid {
                         new LandmarkButton(this, 5, state, null, ["Help"]),
                         new LandmarkButton(this, 6, state, null, ["Exit"]),
                         new LandmarkButton(this, 7, state, null, ["Next"]),
-                        new LandmarkButton(this, 8, state, null, ["Previous"]),
+                        new LandmarkButton(this, 8, state, null, ["Back"]),
                     ],
                     output: [
                         new LandmarkButton(this, 5, state, null, ["Help"]),
                         new LandmarkButton(this, 6, state, null, ["Exit"]),
                         new LandmarkButton(this, 7, state, null, ["Next"]),
-                        new LandmarkButton(this, 8, state, null, ["Previous"]),
+                        new LandmarkButton(this, 8, state, null, ["Back"]),
                     ]
                 },
                 palm: {

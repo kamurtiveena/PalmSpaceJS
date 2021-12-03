@@ -209,8 +209,8 @@ class State {
         }
 
         if (this.initiator && this.initiator.left.landmarks) {
-            ret.width = this.width/5;
-            ret.height = this.height/5;
+            ret.width = this.width/4;
+            ret.height = this.height/4;
             ret.maxDim = Math.max(ret.width, ret.height);
 
 

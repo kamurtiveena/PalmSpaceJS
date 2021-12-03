@@ -386,10 +386,9 @@ export class Trial {
 
     updateStartBtnInputLoc(state) {
         if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow
-            || state.technique.type == TechniqueType.MidAirV2) {
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow) {
             this._updateStartBtnInputLocBtnID(state);
-        } else if (state.technique.type == TechniqueType.MidAir) {
+        } else if (state.technique.type == TechniqueType.MidAir || state.technique.type == TechniqueType.MidAirV2) {
             this._updateStartBtnInputLocBtnIDMidAir(state);
         } else {
             this._updateStartBtnInputLoc(state);
@@ -536,21 +535,28 @@ export class Trial {
         }
 
         let tl = null, br = null;
-        if (state.technique.alwaysShow) {
-            const p = this._drawStartBtnAlwaysShow(state);
+        
+        if (state.technique.alwaysShow) {   
+            if (state.technique.type == TechniqueType.MidAirV2) {
+                const p = this._drawStartBtnMidAirV2(state);
+                tl = p.tl;
+                br = p.br;
+            } else {
+                const p = this._drawStartBtnAlwaysShow(state);
+                tl = p.tl;
+                br = p.br;
+            }        
+        } else if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
+            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
+            state.technique.type == TechniqueType.MidAir) {
+            const p = this._drawStartBtnBtnID(state);
             tl = p.tl;
             br = p.br;
         } else if (state.isExistingPresentation()) {
             const p = this._drawStartBtnTopRight(state);
             tl = p.tl;
             br = p.br;
-        } else if (state.technique.type == TechniqueType.Landmark_Btn || state.technique.type == TechniqueType.Landmark_Btn_FishEye ||
-            state.technique.type == TechniqueType.LayoutGrid || state.technique.type == TechniqueType.LayoutFlow ||
-            state.technique.type == TechniqueType.MidAir || state.technique.type == TechniqueType.MidAirV2) {
-            const p = this._drawStartBtnBtnID(state);
-            tl = p.tl;
-            br = p.br;
-        } else {
+        }  else {
             const p = this._drawStartBtn(state);
             tl = p.tl;
             br = p.br;
@@ -584,16 +590,31 @@ export class Trial {
         // }
     }
 
-    _drawStartBtnAlwaysShow(state) {
-        const p = state.initiator.left.landmarks[4];
 
+    _drawStartBtnMidAirV2(state) {
         const tl = new cv.Point(
-            state.width - 130,
+            state.width/2 + 170,
             -50 + state.height / 2 - 40
         );
 
         const br = new cv.Point(
-            state.width - 40,
+            state.width/2 + 260,
+            +50 + state.height / 2 - 40
+        );
+
+        return { tl, br };
+    }
+
+    _drawStartBtnAlwaysShow(state) {
+        const p = state.initiator.left.landmarks[4];
+
+        const tl = new cv.Point(
+            state.width/2 + 170,
+            -50 + state.height / 2 - 40
+        );
+
+        const br = new cv.Point(
+            state.width/2 + 260,
             +50 + state.height / 2 - 40
         );
 

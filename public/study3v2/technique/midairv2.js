@@ -18,6 +18,7 @@ export class MidAirV2 {
 
         // this.trainUIState = TrainUIState.Welcome;
         this.trainUIState = TrainUIState.Choice;
+        this.parent.alwaysShow = true;
 
         this.parent.buttonsUIs = {
             Unassigned: {
@@ -86,13 +87,13 @@ export class MidAirV2 {
                         new LandmarkButton(this, 3, state, null, ["Help"]),
                         new LandmarkButton(this, 4, state, null, ["Exit"]),
                         new LandmarkButton(this, 5, state, null, ["Next"]),
-                        new LandmarkButton(this, 6, state, null, ["Previous"]),
+                        new LandmarkButton(this, 6, state, null, ["Go", "Back"]),
                     ],
                     output: [
                         new LandmarkButton(this, 3, state, null, ["Help"]),
                         new LandmarkButton(this, 4, state, null, ["Exit"]),
                         new LandmarkButton(this, 5, state, null, ["Next"]),
-                        new LandmarkButton(this, 6, state, null, ["Previous"]),
+                        new LandmarkButton(this, 6, state, null, ["Go", "Back"]),
                     ]
                 },
                 palm: {
@@ -114,13 +115,13 @@ export class MidAirV2 {
                         new LandmarkButton(this, 5, state, null, ["Help"]),
                         new LandmarkButton(this, 6, state, null, ["Exit"]),
                         new LandmarkButton(this, 7, state, null, ["Next"]),
-                        new LandmarkButton(this, 8, state, null, ["Previous"]),
+                        new LandmarkButton(this, 8, state, null, ["Go", "Back"]),
                     ],
                     output: [
                         new LandmarkButton(this, 5, state, null, ["Help"]),
                         new LandmarkButton(this, 6, state, null, ["Exit"]),
                         new LandmarkButton(this, 7, state, null, ["Next"]),
-                        new LandmarkButton(this, 8, state, null, ["Previous"]),
+                        new LandmarkButton(this, 8, state, null, ["Go", "Back"]),
                     ]
                 },
                 palm: {
@@ -174,13 +175,13 @@ export class MidAirV2 {
 
     calculate(state) {
 
-        if (!state.initiator.left.show) return;
+        // if (!state.initiator.left.show) return;
 
-        if (state.initiator.left.landmarks) {
+        // if (state.initiator.left.landmarks) {
             this._align(state);
             this.parent._setupSelectionTrain(state);
 
-        }
+        // }
     }
 
     reset() {
@@ -270,7 +271,6 @@ export class MidAirV2 {
 
         this.palm = state.staticRect();
         // this.palm = state.palmRect();
-        console.log("this.palm:", this.palm);
 
         this.width = this.palm.width;
         this.height = this.palm.height;
@@ -279,8 +279,8 @@ export class MidAirV2 {
 
         if (btns && btns.finger && btns.finger.input) {
             const n = btns.finger.input.length;
-            this.dx_col = (this.width - 4 * this.gap) / 3;
-            this.dy_row = (this.height - 4 * this.gap) / 3;
+            this.dx_col = (this.width  - (n+1) * this.gap) / n;
+            this.dy_row = this.height / 2;
 
             for (let i = 0, j = 8; i < n; i++, j += 4) {
                 btns.finger.input[i].x = this.palm.x + (i * this.dx_col) + (i * this.gap); // state.initiator.left.landmarks[j].x;
@@ -307,7 +307,6 @@ export class MidAirV2 {
                 this.dy_row = (this.height - 2 * this.gap);
             } else if (n == 2) {
                 this.dx_col = (this.width - 3 * this.gap) / 2;
-                // this.dy_row = (this.height - 2 * this.gap);
                 this.dy_row = (this.height - 2 * this.gap);
             } else if (n == 1) {
                 this.dx_col = (this.width - 2 * this.gap);
@@ -344,7 +343,7 @@ export class MidAirV2 {
     }
 
     draw(state) {
-        if (!state.initiator.left.show) return;
+        // if (!state.initiator.left.show) return;
 
         // this.parent._drawTextHighlightedBtnID(state);
         // this.parent._drawTextMarkedMarkedBtnID(state);

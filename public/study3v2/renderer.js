@@ -341,7 +341,7 @@ window.onload = function () {
             // state.technique.type == TechniqueType.H2S_Relative ||
             // state.technique.type == TechniqueType.H2S_Absolute ||
             // state.technique.type == TechniqueType.H2S_Relative_Finger
-            state.technique.type == TechniqueType.MidAir
+            state.technique.type == TechniqueType.MidAir || state.technique.type == TechniqueType.MidAirV2
         ) {
             canvasCtx.fillStyle = "#fec";
             canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
@@ -399,7 +399,6 @@ window.onload = function () {
         const remainingUIPauseTime = state.experiment.trial.remainingUIPauseTime(state);
 
         if (remainingUIPauseTime > 0 || remainingStartButtonPauseTime > 0) {
-            // console.log("remainingUIPauseTime:", remainingUIPauseTime, "remainingStartButtonPauseTime:", remainingStartButtonPauseTime);
             state.trigger.reset(state);
         }
 
@@ -549,14 +548,9 @@ window.onload = function () {
                     state.width - 250,
                     state.height - 80
                 );
-                
             }
-
         }
 
-        // if (state.initiator.show || state.technique.alwaysShow) {
-        //     state.technique.drawIconsOnGridCanvas(state);
-        // }
 
         if (state.experiment.trial.started()) {
             state.technique.drawCustom(state);
