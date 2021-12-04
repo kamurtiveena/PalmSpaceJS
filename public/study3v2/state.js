@@ -52,6 +52,11 @@ class State {
             study2: {},
         };
 
+        this.ratio = {
+            width: 6,
+            height: 4
+        };
+
         this.imageCombinations = {}
 
         console.log(PresentationType, TechniqueType, ReadingDirectionType);
@@ -183,8 +188,8 @@ class State {
 
         if (this.initiator && this.initiator.left.landmarks) {
             
-            ret.width = this.width/5;
-            ret.height = this.height/5;
+            ret.width  = this.width  / this.ratio.width;
+            ret.height = this.height / this.ratio.height;
             ret.maxDim = Math.max(ret.width, ret.height);
 
             ret.x = (this.width / 2) - (ret.width / 2);
@@ -209,8 +214,8 @@ class State {
         }
 
         if (this.initiator && this.initiator.left.landmarks) {
-            ret.width = this.width/4;
-            ret.height = this.height/4;
+            ret.width  = this.width  / this.ratio.width;
+            ret.height = this.height / this.ratio.height;
             ret.maxDim = Math.max(ret.width, ret.height);
 
 

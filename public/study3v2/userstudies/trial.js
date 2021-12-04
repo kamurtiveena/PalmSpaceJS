@@ -163,6 +163,15 @@ export class Trial {
         return ret;
     }
 
+    maxAttemptsAmongUIs() {
+        let ret = 0;
+        for (let i = 0;i < this.trainUIStates.length - 1; i ++) {
+            ret = Math.max(ret, this.stats.attemptsUI[this.trainUIStates[i]][this.targetID]);
+        }
+
+        return ret;        
+    }
+
     resetCurrentTarget(state) {
         this.status = TrialState.PAUSED;
         this.targetList[this.targetID].currentUI = TrainUIState.Choice;

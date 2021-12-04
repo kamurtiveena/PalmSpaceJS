@@ -24,7 +24,7 @@ class Study {
             targets_visit_time_ms: state.experiment.trial.lastVisitTime() | 0,
             elapsed_time_ms: state.experiment.trial.elapsedTime(),
             cursor_dist_px: state.experiment.trial.stats.distance.cursor[state.experiment.trial.targetID].toFixed(1),
-            attempts: state.experiment.trial.stats.attempts[state.experiment.trial.targetID],
+            attempts: state.experiment.trial.maxAttemptsAmongUIs(), // state.experiment.trial.stats.attempts[state.experiment.trial.targetID],
             visited_cells: state.experiment.trial.stats.visitedCells[state.experiment.trial.targetID],
             valid: state.experiment.trial.stats.valid,
             layout: state.menu.study2.layout,
